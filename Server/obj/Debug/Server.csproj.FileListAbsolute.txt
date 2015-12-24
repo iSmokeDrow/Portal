@@ -3,3 +3,9 @@ f:\users\switch\documents\visual studio 2015\Projects\Portal\Server\bin\Debug\Se
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Server\bin\Debug\Server.pdb
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Server\obj\Debug\Server.exe
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Server\obj\Debug\Server.pdb
+C:\Users\guilh\Documents\Dev\Rappelz\Portal\Server\bin\Debug\Server.exe.config
+C:\Users\guilh\Documents\Dev\Rappelz\Portal\Server\bin\Debug\Server.exe
+C:\Users\guilh\Documents\Dev\Rappelz\Portal\Server\bin\Debug\Server.pdb
+C:\Users\guilh\Documents\Dev\Rappelz\Portal\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\guilh\Documents\Dev\Rappelz\Portal\Server\obj\Debug\Server.exe
+C:\Users\guilh\Documents\Dev\Rappelz\Portal\Server\obj\Debug\Server.pdb

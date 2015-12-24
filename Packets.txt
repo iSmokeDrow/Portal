@@ -1,0 +1,54 @@
+//=====================================
+//=		Packet List
+//=====================================
+//-- Directions
+// CS: Client-Server
+// SC: Server-Client
+//
+// Structure:
+
+// <Packet ID>
+struct <Direction>_<PacketName> {
+	<Fields>
+}
+
+//--- Comments
+//=====================================
+
+// *****************
+//		Login
+// *****************
+
+// 0x0000
+struct CS_Login {
+	string(60) username;
+	byte[8] password;
+	string(60) fingerprint;
+}
+//----- Note:
+//-- password is DES-encrypted
+
+// 0x0001
+struct SC_LoginResult {
+	int result;
+}
+
+
+
+// *****************
+//		Update
+// *****************
+// (Not Implemented yet)
+
+// 0x0010
+struct CS_RequestFile {
+	string(256) file_name;
+	int offset;
+}
+
+// 0x0011
+struct SC_File {
+	int offset;
+	bool endOfFile;
+	
+}
