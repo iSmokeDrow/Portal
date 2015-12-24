@@ -31,6 +31,7 @@ namespace Server.Network
         /// <param name="stream"></param>
         public void PacketReceived(Client client, PacketStream stream)
         {
+            Console.WriteLine("HERE");
             // Is it a known packet ID?
             if (!PacketsDb.ContainsKey(stream.GetId()))
             {
@@ -55,7 +56,7 @@ namespace Server.Network
             byte[] password = stream.ReadBytes(8);
             string fingerprint = stream.ReadString(60);
 
-            // TODO : Call Server.Login(userId, password, fingerprint);
+            Program.OnUserLogin(client, userId, password, fingerprint);
         }
 
         #endregion
