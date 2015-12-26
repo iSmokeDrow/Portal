@@ -22,7 +22,7 @@ struct <Direction>_<PacketName> {
 // 0x0000
 struct CS_Login {
 	string(60) username;
-	byte[8] password;
+	byte[56] password;
 	string(60) fingerprint;
 }
 //----- Note:
