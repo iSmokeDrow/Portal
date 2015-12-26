@@ -68,9 +68,9 @@ namespace Client.Network
         {
             PacketStream stream = new PacketStream(0x0000);
 
-            stream.WriteString(userId, 60);
+            stream.WriteString(userId, 61);
             stream.WriteBytes(password);
-            stream.WriteString(fingerprint);
+            stream.WriteString(fingerprint, 60);
 
             ServerManager.Instance.Send(stream);
         }

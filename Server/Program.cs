@@ -25,8 +25,7 @@ namespace Server
         public static string DesKey = "password2";
 
         static XDes DesCipher;
-
-        static TcpListener listener;
+        
         static int clientCount = 0;
         
         static void Main(string[] args)
@@ -43,13 +42,13 @@ namespace Server
 
         public static void OnUserLogin(Client client, string userId, byte[] pPassword, string fingerPrint)
         {
-            string password = DesCipher.Decrypt(pPassword);
+            string password = DesCipher.Decrypt(pPassword).Trim('\0');
             clientCount++;
             Console.WriteLine("Client is trying to login (UserID: {0} ; Password: {1} ; FingerPrint: {2})", userId, password, fingerPrint);
             Console.WriteLine("Now there're {0} users connected to the launcher server.", clientCount);
             // TODO : Validation
 
-            ClientPackets.Instance.LoginResult(client, 0); // Success
+            ClientPackets.Instance.LoginResult(client, 1); // Success
         }
 
         public static void OnUserLogout(Client client)

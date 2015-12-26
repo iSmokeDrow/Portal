@@ -1,5 +1,4 @@
-﻿using Client.Functions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,8 +19,6 @@ namespace Client
         /// It's used to encrypt passwords
         /// </summary>
         public static string DesKey = "password2";
-
-        static XDes DesCipher;
 
         /// <summary>
         /// The main entry point for the application.

@@ -43,8 +43,8 @@ namespace Client
         /// <param name="password"></param>
         private void Login(string username, string password)
         {
-            // Encrypt password
-            byte[] pass = DesCipher.Encrypt(password);
+            // Encrypt password (it must be a 56 characters string)
+            byte[] pass = DesCipher.Encrypt(password.PadRight(56, '\0'));
             // Sets the fingerprint
             string fingerprint = "5D61-1131-B2D5-3619-EF76-0885-57D3-1972";
 
