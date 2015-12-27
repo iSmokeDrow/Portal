@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Sockets;
 using Server.Functions;
 using Server.Network;
 
@@ -25,35 +20,71 @@ namespace Server
         public static string DesKey = "password2";
 
         static XDes DesCipher;
-        
-        static int clientCount = 0;
+
+        static internal int clientCount
+        {
+            get
+            {
+                if (clientList != null) { return clientList.Count; }
+                else { return 0; }
+            }
+        }
+        static internal Dictionary<int, Client> clientList;
         
         static void Main(string[] args)
         {
             OPT.LoadSettings();
             DesCipher = new XDes(DesKey);
 
-            Console.Write("Initializing client listener... ");
-            if (ClientManager.Instance.Start())
-                Console.WriteLine("[OK]");
+            clientList = new Dictionary<int, Client>();
 
+            Console.Write("Initializing client listener... ");
+            if (ClientManager.Instance.Start()) { Console.WriteLine("[OK]"); }
+                
             Console.ReadLine();
         }
 
         public static void OnUserLogin(Client client, string userId, byte[] pPassword, string fingerPrint)
         {
+            string username = userId.Trim('\0');
             string password = DesCipher.Decrypt(pPassword).Trim('\0');
-            clientCount++;
-            Console.WriteLine("Client is trying to login (UserID: {0} ; Password: {1} ; FingerPrint: {2})", userId, password, fingerPrint);
-            Console.WriteLine("Now there're {0} users connected to the launcher server.", clientCount);
-            // TODO : Validation
+            string fingerprint = fingerPrint.Trim('\0');
+#if DEBUG
+            Console.WriteLine("User login (UserID: {0} ; Password: {1} ; FingerPrint: {2})", userId, password, fingerPrint);
+#endif
 
-            ClientPackets.Instance.LoginResult(client, 1); // Success
+            switch (User.ValidateCredentials(username, password, fingerprint))
+            {
+                case 0:
+                    clientList.Add(clientCount + 1, client);
+                    ClientPackets.Instance.LoginResult(client, 0); // Success
+                    break;
+
+                case 1:
+                    ClientPackets.Instance.LoginResult(client, 1);
+                    break;
+
+                case 2:
+                    ClientPackets.Instance.LoginResult(client, 2);
+                    break;
+
+                case 3:
+                    ClientPackets.Instance.LoginResult(client, 3);
+                    break;
+
+                case 4:
+                    ClientPackets.Instance.LoginResult(client, 4);
+                    break;
+            }        
+            
+#if DEBUG
+    Console.WriteLine("Now there're {0} users connected to the launcher server.", clientCount);
+#endif
         }
 
         public static void OnUserLogout(Client client)
         {
-            clientCount++;
+            // TODO: Add client "key" to the Client class for removing client from clientList on logout
             Console.WriteLine("User disconnected");
         }
     }

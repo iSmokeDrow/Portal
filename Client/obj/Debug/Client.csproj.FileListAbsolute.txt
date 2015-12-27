@@ -21,7 +21,6 @@ f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Cl
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Client.csproj.GenerateResource.Cache
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Client.exe
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Client.pdb
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\bin\Debug\Client.exe.config
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.GUI.resources
@@ -46,3 +45,4 @@ C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\bin\Debug\xinput9_1_0.dll
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\bin\Debug\pdf_js.pak
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.exe
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.pdb
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.LoginGUI.resources

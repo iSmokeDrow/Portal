@@ -63,7 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
+    <Compile Include="Functions\PasswordCipher.cs" />
+    <Compile Include="Functions\User.cs" />
+    <Compile Include="Network\Client.cs" />
     <Compile Include="Functions\Database.cs" />
     <Compile Include="Functions\OPT.cs" />
     <Compile Include="Functions\XDes.cs" />

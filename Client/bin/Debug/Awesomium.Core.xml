@@ -16888,7 +16888,7 @@
             </note>
             </remarks>
         </member>
-        <member name="F:Awesomium.Core.ReleaseInfo.PRODUCT_COMPANY">
+        <member name="F:Awesomium.Core.ReleaseInfo.ASSEMBLY_COMPANY">
             <summary>
             Specifies the Awesomium.NET product company.
             </summary>
@@ -16897,7 +16897,7 @@
             version is defined.
             </remarks>
         </member>
-        <member name="F:Awesomium.Core.ReleaseInfo.PRODUCT_COPYRIGHT">
+        <member name="F:Awesomium.Core.ReleaseInfo.ASSEMBLY_COPYRIGHT">
             <summary>
             Specifies the Awesomium.Core assembly copyright.
             </summary>
@@ -16906,7 +16906,7 @@
             version is defined.
             </remarks>
         </member>
-        <member name="F:Awesomium.Core.ReleaseInfo.PRODUCT_TRADEMARK">
+        <member name="F:Awesomium.Core.ReleaseInfo.ASSEMBLY_TRADEMARK">
             <summary>
             Specifies the Awesomium product trademark.
             </summary>
@@ -17617,11 +17617,6 @@
               Looks up a localized string similar to The JSObject instance has been disposed..
             </summary>
         </member>
-        <member name="P:Awesomium.Core.CoreResources.ERR_JSObjectTimeout">
-            <summary>
-              Looks up a localized string similar to The operation has timed out. The child process or the I/O thread, are busy. Please try to create the object again..
-            </summary>
-        </member>
         <member name="P:Awesomium.Core.CoreResources.ERR_JSObjectUndefined">
             <summary>
               Looks up a localized string similar to You cannot perform this operation on an invalid (undefined) object..
@@ -17650,11 +17645,6 @@
         <member name="P:Awesomium.Core.CoreResources.ERR_OutputDirectoryDoesNotExist">
             <summary>
               Looks up a localized string similar to The specified output directory ({0}), does not exist..
-            </summary>
-        </member>
-        <member name="P:Awesomium.Core.CoreResources.ERR_PackagePathNotFound">
-            <summary>
-              Looks up a localized string similar to Could not locate the path to the native Awesomium library..
             </summary>
         </member>
         <member name="P:Awesomium.Core.CoreResources.ERR_PAKFileNotFound">
@@ -17741,31 +17731,6 @@
              [rest of string was truncated]&quot;;.
              </summary>
         </member>
-        <member name="P:Awesomium.Core.CoreResources.JS_DevToolsClose">
-             <summary>
-               Looks up a localized string similar to &lt;!DOCTYPE html&gt;
-            
-            &lt;html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
-            &lt;head&gt;
-                &lt;meta charset=&quot;utf-8&quot; /&gt;
-                &lt;title&gt;Developer Tools - Closed&lt;/title&gt;
-                &lt;link href=&apos;http://fonts.googleapis.com/css?family=Lato:300&apos; rel=&apos;stylesheet&apos; type=&apos;text/css&apos;&gt;
-                &lt;style&gt;
-                    * {
-                        margin: 0;
-                    }
-            
-                    html, body {
-                        height: 100%;
-                        width: 100%;
-                        font-family: &apos;Lato&apos;, Helvetica, Tahoma;
-                        display: table;
-                    }
-            
-                    button {
-                 [rest of string was truncated]&quot;;.
-             </summary>
-        </member>
         <member name="P:Awesomium.Core.CoreResources.JS_DevToolsInit">
              <summary>
                Looks up a localized string similar to &lt;!DOCTYPE html&gt;
@@ -17790,8 +17755,9 @@
                     }
                 &lt;/style&gt;
                 &lt;script&gt;
+                    DEV_TOOLS_SCRIPT
             
-                    !function (a, b) { &quot;object&quot; == typeof exports ? module.export [rest of string was truncated]&quot;;.
+                    !function (a, b) { &quot;object&quot; == type [rest of string was truncated]&quot;;.
              </summary>
         </member>
         <member name="P:Awesomium.Core.CoreResources.JS_OSMJIF">
@@ -26353,9 +26319,6 @@
             <exception cref="T:System.ObjectDisposedException">
             This <see cref="T:Awesomium.Core.WebSession"/> instance has either been disposed or never properly initialized.
             </exception>
-            <exception cref="T:System.ArgumentNullException">
-            The specified <paramref name="url"/> is <c>null</c>.
-            </exception>
         </member>
         <member name="M:Awesomium.Core.WebSession.ClearCookies">
             <summary>
@@ -26391,9 +26354,6 @@
             </remarks>
             <exception cref="T:System.ObjectDisposedException">
             This <see cref="T:Awesomium.Core.WebSession"/> instance has either been disposed or never properly initialized.
-            </exception>
-            <exception cref="T:System.ArgumentNullException">
-            The specified <paramref name="url"/> is <c>null</c>.
             </exception>
         </member>
         <member name="P:Awesomium.Core.WebSession.IsOnDisk">

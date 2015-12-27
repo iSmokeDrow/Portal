@@ -2,13 +2,25 @@
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Portal.Functions
+namespace Server.Functions
 {
     /// <summary>
     /// Provides interactivity with SQL Server database
     /// </summary>
     public class Database
     {
+        public static string ConnectionString
+        {
+            get
+            {
+                string conString = string.Format("Server={0};Database={1};", OPT.SettingsList["db.auth.ip"], OPT.SettingsList["db.auth.name"]);
+                if (OPT.SettingsList["db.auth.trusted"] == "1") { conString += "Trusted_Connection=True;"; }
+                else { conString += string.Format("uid={0};pwd={1};", OPT.SettingsList["db.auth.user"], OPT.SettingsList["db.auth.password"]); }
+
+                return conString;
+            }
+        }
+
         /// <summary>
         /// Creates a new SqlConnection for future uses
         /// </summary>
@@ -58,12 +70,7 @@ namespace Portal.Functions
             }
             catch (SqlException sqlEx)
             {
-                // say error
-                return null;
-            }
-            catch (Exception ex)
-            {
-                // say error
+                Console.WriteLine("SQL Error:\n{0}", sqlEx.Message);
                 return null;
             }
         }
