@@ -56,7 +56,8 @@ namespace Server
             switch (User.ValidateCredentials(username, password, fingerprint))
             {
                 case 0:
-                    clientList.Add(clientCount + 1, client);
+                    client.Id = Client.GetNewUserId();
+                    clientList.Add(client.Id, client);
                     ClientPackets.Instance.LoginResult(client, 0); // Success
                     break;
 
@@ -84,7 +85,8 @@ namespace Server
 
         public static void OnUserLogout(Client client)
         {
-            // TODO: Add client "key" to the Client class for removing client from clientList on logout
+            clientList.Remove(client.Id);
+            client.Dispose();
             Console.WriteLine("User disconnected");
         }
     }

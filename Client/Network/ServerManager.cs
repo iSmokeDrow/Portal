@@ -214,6 +214,11 @@ namespace Client.Network
             }
         }
 
+        internal void Close()
+        {
+            _Server.ClSocket.Close();
+        }
+
         /// <summary>
         /// Sends a packet to a game-server
         /// </summary>

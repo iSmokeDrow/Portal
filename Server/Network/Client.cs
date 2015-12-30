@@ -10,6 +10,25 @@ namespace Server
 {
     public class Client
     {
+        private static List<int> idPool = new List<int>();
+        private static int lastId = 0;
+
+        public static int GetNewUserId()
+        {
+            int newId;
+            if (idPool.Count > 0)
+            {
+                newId = idPool[0];
+                idPool.RemoveAt(0);
+            }
+            else
+            {
+                newId = ++lastId;
+            }
+            return newId;
+        }
+
+        public int Id { get; set; }
         public Socket ClSocket { get; set; }
         public byte[] Buffer;
         public PacketStream Data { get; set; }
@@ -25,6 +44,11 @@ namespace Server
             this.Data = new PacketStream();
             this.InCipher = new XRC4Cipher(Program.RC4Key);
             this.OutCipher = new XRC4Cipher(Program.RC4Key);
+        }
+
+        internal void Dispose()
+        {
+            idPool.Add(this.Id);
         }
     }
 }

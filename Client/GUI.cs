@@ -147,7 +147,7 @@ namespace Client
 
         private void close_Click(object sender, EventArgs e)
         {
-            // TODO: Add ServerManager.Disconnect?
+            ServerManager.Instance.Close();
             this.Dispose();
         }
     }

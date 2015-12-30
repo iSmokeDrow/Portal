@@ -168,12 +168,14 @@ namespace Server.Network
                 else
                 {
                     Console.WriteLine("Client disconected.");
+                    Program.OnUserLogout(client);
                     return;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Program.OnUserLogout(client);
             }
         }
 
