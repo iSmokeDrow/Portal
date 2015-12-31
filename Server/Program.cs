@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Server.Functions;
 using Server.Network;
+using System.IO;
 
 namespace Server
 {
@@ -46,9 +47,9 @@ namespace Server
 
         public static void OnUserLogin(Client client, string userId, byte[] pPassword, string fingerPrint)
         {
-            string username = userId.Trim('\0');
-            string password = DesCipher.Decrypt(pPassword).Trim('\0');
-            string fingerprint = fingerPrint.Trim('\0');
+            string username = userId;
+            string password = DesCipher.Decrypt(pPassword);
+            string fingerprint = fingerPrint;
 #if DEBUG
             Console.WriteLine("User login (UserID: {0} ; Password: {1} ; FingerPrint: {2})", userId, password, fingerPrint);
 #endif

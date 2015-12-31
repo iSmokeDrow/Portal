@@ -42,7 +42,7 @@ namespace Server.Functions
 				{
 					using (StreamReader sr = new StreamReader(cs))
 					{
-						return sr.ReadToEnd();
+						return sr.ReadToEnd().Trim('\0');
 					}
 				}
 			}

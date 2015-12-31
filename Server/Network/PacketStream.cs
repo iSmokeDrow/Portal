@@ -420,7 +420,7 @@ namespace Server.Network
             // Advances the reading cursor
             inner.Seek((size - i - 1), SeekOrigin.Current);
 
-            return Encoding.ASCII.GetString(buffer);
+            return Encoding.ASCII.GetString(buffer).Trim('\0');
         }
 
 		/// <summary>

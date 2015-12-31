@@ -108,7 +108,7 @@ namespace Client.Network
             }
             socket.EndConnect(ar);
 
-            
+
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Client.Network
                     // Bytes to use in the next write
                     int bytesToRead = 0;
 
-                    byte[] decode = _Server.InCipher.DoCipher(ref _Server.Buffer);
+                    byte[] decode = _Server.InCipher.DoCipher(ref _Server.Buffer, bytesRead);
                     do
                     { // While there's data to read
 

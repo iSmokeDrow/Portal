@@ -25,6 +25,7 @@ namespace Server.Functions
         /// <returns></returns>
         public static int ValidateCredentials(string username, string password, string fingerprint)
         {
+            return 0;
             using (SqlConnection sqlCon = Database.CreateConnection(Database.ConnectionString))
             {
                 using (SqlCommand sqlCmd = new SqlCommand())

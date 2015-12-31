@@ -21,6 +21,8 @@ namespace Server.Network
 
             #region Packets
             PacketsDb.Add(0x0000, CS_Login);
+
+            PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
             #endregion
         }
 
@@ -58,6 +60,17 @@ namespace Server.Network
             Program.OnUserLogin(client, userId, password, fingerprint);
         }
 
+
+        /// <summary>
+        /// Client wants the file list
+        /// </summary>
+        /// <param name="client">the client</param>
+        /// <param name="stream">data</param>
+        private void CS_RequestUpdateIndex(Client client, PacketStream stream)
+        {
+            UpdateHandler.Instance.OnUserRequestUpdateIndex(client);
+        }
+
         #endregion
 
         #region Server-Client Packets (SC)
@@ -73,6 +86,35 @@ namespace Server.Network
 
             stream.WriteInt32(result);
 
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        /// <summary>
+        /// Sends UpdateIndex of a file
+        /// </summary>
+        /// <param name="client">target client</param>
+        /// <param name="fileName">file name (hashed)</param>
+        /// <param name="fileHash">SHA512 hash of this file</param>
+        /// <param name="isLegacy"></param>
+        public void UpdateIndex(Client client, string fileName, string fileHash, bool isLegacy)
+        {
+            PacketStream stream = new PacketStream(0x0011);
+
+            stream.WriteInt16((short)fileName.Length);
+            stream.WriteString(fileName);
+            stream.WriteString(fileHash);
+            stream.WriteBool(isLegacy);
+
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        /// <summary>
+        /// Informs the end of UpdateIndex sending
+        /// </summary>
+        /// <param name="client"></param>
+        public void UpdateIndexEnd(Client client)
+        {
+            PacketStream stream = new PacketStream(0x0012);
             ClientManager.Instance.Send(client, stream);
         }
 

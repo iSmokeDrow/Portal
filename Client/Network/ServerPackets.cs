@@ -21,6 +21,9 @@ namespace Client.Network
 
             #region Packets
             PacketsDb.Add(0x0001, SC_LoginResult);
+
+            PacketsDb.Add(0x0011, SC_UpdateIndex);
+            PacketsDb.Add(0x0012, SC_UpdateIndexEnd);
             #endregion
         }
 
@@ -41,7 +44,7 @@ namespace Client.Network
             Task.Run(() => { PacketsDb[stream.GetId()].Invoke(stream); });
         }
 
-        #region Client-Server Packets (CS)
+        #region Server-Client Packets (SC)
 
         /// <summary>
         /// Result of login try
@@ -54,9 +57,28 @@ namespace Client.Network
             GUI.LoginResponse(result);
         }
 
+        /// <summary>
+        /// UpdateIndex entry received
+        /// </summary>
+        /// <param name="stream"></param>
+        private void SC_UpdateIndex(PacketStream stream)
+        {
+            short nameLength = stream.ReadInt16();
+            string name = stream.ReadString(nameLength);
+            string fileHash = stream.ReadString(64);
+            bool isLegacy = stream.ReadBool();
+
+            UpdateHandler.Instance.OnUpdateIndexReceived(name, fileHash, isLegacy);
+        }
+
+        private void SC_UpdateIndexEnd(PacketStream stream)
+        {
+            UpdateHandler.Instance.OnUpdateIndexEnd();
+        }
+
         #endregion
 
-        #region Server-Client Packets (SC)
+        #region Client-Server Packets (CS)
 
         /// <summary>
         /// Sends a login request
@@ -72,6 +94,15 @@ namespace Client.Network
             stream.WriteBytes(password);
             stream.WriteString(fingerprint, 60);
 
+            ServerManager.Instance.Send(stream);
+        }
+
+        /// <summary>
+        /// Requests the list of files
+        /// </summary>
+        public void RequestUpdateIndex()
+        {
+            PacketStream stream = new PacketStream(0x0010);
             ServerManager.Instance.Send(stream);
         }
 

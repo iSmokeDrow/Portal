@@ -33,22 +33,47 @@ struct SC_LoginResult {
 	int result;
 }
 
+// *****************
+//		File List
+// *****************
+// 0x0010
+struct CS_RequestUpdateIndex {
+	// empty
+}
 
+// 0x0011
+struct SC_UpdateIndex {
+	short nameLength;
+	string(nameLength) name;
+	string(64) fileHash;
+	bool isLegacy;
+}
+
+// 0x0012
+struct SC_UpdateIndexEnd {
+	// empty
+}
 
 // *****************
 //		Update
 // *****************
 // (Not Implemented yet)
 
-// 0x0010
+// 0x020
 struct CS_RequestFile {
-	string(256) file_name;
+	short nameLenght;
+	string(nameLenght) fileName;
+	string(64) partialHash;
 	int offset;
 }
 
-// 0x0011
+// 0x021
 struct SC_File {
 	int offset;
 	bool endOfFile;
-	
+	byte[] data;
 }
+
+//---- Note:
+// if SC_File offset differs from CS_RequestFile offset,
+// local file is corrupted.

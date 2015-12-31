@@ -137,12 +137,18 @@ namespace Client
             {
                 case 0: // Success
                     MessageBox.Show("You're logged.");
+                    UpdateHandler.Instance.Start();
                     break;
 
                 case 1: // Failed
                     MessageBox.Show("Check your data and try again");
                     break;
             }
+        }
+
+        public static void OnUpdateComplete()
+        {
+            MessageBox.Show("Patching process completed.");
         }
 
         private void close_Click(object sender, EventArgs e)
