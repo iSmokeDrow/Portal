@@ -43,9 +43,8 @@ struct CS_RequestUpdateIndex {
 
 // 0x0011
 struct SC_UpdateIndex {
-	short nameLength;
-	string(nameLength) name;
-	string(64) fileHash;
+	string name;
+	string fileHash;
 	bool isLegacy;
 }
 
@@ -57,14 +56,12 @@ struct SC_UpdateIndexEnd {
 // *****************
 //		Update
 // *****************
-// (Not Implemented yet)
 
 // 0x020
 struct CS_RequestFile {
-	short nameLenght;
-	string(nameLenght) fileName;
-	string(64) partialHash;
+	string fileName;
 	int offset;
+	string(64) partialHash;
 }
 
 // 0x021

@@ -16,8 +16,6 @@ namespace Server
 
         public void OnUserRequestUpdateIndex(Client client)
         {
-            // TODO : Keep these file entries in a text file so we don't have to calculate their hashes everytime?
-
             // Process the list of files found in the directory.
             string[] fileEntries = Directory.GetFiles("updates/");
             foreach (string fileName in fileEntries)
@@ -25,6 +23,27 @@ namespace Server
                 ClientPackets.Instance.UpdateIndex(client, Path.GetFileName(fileName), Hash.GetSHA512Hash(fileName), true);
             }
             ClientPackets.Instance.UpdateIndexEnd(client);
+        }
+
+        internal void OnUserRequestFile(Client client, string name, int offset, string partialHash)
+        {
+            if (!File.Exists("updates/"+name))
+            {
+                // TODO : What if file doesn't exists?
+                return;
+            }
+
+            byte[] data = File.ReadAllBytes("updates/" + name);
+            if (partialHash != Hash.GetSHA512Hash(data, offset))
+            {
+                // Hashes are different, start from the beggining
+                ClientPackets.Instance.File(client, 0, data);
+            }
+            else
+            {
+                // Hashes are the same, resume
+                ClientPackets.Instance.File(client, offset, data);
+            }
         }
     }
 }

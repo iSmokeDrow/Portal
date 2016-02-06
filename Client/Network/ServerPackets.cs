@@ -21,9 +21,9 @@ namespace Client.Network
 
             #region Packets
             PacketsDb.Add(0x0001, SC_LoginResult);
-
             PacketsDb.Add(0x0011, SC_UpdateIndex);
             PacketsDb.Add(0x0012, SC_UpdateIndexEnd);
+            PacketsDb.Add(0x0021, SC_File);
             #endregion
         }
 
@@ -63,9 +63,8 @@ namespace Client.Network
         /// <param name="stream"></param>
         private void SC_UpdateIndex(PacketStream stream)
         {
-            short nameLength = stream.ReadInt16();
-            string name = stream.ReadString(nameLength);
-            string fileHash = stream.ReadString(64);
+            string name = stream.ReadString();
+            string fileHash = stream.ReadString();
             bool isLegacy = stream.ReadBool();
 
             UpdateHandler.Instance.OnUpdateIndexReceived(name, fileHash, isLegacy);
@@ -74,6 +73,15 @@ namespace Client.Network
         private void SC_UpdateIndexEnd(PacketStream stream)
         {
             UpdateHandler.Instance.OnUpdateIndexEnd();
+        }
+
+        private void SC_File(PacketStream stream)
+        {
+            int offset = stream.ReadInt32();
+            bool endOfFile = stream.ReadBool();
+            byte[] data = stream.ReadBytes(stream.GetSize() - PacketStream.HeaderLength - 5);
+
+            UpdateHandler.Instance.OnFileDataReceived(offset, endOfFile, data);
         }
 
         #endregion
@@ -93,6 +101,17 @@ namespace Client.Network
             stream.WriteString(userId, 61);
             stream.WriteBytes(password);
             stream.WriteString(fingerprint, 60);
+
+            ServerManager.Instance.Send(stream);
+        }
+
+        internal void RequestFile(string name, int offset, string partialHash)
+        {
+            PacketStream stream = new PacketStream(0x0020);
+
+            stream.WriteString(name, name.Length + 1);
+            stream.WriteInt32(offset);
+            stream.WriteString(partialHash, partialHash.Length + 1);
 
             ServerManager.Instance.Send(stream);
         }

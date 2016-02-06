@@ -32,8 +32,8 @@ namespace Client
         }
         #endregion
 
-        internal readonly string ip;
-        internal readonly int port;
+        internal readonly string ip = "127.0.0.1";
+        internal readonly short port = 13545;
         XDes DesCipher;
         internal Properties.Settings settings;
         internal LoginGUI loginGUI;
@@ -48,7 +48,7 @@ namespace Client
 
         private void GUI_Load(object sender, EventArgs e)
         {
-            if (!ServerManager.Instance.Start("127.0.0.1", 13545))
+            if (!ServerManager.Instance.Start(this.ip, this.port))
             {
                 MessageBox.Show(ServerManager.Instance.ErrorMessage, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -66,10 +66,6 @@ namespace Client
             if (loginCreds != null)
             {
                 Login(loginCreds.Username, loginCreds.Password);
-
-#if DEBUG
-                MessageBox.Show("Sent");
-#endif
             }
         }
 

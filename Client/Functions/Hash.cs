@@ -76,6 +76,17 @@ namespace Client.Functions
                 return GetHash(s, sha512);
         }
 
+        /// <summary>
+        /// Gets a hash of the file using SHA512.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string GetSHA512Hash(byte[] data, int count)
+        {
+            using (var sha512 = new SHA512CryptoServiceProvider())
+                return GetHash(data, count, sha512);
+        }
+
         private static string GetHash(string filePath, HashAlgorithm hasher)
         {
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -85,6 +96,13 @@ namespace Client.Functions
         private static string GetHash(Stream s, HashAlgorithm hasher)
         {
             var hash = hasher.ComputeHash(s);
+            var hashStr = Convert.ToBase64String(hash);
+            return hashStr.TrimEnd('=');
+        }
+
+        private static string GetHash(byte[] data, int count, HashAlgorithm hasher)
+        {
+            var hash = hasher.ComputeHash(data, 0, count);
             var hashStr = Convert.ToBase64String(hash);
             return hashStr.TrimEnd('=');
         }

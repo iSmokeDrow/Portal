@@ -21,8 +21,8 @@ namespace Server.Network
 
             #region Packets
             PacketsDb.Add(0x0000, CS_Login);
-
             PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
+            PacketsDb.Add(0x0020, CS_RequestFile);
             #endregion
         }
 
@@ -71,6 +71,22 @@ namespace Server.Network
             UpdateHandler.Instance.OnUserRequestUpdateIndex(client);
         }
 
+        /// <summary>
+        /// Request a file
+        /// </summary>
+        /// <param name="client">the client</param>
+        /// <param name="stream">data</param>
+        private void CS_RequestFile(Client client, PacketStream stream)
+        {
+            string name = stream.ReadString();
+            int offset = stream.ReadInt32();
+            string partialHash = "";
+            if (offset > 0)
+                partialHash = stream.ReadString();
+
+            UpdateHandler.Instance.OnUserRequestFile(client, name, offset, partialHash);
+        }
+
         #endregion
 
         #region Server-Client Packets (SC)
@@ -83,7 +99,7 @@ namespace Server.Network
         public void LoginResult(Client client, int result)
         {
             PacketStream stream = new PacketStream(0x0001);
-
+            
             stream.WriteInt32(result);
 
             ClientManager.Instance.Send(client, stream);
@@ -100,9 +116,8 @@ namespace Server.Network
         {
             PacketStream stream = new PacketStream(0x0011);
 
-            stream.WriteInt16((short)fileName.Length);
-            stream.WriteString(fileName);
-            stream.WriteString(fileHash);
+            stream.WriteString(fileName, fileName.Length + 1);
+            stream.WriteString(fileHash, fileHash.Length + 1);
             stream.WriteBool(isLegacy);
 
             ClientManager.Instance.Send(client, stream);
@@ -116,6 +131,38 @@ namespace Server.Network
         {
             PacketStream stream = new PacketStream(0x0012);
             ClientManager.Instance.Send(client, stream);
+        }
+
+        /// <summary>
+        /// Sends bytes of a file
+        /// </summary>
+        /// <param name="client">target client</param>
+        /// <param name="offset">data offset</param>
+        /// <param name="data">file data</param>
+        public void File(Client client, int offset, byte[] data)
+        {
+            const int bytesPerPacket = 256;
+            for (int i = offset; i < data.Length; i += bytesPerPacket)
+            {
+                int count;
+
+                PacketStream stream = new PacketStream(0x0021);
+                
+                stream.WriteInt32(i);
+                if (offset + bytesPerPacket > data.Length) {
+                    stream.WriteBool(true);
+                    count = data.Length - offset;
+                }
+                else {
+                    stream.WriteBool(false);
+                    count = bytesPerPacket;
+                }
+                byte[] toSend = new byte[count];
+                Array.Copy(data, offset, toSend, 0, count);
+                stream.WriteBytes(toSend);
+
+                ClientManager.Instance.Send(client, stream);
+            }
         }
 
         #endregion

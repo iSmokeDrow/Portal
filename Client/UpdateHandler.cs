@@ -11,6 +11,8 @@ namespace Client
 {
     public class UpdateHandler
     {
+        private string ResourceFolder = "Resource/";
+
         public static readonly UpdateHandler Instance = new UpdateHandler();
 
         public class UpdateIndex
@@ -21,13 +23,13 @@ namespace Client
         }
 
         public List<UpdateIndex> FileList { get; set; }
-
-
+        
         private int CurrentIndex { get; set; }
 
         public UpdateHandler()
         {
             this.FileList = new List<UpdateIndex>();
+            Directory.CreateDirectory(ResourceFolder);
         }
 
         public void Start()
@@ -42,10 +44,6 @@ namespace Client
 
         public void OnUpdateIndexEnd()
         {
-            foreach(UpdateIndex ind in this.FileList)
-            {
-                File.AppendAllText("dump.txt", "\r\n" + ind.FileName + " | " + ind.FileHash + " | " + ind.IsLegacy);
-            }
             this.CurrentIndex = 0;
             CheckFiles();
         }
@@ -59,7 +57,7 @@ namespace Client
 
                 if (file.IsLegacy)
                 {
-                    if (!File.Exists("Resource/" + file.FileName) || (Hash.GetSHA512Hash("Resource/" + file.FileName) != file.FileHash))
+                    if (!File.Exists(ResourceFolder + file.FileName) || (Hash.GetSHA512Hash(ResourceFolder + file.FileName) != file.FileHash))
                     {
                         download = true;
                     }
@@ -84,13 +82,58 @@ namespace Client
 
         private void DoUpdate()
         {
-            // TODO : Download File
+            string name = this.FileList[this.CurrentIndex].FileName;
+            int offset = 0;
+            string partialHash = "";
+
+            if (File.Exists(name))
+            {
+                byte[] currentData = File.ReadAllBytes(name);
+                partialHash = Hash.GetSHA512Hash(currentData, currentData.Length);
+                offset = currentData.Length;
+            }
+            ServerPackets.Instance.RequestFile(name, offset, partialHash);
+        }
+
+        public void OnFileDataReceived(int offset, bool isEOF, byte[] data)
+        {
+            string name = this.FileList[this.CurrentIndex].FileName;
+
+            if (offset == 0 && File.Exists(name))
+            {
+                File.Delete(name);
+            }
+
+            using (FileStream fs = File.OpenWrite(name))
+            {
+                fs.Seek(offset, SeekOrigin.Begin);
+                fs.Write(data, 0, data.Length);
+                fs.Close();
+            }
+
+            if (isEOF)
+            {
+                OnUpdateDownloadCompleted();
+            }
         }
 
         private void OnUpdateDownloadCompleted()
         {
-            // TODO : Apply update
-
+            UpdateIndex file = this.FileList[this.CurrentIndex];
+            
+            if (file.IsLegacy)
+            {
+                if (File.Exists(ResourceFolder + file.FileName))
+                {
+                    File.Delete(ResourceFolder + file.FileName);
+                }
+                File.Move(file.FileName, ResourceFolder + file.FileName);
+            }
+            else
+            {
+                // TODO : Apply file inside data.xxx
+            }
+            
             CheckFiles();
         }
     }
