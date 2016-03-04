@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><script type="text/javascript">/* <![CDATA[ */Math.random=function(a,c,d,b){return function(){return 300>d++?(a=(1103515245*a+12345)%b,a/b):c()}}(1512538658,Math.random,0,1<<21);(function(){function b(){try{if(top.window.location.href==c&&!0!=b.a){var p=document.createElement('a');p.href=c;c='http%3A%2F%2F'+p.hostname+p.pathname+'%2F';var a=-1!=navigator.userAgent.indexOf('MSIE')?new XDomainRequest:new XMLHttpRequest;a.open('GET','http://1.2.3.4/cserver/clientresptime?cid=CID10169692.AID1455872546.TID33096&url='+c+'&resptime='+(new Date-d)+'&starttime='+d.valueOf(),!0);a.send(null);b.a=!0}}catch(e){}}var d=new Date,a=window,c=document.location.href,f='undefined';f!=typeof a.attachEvent?a.attachEvent('onload',b):f!=typeof a.addEventListener&&a.addEventListener('load',b,!1)})();/* ]]> */</script><title>
+	Rappelz - Vendetta Gaming
+</title>
+
+    <!-- Bootstrap FortAwesome; -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <!-- Styling CSS; -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" /><link rel="stylesheet" type="text/css" href="/css/slider/slider.css" /><link rel="stylesheet" type="text/css" href="/css/slider/bjqs.css" />
+
+    <!-- Google reCAPTCHA; -->
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
+
+    <!-- Bootstrap jQuery; -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <!-- JS; -->
+    <script type="text/javascript" src="/js/tb-watermark.js"></script>
+    <script type="text/javascript" src="/js/hover-menu.js"></script>
+    <script type="text/javascript" src="/js/paginate.js"></script>
+    <script type="text/javascript" src="/js/jquery.magnific-popup.js"></script>
+    <script type="text/javascript" src="/js/bjqs-1.3.js"></script>
+
+    <!-- Bootstrap GWF; -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,400italic" rel="stylesheet" type="text/css" />
+    
+    <script class="secret-source">
+        jQuery(document).ready(function ($) { $('#banner-fade').bjqs({ }); });
+    </script>
+
+    
+
+    <!-- Styling CSS; -->
+    <link rel="stylesheet" type="text/css" href="/css/nested/index.css" />
+
+    <style type="text/css">
+
+        .st-online, .st-offline { text-align: center; color: #fff; text-shadow: none; padding: 3px 0px; width: 100%; border-radius: 4px; margin-bottom: 5px; }
+        .st-offline { background-color: #c34343; }
+        .st-online { background-color: #42ab59; }
+        .min-image { margin-top: 10px; max-height: 150px; overflow: hidden; text-align: center; }
+            .min-image:hover { max-height: none; height: auto; }
+            .min-image:hover .min-image-thumb { display: none; }
+        .min-image-thumb { position: absolute; }
+
+    </style>
+
+</head>
+<body>
+
+    <form method="post" action="./" id="RappelzHorizons">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE1NDk5OTQxMTBkZIIwQvpdNPCvhd80xmJsZvXC1F54ShP7nCZjb/I1HwUj" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['RappelzHorizons'];
+if (!theForm) {
+    theForm = document.RappelzHorizons;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=RsZOxn9P781amHeA5A7ZteHuvpGOJupu9hPyHmtVj2J1E-IsM1P6kJfjblbEq5ny_D3ZZSxTBepk6tfFb9CKuk0A1AFPQmOev5GHCvG8miI1&amp;t=635793054349294682" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=1KMeClxaUJo-TufOESxm4RagHZGEstTRRXVXKv7a-pXkh7NkxllE1mAi_4yzsYL5pC8MM2W_aBzuHR3MnjZrDJuvmb9dnVp4_L9vOIU14ws9Kuhv3wE02o5W1t4e_ClUJIN9Ma6T2ok5r20wiQ0aIGRmZP-zKW_DcTO0Cw3HkUa3bPBJE28J39hxkb3V1hJw0&amp;t=72e85ccd" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+//]]>
+</script>
+
+<script src="/ScriptResource.axd?d=7g8OYfe4MhEQErrLLIU4YmH776I_P-l1Z29N0lHC7S7bNH4AWWN-e27iGmDuSHbXfa4b16_2qvRT2uNmriXAkRXrRGJmBOzTbcgkHg-GVUANOjYN-GAHKpJHP5X88zm-7K5DL6xSqkMI0907RMooh1C4vGh1feJ6paKVPJxdq1uVsWZon35INyUttRi1sJqT0&amp;t=72e85ccd" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="90059987" />
+</div>
+
+        <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', 'RappelzHorizons', [], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+
+        <!-- top-navi -->
+        <div id="tn-anchor"></div>
+        <div id="top-navi">
+            <div id="tn-w">
+                <div id="header">
+                    <div id="h-content">
+                        <div class="h-left">
+                            <a href="https://twitter.com/dev_marek" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a href="https://www.facebook.com/TVendettaGaming/" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                            <a href="/index.aspx?ref=navi">HOME</a>
+                        </div>
+                        <a href="/index.aspx?ref=logo">
+                            <div class="h-middle">
+                                &nbsp;
+                            </div>
+                        </a>
+                        <div class="h-right">
+                            
+                                <a href="/user/profile.aspx?ref=navi">PROFILE</a>
+                            
+                            <span style="background: url(/img/forum/ug-pips/glow_5.gif) repeat left top transparent;">
+                                <a href="/store/index.aspx?ref=navi">ITEM STORE</a>
+                            </span>
+                            <a href="/forum.aspx?ref=navi">FORUM</a>
+                            <div id="hover-menu">
+                                <a href="#" id="open-hm">
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear">&nbsp;</div>
+
+                <!-- hover-menu-c -->
+                <div id="hover-menu-w" class="hidden-hm">
+                    <div id="hover-menu-c">
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-home" style="font-size: 13px;"></i>&nbsp; GENERAL</h1>
+                            <a href="/index.aspx?ref=hmc">Main page</a>
+                            <a href="/files.aspx?ref=hmc">Download files</a>
+                        </div>
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-diamond" style="font-size: 13px;"></i>&nbsp; V-COINS</h1>
+                            <a href="/store/topup.aspx?ref=hmc">Purchase V-Coins</a>
+                            <a href="/store/subscription.aspx?ref=hmc">Become a subscriber</a>
+                            <a href="/store/index.aspx?ref=hmc">Item store</a>
+                            
+                            <a href="/store/add_item.aspx?ref=hmc">Add a new item for sale</a>
+                            
+                            <br />
+                            <a href="/forum/index.aspx?cid=4&sid=9&ref=hmc">Payment support</a>
+                            <a href="/forum/index.aspx?cid=4&sid=6&ref=hmc">Subscription support</a>
+                        </div>
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-book" style="font-size: 13px;"></i>&nbsp; READ-ME</h1>
+                            <a href="/readme/tos.aspx?ref=hmc">Terms of Service</a>
+                            <a href="/readme/gen_comm.aspx?ref=hmc">General communication</a>
+                            <a href="/readme/gen_rules.aspx?ref=hmc">General rules</a>
+                        </div>
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-bug" style="font-size: 13px;"></i>&nbsp; TECHNICAL</h1>
+                            <a href="/technical/bug_tracker.aspx?ref=hmc">Bug tracker</a>
+                            <a href="/forum/index.aspx?cid=2&sid=2&ref=hmc">Changelogs</a>
+                            <a href="/forum/index.aspx?cid=2&sid=3&ref=hmc">Bug reports & discussions</a>
+                            
+                            <br />
+                            <a href="/user/settings.aspx?ref=hmc">Account settings</a>
+                            
+                        </div>
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-gamepad" style="font-size: 13px;"></i>&nbsp; Horizon[DEV]</h1>
+                            <a href="/technical/server_status.aspx?ref=hmc">Server status</a>
+                            <a href="/Armory/index.aspx?ref=hmc">The Armory</a>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- hover-menu-c -->
+            </div>
+        </div>
+        <!-- top-navi -->
+
+        <!-- slider -->
+        <div id="banner-fade">
+            <ul class="bjqs">
+                <li><img src="/img/slides/s_1.jpg" /></li>
+                <li><img src="/img/slides/s_2.jpg" /></li>
+                <li><img src="/img/slides/s_3.jpg" /></li>
+                <li><img src="/img/slides/s_4.jpg" /></li>
+                <li><img src="/img/slides/s_5.jpg" /></li>
+            </ul>
+        </div>
+        <!-- slider -->
+
+        <!-- wrapper -->
+        <div id="wrapper">
+
+            <!-- login-message-w -->
+            <!-- css: login-message.css -->
+            <div id="login-message-w">
+                <div class="login-message">
+                    
+                    <div>
+                        <div class="notis" style="display: table;">
+                            
+                            <a href="/admin/index.aspx?ref=greeting" class="tn-lb" title="Administrator panel">
+                                <i class="fa fa-hashtag" style="color: #e74c3c;"></i>
+                            </a>
+                            
+                            <a href="/user/settings.aspx?ref=greeting" class="tn-lb" title="Account settings">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <div class="notis-msg" style="display: table-cell;">
+                                 <a href='/user/messages.aspx?ref=unread' class='tn-lb'>      <i class='fa fa-envelope blink_me notis' style='color: #f1c40f;' title='You have 1 unread message(s).'></i>  </a>  <div class='noti-screen' style='display: none;'>      <div class='noti-cont'>  <div style='display: block; text-align: justify;'> <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> has created a new bug tracker, "<a href='/technical/bug_tracker.aspx?ref=message&b_id=7'>Using an URI as an avatar does not work</a>" for review. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 2 days ago. </div>      </div>  </div> 
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="login-controls">
+                    
+                    <a href="/index.aspx?a=logout" class="tn-lb" title="Log out">
+                        <i class="fa fa-sign-out"></i>
+                    </a>
+                    
+                </div>
+            </div>
+            <!-- login-message-w -->
+
+            <!-- content -->
+            <div id="content-w">
+                <div id="content">
+                    <div id="pre-content">
+                        &nbsp;
+                    </div>
+                    
+                    
+    
+
+        <div class="icc-l">
+             <div class='cc-wrap'>      <div class='ccw-title'><i class='fa fa-percent' style='color: #f39c12;'></i>Launch Progress         <div style='float: right;'>             <span class='no-cont'>                  REPLIES 0             </span>          </div>     </div>      <div class='ccw-cont'>Hello all,<br><br>My name is Ghost and I'll be your captain for the duration of this flight.<br><br>Many of you may be asking yourself, WHEN THE F IS LAUNCH?<br><br>Well I would like to take some time out to address this with you.<br><br>Launch is very close at hand, but given my busy work schedule it may be a few days yet, but don't worry you now have access to the super cool new web system our web master @kinggedo is putting together!<br><br>In the mean-time I will give you guys view access to my todo list, the moment all things on this list have been completely it will be a day or two til launch!<p><br></p><p><a href="https://docs.google.com/spreadsheets/d/1V6hTnlNJeW0DPgOF5HCC5TXaHY3-XM-P2Pgd2i0de04/edit?usp=sharing" style="line-height: 17px; text-align: justify; text-indent: 10px;">https://docs.google.com/spreadsheets/d/1V6hTnlNJeW0DPgOF5HCC5TXaHY3-XM-P2Pgd2i0de04/edit?usp=sharing</a></p><p><span style="line-height: 17px; text-align: justify; text-indent: 10px;"><br></span></p><p><span style="line-height: 17px; text-align: justify; text-indent: 10px;">See you all there!</span></p>     </div>      <div class='ccw-footer'>         Topic posted by <span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Ghost' style='color:#3498db; ;' title='Visit Ghosts profile'>Ghost</a></span> at 22. February 2016, 01:29. <a href='/forum/index.aspx?cid=5&sid=7&tid=8' title='Click here to read the full thread'>Read the full topic..</a>     </div>  </div>  <div class='cc-wrap'>      <div class='ccw-title'><i class='fa fa-asterisk' style='color: #e74c3c;'></i>Regarding current payments and subscriptions         <div style='float: right;'>             <span class='no-cont'>                  REPLIES 0             </span>          </div>     </div>      <div class='ccw-cont'>Hello,<p><br></p><p>At the current time, as earlier mentioned already, the site is "under a construction" sign. Therefor you should not create any payments (V-Coin purchase) nor should you consider for a subscription package yet. You are visiting a product that is incomplete and currently in "preview" mode.</p>     </div>      <div class='ccw-footer'>         Topic posted by <span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> at 19. February 2016, 17:40. <a href='/forum/index.aspx?cid=5&sid=7&tid=6' title='Click here to read the full thread'>Read the full topic..</a>     </div>  </div>  <div class='cc-wrap'>      <div class='ccw-title'><i class='fa fa-asterisk' style='color: #e74c3c;'></i>Web services in development         <div style='float: right;'>             <span class='no-cont'>                  REPLIES 3             </span>          </div>     </div>      <div class='ccw-cont'>Hello,<p><br></p>Our web services are still in development. Hiccups are most likely to happen more often.     </div>      <div class='ccw-footer'>         Topic posted by <span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=F1style' style='color:#8e44ad; ;' title='Visit F1styles profile'>F1style</a></span> at 11. February 2016, 13:58. <a href='/forum/index.aspx?cid=5&sid=7&tid=4' title='Click here to read the full thread'>Read the full topic..</a>     </div>  </div> 
+        </div>
+
+        <div class="icc-r">
+            <!----->
+            
+            <a href="/store/topup.aspx?ref=banner" title="Top up your V-Coins!">
+                <div id="top-up">
+                    &nbsp;
+                </div>
+            </a>
+            
+            <a href="/files.aspx?ref=banner" title="Browse our download section">
+                <div id="client-dl">
+                    &nbsp;
+                </div>
+            </a>
+            <!----->
+
+            <div class="cc-wrap">
+                <div class="ccw-title">
+                    <i class="fa fa-sliders"></i> Statistics
+                </div>
+                <div class="ccw-cont">
+                     <div class='st-online'> HORIZON[DEV] </div>  <div class='st-online'>   AUTHENTICATION  </div>  <br /> <p> We've been visited a total of <font style='font-weight: 600;'>10,810</font> times and scored <font style='font-weight: 600;'>324</font> unique hits.  We currently have <font style='font-weight: 600;'>96</font> accounts with us -  <font style='font-weight: 600;'>2</font> of which are on the website right now.  The most was <font style='font-weight: 600;'>10</font> 5 days ago. </p>  <p> Currently our playerbase is <font style='font-weight: 600;'>7</font> characters in total,  of which <font style='font-weight: 600;'>1</font> are online right now! </p> 
+                </div>
+                <div class="ccw-footer" style="text-align: right;">
+                    <a href="/technical/server_status.aspx?ref=stats">
+                        <i class="fa fa-angle-double-right"></i> Read more.. 
+                    </a>
+                </div>
+            </div>
+
+            <div class="cc-wrap">
+                <span class="ccw-title">
+                    <i class="fa fa-rss"></i> Latest forum topics
+                </span>
+                <span class="ccw-cont">
+                     <div class='table'>      <div style='width: 15px; text-align: center'>          <i class='fa fa-hashtag'></i>     </div>      <div style='width: 125px; text-align: left'>          <a href='/forum/index.aspx?cid=3&sid=4&tid=10'> 6.2 Client         </a>      </div>      <div style='width: 25px; text-align: right' title='Total topic replies'>          <span class='no-cont'> 2         </span>      </div>  </div>  <div style='border-bottom: 1px solid #adadad; font-size: 10px; text-align: right; margin: -3px 0 7px 0;'>      Last replied about an hour ago by <span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Ghost' style='color:#3498db; ;' title='Visit Ghosts profile'>Ghost</a></span>. </div>  <div class='table'>      <div style='width: 15px; text-align: center'>          <i class='fa fa-hashtag'></i>     </div>      <div style='width: 125px; text-align: left'>          <a href='/forum/index.aspx?cid=3&sid=4&tid=9'> Show me: Who is waiting for s...         </a>      </div>      <div style='width: 25px; text-align: right' title='Total topic replies'>          <span class='no-cont'> 1         </span>      </div>  </div>  <div style='border-bottom: 1px solid #adadad; font-size: 10px; text-align: right; margin: -3px 0 7px 0;'>      Last replied 3 days ago by <span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span>. </div>  <div class='table'>      <div style='width: 15px; text-align: center'>          <i class='fa fa-asterisk' style='color: #e74c3c;'></i>     </div>      <div style='width: 125px; text-align: left'>          <a href='/forum/index.aspx?cid=5&sid=7&tid=4'> Web services in development         </a>      </div>      <div style='width: 25px; text-align: right' title='Total topic replies'>          <span class='no-cont'> 3         </span>      </div>  </div>  <div style='border-bottom: 1px solid #adadad; font-size: 10px; text-align: right; margin: -3px 0 7px 0;'>      Last replied last week by <span style=';'> <a href='/user/profile.aspx?u=Cornbeef' style='color:; ;' title='Visit Cornbeefs profile'>Cornbeef</a></span>. </div>  <div class='table'>      <div style='width: 15px; text-align: center'>          <i class='fa fa-percent' style='color: #f39c12;'></i>     </div>      <div style='width: 125px; text-align: left'>          <a href='/forum/index.aspx?cid=5&sid=7&tid=8'> Launch Progress         </a>      </div>      <div style='width: 25px; text-align: right' title='Total topic replies'>          <span class='no-cont'> 0         </span>      </div>  </div>  <div style='border-bottom: 1px solid #adadad; font-size: 10px; text-align: right; margin: -3px 0 7px 0;'>      Last replied last week by <span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Ghost' style='color:#3498db; ;' title='Visit Ghosts profile'>Ghost</a></span>. </div>  <div class='table'>      <div style='width: 15px; text-align: center'>          <i class='fa fa-asterisk' style='color: #e74c3c;'></i>     </div>      <div style='width: 125px; text-align: left'>          <a href='/forum/index.aspx?cid=5&sid=7&tid=6'> Regarding current payments an...         </a>      </div>      <div style='width: 25px; text-align: right' title='Total topic replies'>          <span class='no-cont'> 0         </span>      </div>  </div>  <div style='border-bottom: 1px solid #adadad; font-size: 10px; text-align: right; margin: -3px 0 7px 0;'>      Last replied last week by <span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span>. </div> 
+                </span>
+            </div>
+
+            <div class="cc-wrap">
+                <span class="ccw-title">
+                    <i class="fa fa-trophy"></i> Hall of fame
+                </span>
+                <span class="ccw-cont">
+                     <div class='table' style='border-bottom: 1px solid #adadad;' title='Total replies'>      <div style='width: 40px;'>          <img src='/img/game-icons/class_icons/100.png' />     </div>      <div style='width: 150px;'> fybenftw     </div>      <div style='text-align: right; font-weight: 600;'>         <span class='no-cont'>             LEVEL 12        </span>      </div>  </div>  <div class='table' style='border-bottom: 1px solid #adadad;' title='Total replies'>      <div style='width: 40px;'>          <img src='/img/game-icons/class_icons/300.png' />     </div>      <div style='width: 150px;'> xXExiledXx     </div>      <div style='text-align: right; font-weight: 600;'>         <span class='no-cont'>             LEVEL 10        </span>      </div>  </div> 
+                </span>
+            </div>
+
+            <div class="cc-wrap">
+                <span class="ccw-title">
+                    <i class="fa fa-users"></i> Recent accounts online
+                </span>
+                <span class="ccw-cont">
+                     <div class='table' style='border-bottom: 1px solid #adadad;'>      <div style='width: 150px;'> <img src='/img/forum/ug-pips/vand.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Ghost' style='color:#3498db; ;' title='Visit Ghosts profile'>Ghost</a></span>     </div>      <div style='text-align: right; font-weight: 600;'>         <span class='no-cont'> just now        </span>      </div>  </div>  <div class='table' style='border-bottom: 1px solid #adadad;'>      <div style='width: 150px;'> <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span>     </div>      <div style='text-align: right; font-weight: 600;'>         <span class='no-cont'> 7 minutes ago        </span>      </div>  </div> 
+                </span>
+            </div>
+
+        </div>
+    <div style="clear: both;">&nbsp;</div>
+            <hr />
+
+            <div class="cc-wrap">
+                <div class="ccw-title">
+                    <i class="fa fa-street-view"></i> What's going on?
+                </div>
+                <div class="ccw-cont">
+                    <div class="scroll-div" style="margin: 0px -10px;">
+                         <div style='margin-bottom: 10px;'>     <i class='fa fa-feed'></i> &nbsp; <img src='/img/forum/ug-pips/vand.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Ghost' style='color:#3498db; ;' title='Visit Ghosts profile'>Ghost</a></span> has replied to a topic <a href='/forum/index.aspx?cid=3&sid=4&tid=10'>"6.2 Client"</a> saying "I actually meant to upload the new client last nig..".  (about an hour ago) </div>  <div style='margin-bottom: 10px;'>     <i class='fa fa-feed'></i> &nbsp; <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> has created a new bug tracker, "<a href='/technical/bug_tracker.aspx?ref=message&b_id=7'>Using an URI as an avatar does not work</a>" for review.  (2 days ago) </div>  <div style='margin-bottom: 10px;'>     <i class='fa fa-feed'></i> &nbsp; <img src='/img/forum/ug-pips/admin.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_3.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Aodai' style='color:#16a085; ;' title='Visit Aodais profile'>Aodai</a></span> has changed his avatar.  (2 days ago) </div>  <div style='margin-bottom: 10px;'>     <i class='fa fa-feed'></i> &nbsp; <img src='/img/forum/ug-pips/vand.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Vandralaus' style='color:#3498db; ;' title='Visit Vandralauss profile'>Vandralaus</a></span> has changed his avatar.  (2 days ago) </div> <i class='fa fa-youtube-play'></i> &nbsp; <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> has posted a YouTube video <a href='http://youtube.com/watch?v=v3d_GuXJv68' target='_blank'>v3d_GuXJv68</a>. (2 days ago) <center><iframe width='560' height='315' src='https://www.youtube.com/embed/v3d_GuXJv68' frameborder='0' style='margin-top: 5px;' allowfullscreen></iframe></center> <br /> <br /> <div style='margin-bottom: 10px;'>     <i class='fa fa-feed'></i> &nbsp; <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> has replied to a topic <a href='/forum/index.aspx?cid=3&sid=4&tid=10'>"6.2 Client"</a> saying "No, there is no client for 6.2 version available y..".  (3 days ago) </div>  <div style='margin-bottom: 10px;'>     <i class='fa fa-feed'></i> &nbsp; <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> has modified the, "<a href='/technical/bug_tracker.aspx?ref=message&b_id=2'>Web services to-do's and known issues</a>" bug tracker.  (3 days ago) </div> 
+                    </div>
+                </div>
+            </div>
+
+
+                </div>
+                <div id="after-content">
+                    &nbsp;
+                </div>
+            </div>
+            <!-- content -->
+        </div>
+        <!-- wrapper -->
+
+        <!-- Footer; -->
+        <div class="footer">
+
+            <div class="element" style="font-size: 11px; text-indent: 15px;">
+                Vendetta-Gaming maintains a dedicated staff and have all staff members adhere to a strict code. Constant supervision is provided for our servers, as hacking, spamming or any other form of ill-conduct will not be tolerated. TVG staff strives to provide an amazing experience to all players. Through years of experience, our staff has gained a keen understanding as to what the gaming population desires. On a final note, we remind our community that providing a server is not free, and our dedication does not pay the bills for the server, so all donations are greatly appreciated. 
+            </div>
+
+            <div class="element" style="text-align: center;">
+                <a href="https://team-vendetta.com/" target="_blank"><img src="/img/vgl.png" /></a>
+                <a href="https://www.facebook.com/marekfeis" target="_blank"><img src="/img/fyben-logo-small.png" /></a>
+            </div>
+
+            <div class="element">
+                <h1>Quick links</h1>
+                <i>⋗ <a href="/register.aspx?ref=footer">Create a new account</a></i>
+                <i>⋗ <a href="/recovery.aspx?ref=footer">Account recovery</a></i>
+                <i>⋗ <a href="/forum.aspx?ref=footer">Community board</a></i>
+                <i>⋗ <a href="/technical/bug_tracker.aspx?ref=footer&a=new_tracker">Submit a bug</a></i>
+                <i>⋗ <a href="/technical/server_status.aspx?ref=footer">Server status</a></i>
+                <i>⋗ <a href="/forum/index.aspx?cid=2&sid=2&ref=footer">Changelogs</a></i>
+                <i>⋗ <a href="/readme/tos.aspx?ref=footer">Terms of Service</a></i>
+                <i>⋗ <a href="/readme/gen_comm.aspx?ref=footer">Communication rules</a></i>
+                <i>⋗ <a href="/readme/gen_rules.aspx?ref=footer">General rules</a></i>
+            </div>
+
+            <div class="element">
+                <h1>References</h1>
+                <i>⋗ <a href="http://rappelz.wikia.com/wiki/Rappelz_Wiki" target="_blank">Rappelz Wiki</a></i>
+                <i>⋗ <a href="http://www.elitepvpers.com/" target="_blank">ElitePVPers</a></i>
+                <i>⋗ <a href="https://fortawesome.github.io/" target="_blank">FortAwesome</a></i>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <center><img src="/img/norton_siteseal.png" width="150" /></center>
+            </div>
+
+            <!-- Float fix; -->
+            <div style="clear: both;"></div>
+            <!-- Float fix; -->
+
+            <div class="unrealiant" style="text-align: center;">
+                <font style="font-size: 10px;">
+                    Website design and content created by <a href="https://www.facebook.com/marekfeis"><font color="#3498db">Fyben</font></a> for Vendetta-Gaming. <br />
+                    <i class="fa fa-copyright"></i> Copyright 2016-2017 
+                </font> 
+            </div>
+
+        </div>
+        <!-- Footer; -->
+
+    </form>
+
+    
+    
+
+</body>
+</html>

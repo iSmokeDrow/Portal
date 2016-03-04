@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Functions
+namespace Server.Functions
 {
     public class Hash
     {

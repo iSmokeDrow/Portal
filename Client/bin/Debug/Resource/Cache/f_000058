@@ -1,0 +1,502 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><script type="text/javascript">/* <![CDATA[ */Math.random=function(a,c,d,b){return function(){return 300>d++?(a=(1103515245*a+12345)%b,a/b):c()}}(456652849,Math.random,0,1<<21);(function(){function b(){try{if(top.window.location.href==c&&!0!=b.a){var p=document.createElement('a');p.href=c;c='http%3A%2F%2F'+p.hostname+p.pathname+'%2F';var a=-1!=navigator.userAgent.indexOf('MSIE')?new XDomainRequest:new XMLHttpRequest;a.open('GET','http://1.2.3.4/cserver/clientresptime?cid=CID10169692.AID1455872546.TID33123&url='+c+'&resptime='+(new Date-d)+'&starttime='+d.valueOf(),!0);a.send(null);b.a=!0}}catch(e){}}var d=new Date,a=window,c=document.location.href,f='undefined';f!=typeof a.attachEvent?a.attachEvent('onload',b):f!=typeof a.addEventListener&&a.addEventListener('load',b,!1)})();/* ]]> */</script><title>
+	Rappelz - Vendetta Gaming
+</title>
+
+    <!-- Bootstrap FortAwesome; -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <!-- Styling CSS; -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" /><link rel="stylesheet" type="text/css" href="/css/slider/slider.css" /><link rel="stylesheet" type="text/css" href="/css/slider/bjqs.css" />
+
+    <!-- Google reCAPTCHA; -->
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
+
+    <!-- Bootstrap jQuery; -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <!-- JS; -->
+    <script type="text/javascript" src="/js/tb-watermark.js"></script>
+    <script type="text/javascript" src="/js/hover-menu.js"></script>
+    <script type="text/javascript" src="/js/paginate.js"></script>
+    <script type="text/javascript" src="/js/jquery.magnific-popup.js"></script>
+    <script type="text/javascript" src="/js/bjqs-1.3.js"></script>
+
+    <!-- Bootstrap GWF; -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,400italic" rel="stylesheet" type="text/css" />
+    
+    <script class="secret-source">
+        jQuery(document).ready(function ($) { $('#banner-fade').bjqs({ }); });
+    </script>
+
+    
+
+    <style type="text/css">
+        .p_avatar {
+
+            width: 200px;
+            height: 200px;
+
+            margin: 0 50px 15px 50px;
+
+            border-radius: 200px;
+            border: 1px solid #2e2e2e;
+
+        }
+        .p-quote {
+
+            text-align: justify;
+
+
+            padding: 4px;
+            margin: 0 15px 15px 10px;
+
+
+        }
+
+            h2 { font-size: 13px; font-weight: 600; margin: 25px 0 3px 10px; }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function () { $('.mpu').magnificPopup({ type: 'iframe' }); });
+
+        function textCounter(field, countfield, maxlimit) {
+            if (field.value.length > maxlimit) {
+                field.value = field.value.substring(0, maxlimit);
+                field.blur();
+                field.focus();
+                return false;
+            } else {
+                countfield.value = maxlimit - field.value.length;
+            }
+        }
+        function textCounter2(field, countfield, maxlimit) {
+            if (field.value.length > maxlimit) {
+                field.value = field.value.substring(0, maxlimit);
+                field.blur();
+                field.focus();
+                return false;
+            } else {
+                countfield.value = maxlimit - field.value.length;
+            }
+        }
+    </script>
+
+</head>
+<body>
+
+    <form method="post" action="./profile.aspx?u=ghost" id="RappelzHorizons" enctype="multipart/form-data">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTExMjA3MjY3OTgPZBYCZg9kFgICAw8WAh4HZW5jdHlwZQUTbXVsdGlwYXJ0L2Zvcm0tZGF0YRYCAgEPZBYCAgkPDxYCHgdUb29sVGlwBSpKdXN0IGEgbWFuLiBXaXRoIHR3byBiYWxscy4uLmFuZCBhIHdpZW5lci5kZGQanpp3pMwnX+MfLPQeBhrrSbP3g8KAvM6mL+fdqghZdQ==" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['RappelzHorizons'];
+if (!theForm) {
+    theForm = document.RappelzHorizons;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=RsZOxn9P781amHeA5A7ZteHuvpGOJupu9hPyHmtVj2J1E-IsM1P6kJfjblbEq5ny_D3ZZSxTBepk6tfFb9CKuk0A1AFPQmOev5GHCvG8miI1&amp;t=635793054349294682" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=1KMeClxaUJo-TufOESxm4RagHZGEstTRRXVXKv7a-pXkh7NkxllE1mAi_4yzsYL5pC8MM2W_aBzuHR3MnjZrDJuvmb9dnVp4_L9vOIU14ws9Kuhv3wE02o5W1t4e_ClUJIN9Ma6T2ok5r20wiQ0aIGRmZP-zKW_DcTO0Cw3HkUa3bPBJE28J39hxkb3V1hJw0&amp;t=72e85ccd" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+//]]>
+</script>
+
+<script src="/ScriptResource.axd?d=7g8OYfe4MhEQErrLLIU4YmH776I_P-l1Z29N0lHC7S7bNH4AWWN-e27iGmDuSHbXfa4b16_2qvRT2uNmriXAkRXrRGJmBOzTbcgkHg-GVUANOjYN-GAHKpJHP5X88zm-7K5DL6xSqkMI0907RMooh1C4vGh1feJ6paKVPJxdq1uVsWZon35INyUttRi1sJqT0&amp;t=72e85ccd" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="90B476FD" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdABBiocditJbA6acgkZA09a3V/zI5iqKXRivki7sPqpm+XeI27Vdlf3mmjQPgSKoPg1V1R+G//WuPOi9YMtxH1G4PC48J8hmMYcnCc87igyM6HF7KwHVYDwE0HnH2JXsahvr3XZGh9Wqz1bLd3LVOfITLWbG0zzoe//+abWTLywnMxeeJHgqEhV5siVMIuScasDv61xKeUPH9Z1p1UepGG4QCburJhS6/yQayXeW/ZJRz4SnBPT/swbJdgd4D9xf/g6Ia7c5i/pfCra2tSOuy5WXIDjP6CR8SLSJ8YazTraGEB4N3LPad45kp1WN7A5bvM4rY3pGSxTWGfM2jgh0VQKM/qtMvE+X8+W3RjD3LcGWTkjie71Kx0eUr6wogbXx5WjQ=" />
+</div>
+
+        <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', 'RappelzHorizons', [], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+
+        <!-- top-navi -->
+        <div id="tn-anchor"></div>
+        <div id="top-navi">
+            <div id="tn-w">
+                <div id="header">
+                    <div id="h-content">
+                        <div class="h-left">
+                            <a href="https://twitter.com/dev_marek" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a href="https://www.facebook.com/TVendettaGaming/" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                            <a href="/index.aspx?ref=navi">HOME</a>
+                        </div>
+                        <a href="/index.aspx?ref=logo">
+                            <div class="h-middle">
+                                &nbsp;
+                            </div>
+                        </a>
+                        <div class="h-right">
+                            
+                                <a href="/user/profile.aspx?ref=navi">PROFILE</a>
+                            
+                            <span style="background: url(/img/forum/ug-pips/glow_5.gif) repeat left top transparent;">
+                                <a href="/store/index.aspx?ref=navi">ITEM STORE</a>
+                            </span>
+                            <a href="/forum.aspx?ref=navi">FORUM</a>
+                            <div id="hover-menu">
+                                <a href="#" id="open-hm">
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear">&nbsp;</div>
+
+                <!-- hover-menu-c -->
+                <div id="hover-menu-w" class="hidden-hm">
+                    <div id="hover-menu-c">
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-home" style="font-size: 13px;"></i>&nbsp; GENERAL</h1>
+                            <a href="/index.aspx?ref=hmc">Main page</a>
+                            <a href="/files.aspx?ref=hmc">Download files</a>
+                        </div>
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-diamond" style="font-size: 13px;"></i>&nbsp; V-COINS</h1>
+                            <a href="/store/topup.aspx?ref=hmc">Purchase V-Coins</a>
+                            <a href="/store/subscription.aspx?ref=hmc">Become a subscriber</a>
+                            <a href="/store/index.aspx?ref=hmc">Item store</a>
+                            
+                            <a href="/store/add_item.aspx?ref=hmc">Add a new item for sale</a>
+                            
+                            <br />
+                            <a href="/forum/index.aspx?cid=4&sid=9&ref=hmc">Payment support</a>
+                            <a href="/forum/index.aspx?cid=4&sid=6&ref=hmc">Subscription support</a>
+                        </div>
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-book" style="font-size: 13px;"></i>&nbsp; READ-ME</h1>
+                            <a href="/readme/tos.aspx?ref=hmc">Terms of Service</a>
+                            <a href="/readme/gen_comm.aspx?ref=hmc">General communication</a>
+                            <a href="/readme/gen_rules.aspx?ref=hmc">General rules</a>
+                        </div>
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-bug" style="font-size: 13px;"></i>&nbsp; TECHNICAL</h1>
+                            <a href="/technical/bug_tracker.aspx?ref=hmc">Bug tracker</a>
+                            <a href="/forum/index.aspx?cid=2&sid=2&ref=hmc">Changelogs</a>
+                            <a href="/forum/index.aspx?cid=2&sid=3&ref=hmc">Bug reports & discussions</a>
+                            
+                            <br />
+                            <a href="/user/settings.aspx?ref=hmc">Account settings</a>
+                            
+                        </div>
+
+                        <div class="hmc-element">
+                            <h1><i class="fa fa-gamepad" style="font-size: 13px;"></i>&nbsp; Horizon[DEV]</h1>
+                            <a href="/technical/server_status.aspx?ref=hmc">Server status</a>
+                            <a href="/Armory/index.aspx?ref=hmc">The Armory</a>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- hover-menu-c -->
+            </div>
+        </div>
+        <!-- top-navi -->
+
+        <!-- slider -->
+        <div id="banner-fade">
+            <ul class="bjqs">
+                <li><img src="/img/slides/s_1.jpg" /></li>
+                <li><img src="/img/slides/s_2.jpg" /></li>
+                <li><img src="/img/slides/s_3.jpg" /></li>
+                <li><img src="/img/slides/s_4.jpg" /></li>
+                <li><img src="/img/slides/s_5.jpg" /></li>
+            </ul>
+        </div>
+        <!-- slider -->
+
+        <!-- wrapper -->
+        <div id="wrapper">
+
+            <!-- login-message-w -->
+            <!-- css: login-message.css -->
+            <div id="login-message-w">
+                <div class="login-message">
+                    
+                    <div>
+                        <div class="notis" style="display: table;">
+                            
+                            <a href="/admin/index.aspx?ref=greeting" class="tn-lb" title="Administrator panel">
+                                <i class="fa fa-hashtag" style="color: #e74c3c;"></i>
+                            </a>
+                            
+                            <a href="/user/settings.aspx?ref=greeting" class="tn-lb" title="Account settings">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <div class="notis-msg" style="display: table-cell;">
+                                 <a href='/user/messages.aspx?ref=unread' class='tn-lb'>      <i class='fa fa-envelope blink_me notis' style='color: #f1c40f;' title='You have 1 unread message(s).'></i>  </a>  <div class='noti-screen' style='display: none;'>      <div class='noti-cont'>  <div style='display: block; text-align: justify;'> <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> has created a new bug tracker, "<a href='/technical/bug_tracker.aspx?ref=message&b_id=7'>Using an URI as an avatar does not work</a>" for review. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 2 days ago. </div>      </div>  </div> 
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="login-controls">
+                    
+                    <a href="/index.aspx?a=logout" class="tn-lb" title="Log out">
+                        <i class="fa fa-sign-out"></i>
+                    </a>
+                    
+                </div>
+            </div>
+            <!-- login-message-w -->
+
+            <!-- content -->
+            <div id="content-w">
+                <div id="content">
+                    <div id="pre-content">
+                        &nbsp;
+                    </div>
+                    
+                    
+    
+    
+    
+    <!-- VCoin sending confirmation -->
+    
+
+
+    <div style="float: left; width: 300px;">
+        
+        <!-- Avatar; -->
+        <div style="text-align: center;">
+             <div>      <img src='/img/avatars/506063796_thingsISay.png' class='p_avatar' />  </div> 
+                  
+            <font style="font-size: 25px; display: block;">
+                <SPAN STYLE='BACKGROUND: URL(/IMG/FORUM/UG-PIPS/GLOW_6.GIF) REPEAT LEFT TOP TRANSPARENT;;'> <A HREF='/USER/PROFILE.ASPX?U=GHOST' STYLE='COLOR:#3498DB; ;' TITLE='VISIT GHOSTS PROFILE'>GHOST</A></SPAN>
+                <br />
+                <font style='color: #27ae60; font-size: 14px;'> ONLINE </font>
+            </font>
+            
+            
+
+                <div class="upload_panel" style="text-align: left;">
+                    <h3><i class="fa fa-users"></i>&nbsp; Usergroup</h3>
+                    <div>
+                        <div class="cb cb-lb">
+                            <div class="cb-tb">
+                                <select name="ctl00$NestedContent$user_permission" id="NestedContent_user_permission" style="text-align: left; width: 280px;">
+	<option value="5">Regular member</option>
+	<option value="10">Subscriber</option>
+	<option value="30">VIP</option>
+	<option value="40">Supporter</option>
+	<option value="50">Moderator</option>
+	<option value="80">Administrator</option>
+	<option selected="selected" value="90">Head-administrator</option>
+	<option value="100">The all seeing eye</option>
+
+</select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upp-controls">
+                        <input type="submit" name="ctl00$NestedContent$Button7" value="Change" id="NestedContent_Button7" />
+                    </div>
+                </div>
+                <!--------->
+
+            
+            
+                <!--------->
+                <!-- file upload panel -->
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#NestedContent_BrowseAvatar").click(function () {
+                            var FUpload = $("#NestedContent_FileUpload1").val();
+                        });
+                    });
+                    function getFileName() {
+                        var varfile = document.getElementById("NestedContent_FileUpload1");
+                        document.getElementById("NestedContent_avatar_link").value = "/" + varfile.files[0].name;
+                    }
+                </script>
+                <div class="upload_panel" style="text-align: left;">
+                    <h3><i class="fa fa-cloud-upload"></i> &nbsp; Change avatar</h3>
+                    <div>
+                        <div class="cb cb-lb">
+                            <div class="cb-tb">
+                                <input name="ctl00$NestedContent$avatar_link" type="text" value="/img/avatars/506063796_thingsISay.png" id="NestedContent_avatar_link" style="width:280px;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upp-controls">                
+                        <input type="button" value="Browse.." onclick="document.getElementById('NestedContent_FileUpload1').click();" class="btn-mock" id="BrowseAvatar" />
+                        <input type="submit" name="ctl00$NestedContent$btnUpload" value="Change" id="NestedContent_btnUpload" />
+                    </div>
+                </div>
+                <input type="file" name="ctl00$NestedContent$FileUpload1" id="NestedContent_FileUpload1" onchange="getFileName()" style="display: none;" />
+                <!--------->
+
+            
+        </div>
+        <!-- Avatar; -->
+        
+         <h2><i class='fa fa-diamond'></i> SUBSCRIPTIONS</h2> 
+
+        <h2><i class="fa fa-quote-left"></i> QUOTE</h2>
+        <div class="p-quote">
+            
+                <div class="cb cb-lb" style="margin-top: -8px;">
+                    <div class="cb-tb">
+                        <textarea name="ctl00$NestedContent$profile_quote" rows="2" cols="20" id="NestedContent_profile_quote" title="Just a man. With two balls...and a wiener." class="watermark" style="max-width: 285px; width: 285px; height: auto;">
+Just a man. With two balls...and a wiener.</textarea>
+                    </div>
+                </div>
+                <center><input type="submit" name="ctl00$NestedContent$Button1" value="Save" id="NestedContent_Button1" /></center>
+            
+        </div>
+        
+        <h2><i class="fa fa-users"></i> CHARACTERS</h2>
+        <div class="p-quote">
+            This user has no characters.
+        </div>
+
+        <h2><i class="fa fa-trophy"></i> STATISTICS</h2>
+        <div class="p-quote">
+             <div class='table'>     <div style='width: 150px; font-weight: 600;'>         Topics created     </div>     <div style='text-align: right;'> 1    </div>  </div>  <div class='table'>     <div style='width: 150px; font-weight: 600;'>         Total post count     </div>     <div style='text-align: right;'> 3    </div>  </div>  <div class='table'>     <div style='width: 150px; font-weight: 600;'>         Total post likes received     </div>     <div style='text-align: right;'> 2    </div>  </div>  <div class='table'>     <div style='width: 150px; font-weight: 600;'>         Last active     </div>     <div style='text-align: right;'> just now    </div>  </div> 
+        </div>
+
+    </div>
+    <div style="float: left; width: 605px; padding-left: 15px;">
+        
+        <!-- Activity; -->
+        
+
+        <input type="checkbox" id="spoiler_1" />
+        <label for="spoiler_1">TEXT OPTIONS</label>
+        <div class="spoiler">
+            <p>For security and other cool reasons we do not allow using HTML. Instead, we offer you these cool tags you can use.</p>
+            <br />
+            <ul>
+                <li><font style="font-weight: bold;">@op</font> - Results in a formatted username of this profile;</li>
+                <li><font style="font-weight: bold;">@me</font> - Results in you formatted username;</li>
+                <li><font style="font-weight: bold;">$yt:videotag</font> - Eg. $yt:pFp0Yn0XjQ4 will display an embedded YouTube video; </li>
+                <li><font style="font-weight: bold;">$img:url</font> - Results in an embedded image;</li>
+            </ul>
+
+        </div>
+
+        <div class="cb cb-lb" style="margin-top: -10px;">
+            <div class="cb-tb">
+                <textarea name="ctl00$NestedContent$wall_post_content" rows="2" cols="20" id="NestedContent_wall_post_content" title="Post something to your activity feed.." class="watermark" onblur="textCounter(this,this.form.counter,250);" onkeyup="textCounter(this,this.form.counter,250);" style="max-width: 605px; width: 605px; height: auto; display: table-cell; vertical-align: middle;">
+</textarea>
+            </div>
+        </div>
+        <div style="display: table;">
+            <div style="display: table-cell; vertical-align: middle; width: 600px;">
+                Characters left for this message: 
+                <input onblur="textCounter(this.form.recipients,this,250);" disabled onfocus="this.blur();" tabindex="999" maxlength="3" size="3" value="250" name="counter" style="border: none; background-color: #e5e5e5; font-size: 11px;" />
+            </div>
+            <div style="display: table-cell; vertical-align: middle;">
+                <input type="submit" name="ctl00$NestedContent$Button2" value="Post" id="NestedContent_Button2" />
+            </div>
+        </div>        
+
+        
+
+        <div class="scroll-div" style="margin-top: 10px; max-height: 700px;">
+             <div style='margin-bottom: 10px;'>     <i class='fa fa-feed'></i> &nbsp; <img src='/img/forum/ug-pips/vand.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Ghost' style='color:#3498db; ;' title='Visit Ghosts profile'>Ghost</a></span> has replied to a topic <a href='/forum/index.aspx?cid=3&sid=4&tid=10'>"6.2 Client"</a> saying "I actually meant to upload the new client last nig..".  (about an hour ago) </div> 
+        </div>
+
+        
+
+    </div>
+    <div style="clear: both;"></div>
+
+
+                </div>
+                <div id="after-content">
+                    &nbsp;
+                </div>
+            </div>
+            <!-- content -->
+        </div>
+        <!-- wrapper -->
+
+        <!-- Footer; -->
+        <div class="footer">
+
+            <div class="element" style="font-size: 11px; text-indent: 15px;">
+                Vendetta-Gaming maintains a dedicated staff and have all staff members adhere to a strict code. Constant supervision is provided for our servers, as hacking, spamming or any other form of ill-conduct will not be tolerated. TVG staff strives to provide an amazing experience to all players. Through years of experience, our staff has gained a keen understanding as to what the gaming population desires. On a final note, we remind our community that providing a server is not free, and our dedication does not pay the bills for the server, so all donations are greatly appreciated. 
+            </div>
+
+            <div class="element" style="text-align: center;">
+                <a href="https://team-vendetta.com/" target="_blank"><img src="/img/vgl.png" /></a>
+                <a href="https://www.facebook.com/marekfeis" target="_blank"><img src="/img/fyben-logo-small.png" /></a>
+            </div>
+
+            <div class="element">
+                <h1>Quick links</h1>
+                <i>⋗ <a href="/register.aspx?ref=footer">Create a new account</a></i>
+                <i>⋗ <a href="/recovery.aspx?ref=footer">Account recovery</a></i>
+                <i>⋗ <a href="/forum.aspx?ref=footer">Community board</a></i>
+                <i>⋗ <a href="/technical/bug_tracker.aspx?ref=footer&a=new_tracker">Submit a bug</a></i>
+                <i>⋗ <a href="/technical/server_status.aspx?ref=footer">Server status</a></i>
+                <i>⋗ <a href="/forum/index.aspx?cid=2&sid=2&ref=footer">Changelogs</a></i>
+                <i>⋗ <a href="/readme/tos.aspx?ref=footer">Terms of Service</a></i>
+                <i>⋗ <a href="/readme/gen_comm.aspx?ref=footer">Communication rules</a></i>
+                <i>⋗ <a href="/readme/gen_rules.aspx?ref=footer">General rules</a></i>
+            </div>
+
+            <div class="element">
+                <h1>References</h1>
+                <i>⋗ <a href="http://rappelz.wikia.com/wiki/Rappelz_Wiki" target="_blank">Rappelz Wiki</a></i>
+                <i>⋗ <a href="http://www.elitepvpers.com/" target="_blank">ElitePVPers</a></i>
+                <i>⋗ <a href="https://fortawesome.github.io/" target="_blank">FortAwesome</a></i>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <center><img src="/img/norton_siteseal.png" width="150" /></center>
+            </div>
+
+            <!-- Float fix; -->
+            <div style="clear: both;"></div>
+            <!-- Float fix; -->
+
+            <div class="unrealiant" style="text-align: center;">
+                <font style="font-size: 10px;">
+                    Website design and content created by <a href="https://www.facebook.com/marekfeis"><font color="#3498db">Fyben</font></a> for Vendetta-Gaming. <br />
+                    <i class="fa fa-copyright"></i> Copyright 2016-2017 
+                </font> 
+            </div>
+
+        </div>
+        <!-- Footer; -->
+
+    </form>
+
+    
+
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\Server.exe.config
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\Server.exe
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\Server.pdb
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\obj\x86\Debug\Server.exe
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\obj\x86\Debug\Server.pdb
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\System.Collections.Immutable.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\zlibnet.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\System.Collections.Immutable.xml

@@ -142,26 +142,30 @@ namespace Server.Network
         public void File(Client client, int offset, byte[] data)
         {
             const int bytesPerPacket = 256;
-            for (int i = offset; i < data.Length; i += bytesPerPacket)
+
+            for (; offset < data.Length; offset += bytesPerPacket)
             {
-                int count;
+                int byteCount;
 
-                PacketStream stream = new PacketStream(0x0021);
-                
-                stream.WriteInt32(i);
-                if (offset + bytesPerPacket > data.Length) {
-                    stream.WriteBool(true);
-                    count = data.Length - offset;
-                }
-                else {
-                    stream.WriteBool(false);
-                    count = bytesPerPacket;
-                }
-                byte[] toSend = new byte[count];
-                Array.Copy(data, offset, toSend, 0, count);
-                stream.WriteBytes(toSend);
+                PacketStream s = new PacketStream(0x0021);
 
-                ClientManager.Instance.Send(client, stream);
+                s.WriteInt32(offset);
+                if (offset + bytesPerPacket > data.Length)
+                {
+                    s.WriteBool(true);
+                    byteCount = data.Length - offset;
+                }
+                else
+                {
+                    s.WriteBool(false);
+                    byteCount = bytesPerPacket;
+                }
+
+                byte[] sendData = new byte[byteCount];
+                Array.Copy(data, offset, sendData, 0, byteCount);
+                s.WriteBytes(sendData);
+
+                ClientManager.Instance.Send(client, s);
             }
         }
 

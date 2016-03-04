@@ -1,0 +1,476 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DataCore</name>
+    </assembly>
+    <members>
+        <member name="T:DataCore.Core">
+            <summary>
+            Provides interactive access to the Rappelz Data.XXX File Management System
+            </summary>
+        </member>
+        <member name="F:DataCore.Core.encoding">
+            <summary>
+            Defines the encoding of files to be the default of the system
+            unless changed by the user during construction of Core
+            </summary>
+        </member>
+        <member name="M:DataCore.Core.OnError(DataCore.ErrorArgs)">
+            <summary>
+            Raises an event that informs the caller of an error that has occured
+            </summary>
+            <param name="e">Description of the error event ([Method-Name] Error-String)</param>
+        </member>
+        <member name="M:DataCore.Core.OnWarning(DataCore.WarningArgs)">
+            <summary>
+            Raises an event that informs the caller of a warning that has occured
+            </summary>
+            <param name="w">Description of the warning event ([Method-Name] Warning-String)</param>
+        </member>
+        <member name="M:DataCore.Core.OnTotalMaxDetermined(DataCore.TotalMaxArgs)">
+            <summary>
+            Raises an event that informs caller of current TotalProgress operations total
+            </summary>
+            <useage>Caller subscribes to event, uses event int as Progressbar.Total</useage>
+            <param name="t">Total number of processes to be completed</param>
+        </member>
+        <member name="M:DataCore.Core.OnTotalProgressChanged(DataCore.TotalChangedArgs)">
+            <summary>
+            Raises an event that informs the caller of total operations completed.
+            This event can additionally deliver a string (status update) to the caller
+            </summary>
+            <param name="t">Current process of TotalMax</param>
+        </member>
+        <member name="M:DataCore.Core.OnTotalProgressReset(System.EventArgs)">
+            <summary>
+            Raises an event that informs the caller that the TotalProgressbar should be reset to 0
+            </summary>
+            <param name="e">Dummy EventArg</param>
+        </member>
+        <member name="M:DataCore.Core.OnCurrentMaxDetermined(DataCore.CurrentMaxArgs)">
+            <summary>
+            Raises an event that informs caller of CurrentProgress operations total
+            </summary>
+            <param name="c">Total number of processes to be completed</param>
+        </member>
+        <member name="M:DataCore.Core.OnCurrentProgressChanged(DataCore.CurrentChangedArgs)">
+            <summary>
+            Raises an event that informs the caller of current operations completed.
+            This event can additionally deliver a string (status update) to the caller
+            </summary>
+            <param name="c">CurrentChangedArgs containing event data</param>
+        </member>
+        <member name="M:DataCore.Core.OnCurrentProgressReset(System.EventArgs)">
+            <summary>
+            Raises an event that informs the caller that the CurrentProgressbar should be reset to 0
+            </summary>
+            <param name="e">Dummy EventArg</param>
+        </member>
+        <member name="M:DataCore.Core.#ctor">
+            <summary>
+            Dummy constructor
+            </summary>
+        </member>
+        <member name="M:DataCore.Core.#ctor(System.Text.Encoding)">
+            <summary>
+            Constructor allowing encoding to be passed in by caller
+            </summary>
+            <param name="overrideEncoding">Encoding to be used during operation</param>
+        </member>
+        <member name="M:DataCore.Core.Create(System.String)">
+            <summary>
+            Generates a new data.000 index based on provided dumpDirectory
+            Expects: /tga /jpg /wav /dds style dump folder structure
+            </summary>
+            <param name="dumpDirectory">Location of dump folders (e.g. client/output/dump/)</param>
+            <returns>Populated data.000 index</returns>
+        </member>
+        <member name="M:DataCore.Core.Create(System.String[])">
+            <summary>
+            Generates a temporary data.000 index consisting of the filePaths array
+            for further processing
+            </summary>
+            <param name="filePaths">Array of file paths to be indexed</param>
+            <returns>Generated index</returns>
+        </member>
+        <member name="M:DataCore.Core.Load(System.String,System.Boolean)">
+            <summary>
+            Reads the data.000 contents into a List of IndexEntries (note toggling on decodeNames will decrease speed)
+            </summary>
+            <param name="path">Path to the data.xxx files (optional)</param>
+            <param name="decodeNames">Determines if the file names should be decoded during load</param>
+            <returns>A bool value indicating success or failure</returns>
+        </member>
+        <member name="M:DataCore.Core.Save(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String)">
+            <summary>
+            Saves the provided indexList into a ready to use data.000 index
+            </summary>
+            <param name="index">Reference to data.000 index</param>
+            <param name="buildPath">Location to build the new data.000 at</param>
+            <returns>bool value indicating success or failure</returns>
+        </member>
+        <member name="M:DataCore.Core.Sort(System.Collections.Generic.List{DataCore.IndexEntry}@,System.Int32)">
+            <summary>
+            Reorders references index by sortType
+            </summary>
+            <param name="index">Reference to data.000 index</param>
+            <param name="sortType">Type of sort to be performed</param>
+        </member>
+        <member name="M:DataCore.Core.GetEntry(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String)">
+            <summary>
+            Returns an IndexEntry based on it's [UNHASHED] name
+            </summary>
+            <param name="index">Reference to data.000 index</param>
+            <param name="name">[UNHASHED] file name being searched for</param>
+            <returns>IndexEntry of name</returns>
+        </member>
+        <member name="M:DataCore.Core.GetEntry(System.Collections.Generic.List{DataCore.IndexEntry}@,System.Int32,System.Int32)">
+            <summary>
+            Returns an IndexEntry based on it's dataId and offset
+            </summary>
+            <param name="index">Reference to data.000 List</param>
+            <param name="dataId">data.xxx id being searched</param>
+            <param name="offset">offset of file in dataId being searched</param>
+            <returns>IndexEntry of dataId and offset</returns>
+        </member>
+        <member name="M:DataCore.Core.GetEntriesByPartialName(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String)">
+            <summary>
+            Returns a List of all entries whose name contains partialName
+            </summary>
+            <param name="index">Reference to data.000 index</param>
+            <param name="partialName">Partial fileName (e.g. db_) to be searched for</param>
+            <returns>Populated List of IndexEntries</returns>
+        </member>
+        <member name="M:DataCore.Core.GetEntriesByDataId(System.Collections.Generic.List{DataCore.IndexEntry}@,System.Int32)">
+            <summary>
+            Returns a List of all entries matching dataId
+            </summary>
+            <param name="index">Reference to data.000 index</param>
+            <param name="dataId">data.xxx Id being requested</param>
+            <returns>List for data.xx{dataId}</returns>
+        </member>
+        <member name="M:DataCore.Core.GetEntriesByDataId(System.Collections.Generic.List{DataCore.IndexEntry}@,System.Int32,System.Int32)">
+            <summary>
+            Returns a filtered List of all entries matching dataId
+            Return is sorted by sortType
+            </summary>
+            <param name="index">Reference to data.000 index</param>
+            <param name="dataId">data.xxx Id being requested</param>
+            <param name="sortType">Type code for how to sort return</param>
+            LEGEND:
+            0 = Name
+            1 = Offset
+            2 = Size
+            <returns>List for data.xx{dataId}</returns>
+        </member>
+        <member name="M:DataCore.Core.GetEntriesByExtension(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String)">
+            <summary>
+            Returns a filtered List of all entries matching extension
+            </summary>
+            <param name="index">data.000 index being searched</param>
+            <param name="extension">extension being searched (e.g. dds)</param>
+            <returns>Filtered List of extension</returns>
+        </member>
+        <member name="M:DataCore.Core.GetEntriesByExtension(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String,System.Int32)">
+            <summary>
+            Returns a filtered List of all entries matching extension
+            </summary>
+            <param name="index">data.000 index being searched</param>
+            <param name="extension">extension being searched (e.g. dds)</param>
+            <param name="sortType">Type code for how to sort return</param>
+            LEGEND:
+            0 = Name
+            1 = Offset
+            2 = Size
+            <returns>Filtered List of extension</returns>
+        </member>
+        <member name="M:DataCore.Core.DeleteEntriesByDataId(System.Collections.Generic.List{DataCore.IndexEntry}@,System.Int32)">
+            <summary>
+            Removes a set of entries bearing DataID = dataId from referenced data.000 index
+            </summary>
+            <param name="index">Index to be altered</param>
+            <param name="dataId">Id of file entries to be deleted</param>
+        </member>
+        <member name="M:DataCore.Core.DeleteEntryByName(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String)">
+            <summary>
+            Removes a single entry bearing Name = name from referenced data.000 index
+            </summary>
+            <param name="index">Index to be altered</param>
+            <param name="name">Name of file entry to be deleted</param>
+        </member>
+        <member name="M:DataCore.Core.DeleteEntryByIdandOffset(System.Collections.Generic.List{DataCore.IndexEntry}@,System.Int32,System.Int32)">
+            <summary>
+            Removes a single entry bearing DataID = id and Offset = offset from referenced data.000 index
+            </summary>
+            <param name="index">Index to be altered</param>
+            <param name="id">DataID of file entry to be deleted</param>
+            <param name="offset">Offset of file entry to be deleted</param>
+        </member>
+        <member name="M:DataCore.Core.GetFileBytes(System.String,System.Int32,System.Int64,System.Int32)">
+            <summary>
+            Gets the collection of bytes that represents a physical file inside the data.xxx storage system
+            </summary>
+            <param name="dataDirectory">Location of the data.xxx files</param>
+            <param name="dataId">ID of the data.xxx file to be loaded</param>
+            <param name="offset">Offset of the file being gathered</param>
+            <param name="length">Length of the file being gathered</param>
+            <returns>Populated byte array</returns>
+        </member>
+        <member name="M:DataCore.Core.ExportFileEntry(System.String,System.String,System.Int64,System.Int32,System.Int32)">
+            <summary>
+            Writes a single files from the data.xxx (specificed by dataXXX_path) to disk
+            Note: file is written in chunks as to report progress, if chunkSize is not 
+            defined it would default to 2% of total file size (unless n/a then it will
+            default to 64k)
+            </summary>
+            <param name="dataDirectory">Location of the data.xxx files</param>
+            <param name="buildPath">Path to create the exported file at</param>
+            <param name="offset">Offset of the file being exported from dataXXX_path</param>
+            <param name="length">Length of the file being exported from dataXXX_path</param>
+            <param name="chunkSize">Size (in bytes) to process each iteration of the write loop</param>
+        </member>
+        <member name="M:DataCore.Core.ExportFileEntries(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String,System.String,System.Int32)">
+            <summary>
+            Writes multiple files from the data.xxx identified by the IndexEntry to disk
+            </summary>
+            <param name="filteredIndex">data.000 index of entries to export</param>
+            <param name="dataDirectory">Location of the data.xxx files</param>
+            <param name="buildDirectory">Location to export files</param>
+            <param name="chunkSize">Size (in bytes) to process each iteration of the write loop</param>
+        </member>
+        <member name="M:DataCore.Core.UpdateFileEntry(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String,System.String,System.Int32)">
+            <summary>
+            Updates the dataDirectory data.xxx stored copy of the physical file at filePath
+            </summary>
+            <param name="index">Reference to data.000 index to be updated</param>
+            <param name="dataDirectory">Location of the data.xxx files</param>
+            <param name="filePath">Location of the file being imported</param>
+            <param name="chunkSize">Size (in bytes) to process each iteration of the write loop</param>
+        </member>
+        <member name="M:DataCore.Core.UpdateFileEntries(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String,System.String[],System.Int32)">
+            <summary>
+            Updates the dataDirectory data.xxx stored copies of physical files in filePaths
+            </summary>
+            <param name="index">Reference to data.000 index to be updated</param>
+            <param name="dataDirectory">Location of the data.xxx files</param>
+            <param name="filePaths">Array of file paths for physical files</param>
+            <param name="chunkSize">Size (in bytes) to process each iteration of the write loop</param>
+        </member>
+        <member name="M:DataCore.Core.ImportFileEntry(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String,System.String,System.Int32)">
+            <summary>
+            Creates a file entry that does not exist in the referenced data.000 index
+            </summary>
+            <param name="index">Reference to data.000 index to be updated</param>
+            <param name="dataDirectory">Location of the data.xxx files</param>
+            <param name="filePath">Location of the file being imported</param>
+            <param name="chunkSize">Size (in bytes) to process each iteration of the write loop</param>
+        </member>
+        <member name="M:DataCore.Core.ImportFileEntries(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String,System.String[],System.Int32)">
+            <summary>
+            Creates file entries that do not exist in the referenced data.000 index
+            </summary>
+            <param name="index">Reference to data.000 index to be updated</param>
+            <param name="dataDirectory">Location of the data.xxx files</param>
+            <param name="filePaths">Array of file paths of files to import</param>
+            <param name="chunkSize">Size (in bytes) to process each iteration of the write loop</param>
+        </member>
+        <member name="M:DataCore.Core.BuildDataFile(System.Int32,System.Collections.Generic.List{DataCore.IndexEntry}@,System.String,System.String)">
+            <summary>
+            Builds the data.xx[dataId] file from provided dumpDirectory into provided buildDirectory
+            while updating referenced data.000 index
+            </summary>
+            <param name="dataId">data.xxx id (e.g. 1-8)</param>
+            <param name="index">reference to data.000 (target will be updated)</param>
+            <param name="dumpDirectory">Directory containing dumped extension folders (e.g. client/output/dump/)</param>
+            <param name="buildDirectory">Directory where the data.xxx file will be built</param>
+        </member>
+        <member name="M:DataCore.Core.BuildDataFiles(System.String,System.String)">
+            <summary>
+            Generates data.xxx file-system from dump structure (client/output/dump/)
+            </summary>
+            <param name="dumpDirectory">Location of dump folders (e.g. client/output/dump/)</param>
+            <param name="buildDirectory">Location of build folder (e.g. client/output/data-files/)</param>
+            <returns>Newly generated List to be saved</returns>
+        </member>
+        <member name="M:DataCore.Core.GetID(System.String,System.Boolean)">
+            <summary>
+            Calculates the id of the data.xxx file a particular hash name belongs to
+            </summary>
+            <param name="name">Hashed/Unhashed name being searched</param>
+            <param name="isHashed">Determines if name is hashed or not</param>
+            <returns>Data.00x id</returns>
+        </member>
+        <member name="M:DataCore.Core.EncodeName(System.String)">
+            <summary>
+            Encodes provided name [UNHASHED]
+            </summary>
+            <param name="name">File name to be hashed</param>
+            <returns>Hashed name</returns>
+        </member>
+        <member name="M:DataCore.Core.DecodeName(System.String)">
+            <summary>
+            Decodes provided name [HASHED]
+            </summary>
+            <param name="name">Name to be unhashed</param>
+            <returns>Unhashed name</returns>
+        </member>
+        <member name="T:DataCore.Functions.Extensions">
+            <summary>
+            Provides interactibility with file extensions
+            </summary>
+        </member>
+        <member name="F:DataCore.Functions.Extensions.validExts">
+            <summary>
+            List containing all valid extensions in the Rappelz File-System
+            </summary>
+        </member>
+        <member name="M:DataCore.Functions.Extensions.IsValid(System.String)">
+            <summary>
+            Determines if the provided ext exists in the validExts list
+            </summary>
+            <param name="ext">[LOWERCASE] extension (e.g. .dds)</param>
+            <returns>Bool value indicating existance</returns>
+        </member>
+        <member name="M:DataCore.Functions.StringCipher.Decode(System.String)">
+            <summary>
+            Decodes a hash-string into a human-readable string
+            </summary>
+            <param name="hash">Hash-string to be decoded</param>
+            <returns>Human-readable string</returns>
+        </member>
+        <member name="T:DataCore.Functions.XOR">
+            <summary>
+            Original XOR class provided by Glandu2 and adapted originally by xXExiledXx for C# 
+            adapted and restructed for Portal by iSmokeDrow.
+            
+            </summary>
+        </member>
+        <member name="F:DataCore.Functions.XOR.unencryptedExt">
+            <summary>
+            Legend of non-encrypted file extensions (files that will not be encoded during patching)
+            </summary>
+        </member>
+        <member name="F:DataCore.Functions.XOR.s_CipherTable">
+            <summary>
+            Table of bytes to use for encoding files during patching
+            </summary>
+        </member>
+        <member name="M:DataCore.Functions.XOR.Encrypted(System.String)">
+            <summary>
+            Determines if a specific file extension is to be encrypted or not
+            </summary>
+            <param name="ext">File extension (.dds etc) to be checked</param>
+            <returns>true/false</returns>
+        </member>
+        <member name="T:DataCore.ErrorArgs">
+            <summary>
+            Houses arguments passed to caller during raising of ErrorOccured event
+            </summary>
+        </member>
+        <member name="P:DataCore.ErrorArgs.Error">
+            <summary>
+            string containing the error message
+            </summary>
+        </member>
+        <member name="M:DataCore.ErrorArgs.#ctor(System.String)">
+            <summary>
+            Constructor for the ErrorArgs, inheriting from Eventargs
+            Assigns the Error string
+            </summary>
+            <param name="error">Message to be set as Error</param>
+        </member>
+        <member name="T:DataCore.TotalMaxArgs">
+            <summary>
+            Houses arguments passed to caller during raising of TotalMaxDetermined Event
+            </summary>
+        </member>
+        <member name="P:DataCore.TotalMaxArgs.Maximum">
+            <summary>
+            Maximum value that should be set to a "Total" Progressbar.Maximum
+            </summary>
+        </member>
+        <member name="M:DataCore.TotalMaxArgs.#ctor(System.Int32)">
+            <summary>
+            Constructor for the TotalMaxArgs, inheriting from EventArgs
+            Assigns the Maximum value
+            </summary>
+            <param name="maximum"></param>
+        </member>
+        <member name="T:DataCore.TotalChangedArgs">
+            <summary>
+            Houses arguments passed to caller during raising of TotalProgressChanged Event
+            </summary>
+        </member>
+        <member name="P:DataCore.TotalChangedArgs.Value">
+            <summary>
+            Value that should be assigned to a "Total" Progressbar.Value
+            </summary>
+        </member>
+        <member name="P:DataCore.TotalChangedArgs.Status">
+            <summary>
+            Status that should be assigned to a "Total Status" label.Text
+            </summary>
+        </member>
+        <member name="M:DataCore.TotalChangedArgs.#ctor(System.Int32,System.String)">
+            <summary>
+            Constructor for TotalChangesArgs, inherits from EventArgs
+            Assigns Value and Status
+            </summary>
+            <param name="value"></param>
+            <param name="status"></param>
+        </member>
+        <member name="T:DataCore.CurrentMaxArgs">
+            <summary>
+            Houses arguments passed to caller during raising of CurrentMaxDetermined Event
+            </summary>
+        </member>
+        <member name="T:DataCore.CurrentChangedArgs">
+            <summary>
+            Houses arguments passed to caller during raising of CurrentProgressChanged Event
+            </summary>
+        </member>
+        <member name="P:DataCore.CurrentChangedArgs.Value">
+            <summary>
+            Value that should be assigned to a 'Current' Progressbar.Value
+            </summary>
+        </member>
+        <member name="P:DataCore.CurrentChangedArgs.Status">
+            <summary>
+            String that should be assigned to a "Status" label.Text
+            </summary>
+        </member>
+        <member name="M:DataCore.CurrentChangedArgs.#ctor(System.Int32,System.String)">
+            <summary>
+            Constructor for the CurrentChangedArgs, inheriting from EventArgs
+            assigns the Value/Status properties
+            </summary>
+            <param name="value"></param>
+            <param name="status"></param>
+        </member>
+        <member name="T:DataCore.IndexEntry">
+            <summary>
+            Stores information regarding a data.000 entry
+            </summary>
+        </member>
+        <member name="P:DataCore.IndexEntry.Name">
+            <summary>
+            The hashed file name
+            </summary>
+        </member>
+        <member name="P:DataCore.IndexEntry.Length">
+            <summary>
+            The size of the file
+            </summary>
+        </member>
+        <member name="P:DataCore.IndexEntry.Offset">
+            <summary>
+            The offset the file will begin @ inside it's data.xxx housing
+            </summary>
+        </member>
+        <member name="P:DataCore.IndexEntry.DataID">
+            <summary>
+            Data.XXX file this entry belongs to
+            </summary>
+        </member>
+    </members>
+</doc>
