@@ -14,6 +14,7 @@ namespace Client
     {
         public string Username;
         public string Password;
+        public string Pin;
         public bool RememberMe;
         public bool LoginClicked = false;
 
@@ -26,6 +27,7 @@ namespace Client
                 {
                     Properties.Settings.Default.username = username.Text;
                     Properties.Settings.Default.password = password.Text;
+                    Properties.Settings.Default.pin = pin.Text;
                     Properties.Settings.Default.remember = rememberCredentials.Checked;
                     Properties.Settings.Default.Save();
                     Properties.Settings.Default.Reload();
@@ -36,6 +38,7 @@ namespace Client
             {
                 username.Text = Properties.Settings.Default.username;
                 password.Text = Properties.Settings.Default.password;
+                pin.Text = Properties.Settings.Default.pin;
                 rememberCredentials.Checked = Properties.Settings.Default.remember;
             }
         }
@@ -49,6 +52,7 @@ namespace Client
         {
             if (username.Text.Length > 0) { Username = username.Text; }
             if (password.Text.Length > 0) { Password = password.Text; }
+            if (pin.Text.Length > 0) { Pin = pin.Text; }
             RememberMe = rememberCredentials.Checked;
             LoginClicked = true;
             this.Close();

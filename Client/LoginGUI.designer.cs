@@ -35,6 +35,8 @@
             this.password = new System.Windows.Forms.TextBox();
             this.loginBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
+            this.pin = new System.Windows.Forms.TextBox();
+            this.pinLbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -56,7 +58,7 @@
             // rememberCredentials
             // 
             this.rememberCredentials.AutoSize = true;
-            this.rememberCredentials.Location = new System.Drawing.Point(107, 99);
+            this.rememberCredentials.Location = new System.Drawing.Point(107, 103);
             this.rememberCredentials.Name = "rememberCredentials";
             this.rememberCredentials.Size = new System.Drawing.Size(95, 17);
             this.rememberCredentials.TabIndex = 4;
@@ -66,7 +68,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 57);
+            this.label2.Location = new System.Drawing.Point(12, 48);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 3;
@@ -74,7 +76,7 @@
             // 
             // password
             // 
-            this.password.Location = new System.Drawing.Point(15, 73);
+            this.password.Location = new System.Drawing.Point(15, 64);
             this.password.Name = "password";
             this.password.PasswordChar = '*';
             this.password.Size = new System.Drawing.Size(187, 20);
@@ -82,7 +84,7 @@
             // 
             // loginBtn
             // 
-            this.loginBtn.Location = new System.Drawing.Point(15, 130);
+            this.loginBtn.Location = new System.Drawing.Point(15, 135);
             this.loginBtn.Name = "loginBtn";
             this.loginBtn.Size = new System.Drawing.Size(75, 23);
             this.loginBtn.TabIndex = 3;
@@ -92,7 +94,7 @@
             // 
             // cancelBtn
             // 
-            this.cancelBtn.Location = new System.Drawing.Point(127, 130);
+            this.cancelBtn.Location = new System.Drawing.Point(127, 135);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelBtn.TabIndex = 5;
@@ -100,12 +102,31 @@
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
+            // pin
+            // 
+            this.pin.Location = new System.Drawing.Point(17, 103);
+            this.pin.Name = "pin";
+            this.pin.PasswordChar = '*';
+            this.pin.Size = new System.Drawing.Size(73, 20);
+            this.pin.TabIndex = 6;
+            // 
+            // pinLbl
+            // 
+            this.pinLbl.AutoSize = true;
+            this.pinLbl.Location = new System.Drawing.Point(14, 87);
+            this.pinLbl.Name = "pinLbl";
+            this.pinLbl.Size = new System.Drawing.Size(25, 13);
+            this.pinLbl.TabIndex = 7;
+            this.pinLbl.Text = "Pin:";
+            // 
             // LoginGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(219, 165);
+            this.ClientSize = new System.Drawing.Size(219, 172);
             this.ControlBox = false;
+            this.Controls.Add(this.pin);
+            this.Controls.Add(this.pinLbl);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.loginBtn);
             this.Controls.Add(this.password);
@@ -131,5 +152,7 @@
         private System.Windows.Forms.Button cancelBtn;
         public System.Windows.Forms.TextBox username;
         public System.Windows.Forms.TextBox password;
+        public System.Windows.Forms.TextBox pin;
+        private System.Windows.Forms.Label pinLbl;
     }
 }

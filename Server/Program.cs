@@ -50,9 +50,6 @@ namespace Server
             string username = userId;
             string password = DesCipher.Decrypt(pPassword);
             string fingerprint = fingerPrint;
-#if DEBUG
-            Console.WriteLine("User login (UserID: {0} ; Password: {1} ; FingerPrint: {2})", userId, password, fingerPrint);
-#endif
 
             switch (User.ValidateCredentials(username, password, fingerprint))
             {

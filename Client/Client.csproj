@@ -29,7 +29,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -68,11 +68,26 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Awesomium.Core, Version=1.7.5.0, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214" />
-    <Reference Include="Awesomium.Windows.Forms, Version=1.7.5.0, Culture=neutral, PublicKeyToken=9bd24830fbe304a0, processorArchitecture=x86" />
+    <Reference Include="Awesomium.Core, Version=1.7.5.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\Awesomium.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Awesomium.Windows.Forms, Version=1.7.5.1, Culture=neutral, PublicKeyToken=9bd24830fbe304a0, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\Awesomium.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DataCore, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\DataCore.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -82,15 +97,34 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="zlibnet">
+      <HintPath>..\3rdParty\zlibnet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Functions\Fingerprint.cs" />
+    <Compile Include="Functions\Hash.cs" />
+    <Compile Include="Functions\PasswordCipher.cs" />
+    <Compile Include="Functions\SFrameBypass.cs" />
     <Compile Include="Functions\XDes.cs" />
+    <Compile Include="Functions\ZIP.cs" />
+    <Compile Include="GeneralSettingsGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeneralSettingsGUI.designer.cs">
+      <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginGUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LoginGUI.designer.cs">
       <DependentUpon>LoginGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RappelzSettingsGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RappelzSettingsGUI.designer.cs">
+      <DependentUpon>RappelzSettingsGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Server.cs" />
     <Compile Include="GUI.cs">
@@ -110,6 +144,11 @@
     <Compile Include="Structures\IndexEntry.cs" />
     <Compile Include="Structures\LegacyEntry.cs" />
     <Compile Include="Structures\LoginCredentials.cs" />
+    <Compile Include="Structures\Settings.cs" />
+    <Compile Include="UpdateHandler.cs" />
+    <EmbeddedResource Include="GeneralSettingsGUI.resx">
+      <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI.resx">
       <DependentUpon>GUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -124,7 +163,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RappelzSettingsGUI.resx">
+      <DependentUpon>RappelzSettingsGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -149,6 +192,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,9 +2,7 @@ f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Cl
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Client.exe
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Client.pdb
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Core.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Windows.Forms.dll
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Core.xml
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Windows.Forms.xml
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\awesomium.dll
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\icudt.dll
 f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\avcodec-53.dll
@@ -46,3 +44,13 @@ C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\bin\Debug\pdf_js.pak
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.exe
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.pdb
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.LoginGUI.resources
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Windows.Forms.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\DataCore.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\System.Collections.Immutable.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\zlibnet.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Windows.Forms.xml
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\DataCore.xml
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\System.Collections.Immutable.xml
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.GeneralSettingsGUI.resources
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.RappelzSettingsGUI.resources
