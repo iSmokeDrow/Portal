@@ -252,27 +252,17 @@ namespace Client
             browser.Source = new Uri("http://rappelz.team-vendetta.com");
         }
 
-        /// TODO: Remove me
-        public static void LoginResponse(int code)
-        {
-            //switch (code)
-            //{
-            //    case 0: // Success
-            //        MessageBox.Show("You're logged.");
-            //        UpdateHandler.Instance.Start();
-            //        break;
-
-            //    case 1: // Failed
-            //        MessageBox.Show("Check your data and try again");
-            //        break;
-            //}
-        }
-
         public static void OnUpdateComplete()
         {
             MessageBox.Show("Patching process completed.");
+            
+            // TODO : Put username here
+            ServerPackets.Instance.RequestArguments("myusername");
+        }
 
-            // TODO: Fetch start arguments
+        public static void OnArgumentsReceived(string arguments)
+        {
+            // TODO : What to do with start arguments
         }
 
         private void close_Click(object sender, EventArgs e)

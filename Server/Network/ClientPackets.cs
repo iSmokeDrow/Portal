@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.Functions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace Server.Network
         private delegate void PacketAction(Client client, PacketStream stream);
 
         private Dictionary<ushort, PacketAction> PacketsDb;
+        private XDes DesCipher = new XDes(Program.DesKey);
 
         public ClientPackets()
         {
@@ -20,9 +22,9 @@ namespace Server.Network
             PacketsDb = new Dictionary<ushort, PacketAction>();
 
             #region Packets
-            PacketsDb.Add(0x0000, CS_Login);
             PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
             PacketsDb.Add(0x0020, CS_RequestFile);
+            PacketsDb.Add(0x0030, CS_RequestArguments);
             #endregion
         }
 
@@ -45,22 +47,7 @@ namespace Server.Network
         }
 
         #region Client-Server Packets (CS)
-
-        /// <summary>
-        /// Client wants to LogIn
-        /// </summary>
-        /// <param name="client">the client</param>
-        /// <param name="stream">data</param>
-        private void CS_Login(Client client, PacketStream stream)
-        {
-            string userId = stream.ReadString(61);
-            byte[] password = stream.ReadBytes(56);
-            string fingerprint = stream.ReadString(60);
-
-            Program.OnUserLogin(client, userId, password, fingerprint);
-        }
-
-
+        
         /// <summary>
         /// Client wants the file list
         /// </summary>
@@ -87,23 +74,19 @@ namespace Server.Network
             UpdateHandler.Instance.OnUserRequestFile(client, name, offset, partialHash);
         }
 
+        /// <summary>
+        /// Request launch arguments
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="stream"></param>
+        private void CS_RequestArguments(Client client, PacketStream stream)
+        {
+            Program.OnUserRequestArguments(client);
+        }
+
         #endregion
 
         #region Server-Client Packets (SC)
-
-        /// <summary>
-        /// Sends the result of a login try to this client
-        /// </summary>
-        /// <param name="client">the client</param>
-        /// <param name="result">result code</param>
-        public void LoginResult(Client client, int result)
-        {
-            PacketStream stream = new PacketStream(0x0001);
-            
-            stream.WriteInt32(result);
-
-            ClientManager.Instance.Send(client, stream);
-        }
 
         /// <summary>
         /// Sends UpdateIndex of a file
@@ -167,6 +150,21 @@ namespace Server.Network
 
                 ClientManager.Instance.Send(client, s);
             }
+        }
+
+        /// <summary>
+        /// Informs the end of UpdateIndex sending
+        /// </summary>
+        /// <param name="client"></param>
+        public void Arguments(Client client, string arguments)
+        {
+            PacketStream stream = new PacketStream(0x0031);
+
+            byte[] argEncrypt = DesCipher.Encrypt(arguments);
+            stream.WriteInt32(argEncrypt.Length);
+            stream.WriteBytes(argEncrypt);
+
+            ClientManager.Instance.Send(client, stream);
         }
 
         #endregion

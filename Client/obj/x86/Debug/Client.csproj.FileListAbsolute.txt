@@ -30,3 +30,10 @@ F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\x86\Debu
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\x86\Debug\zlibnet.dll
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\x86\Debug\System.Collections.Immutable.xml
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debug\Client.csprojResolveAssemblyReference.cache
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.csprojResolveAssemblyReference.cache
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.GeneralSettingsGUI.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.GUI.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.LoginGUI.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.Properties.Resources.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.RappelzSettingsGUI.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.csproj.GenerateResource.Cache
