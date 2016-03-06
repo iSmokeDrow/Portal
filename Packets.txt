@@ -74,3 +74,21 @@ struct SC_File {
 //---- Note:
 // if SC_File offset differs from CS_RequestFile offset,
 // local file is corrupted.
+
+// ******************
+//	Launch
+// *****************
+
+// 0x30
+struct CS_RequestArguments {
+	string username;
+}
+
+// 0x31
+struct SC_Arguments {
+	int len;
+	byte[len] arguments;
+}
+
+//---- Note:
+// arguments is a DES-encrypted string

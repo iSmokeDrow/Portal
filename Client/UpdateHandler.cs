@@ -1,5 +1,6 @@
 ﻿using Client.Functions;
 using Client.Network;
+using Client.Structures;
 using DataCore;
 using System;
 using System.Collections.Generic;

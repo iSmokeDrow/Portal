@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.Functions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace Client.Network
         private delegate void PacketAction(PacketStream stream);
 
         private Dictionary<ushort, PacketAction> PacketsDb;
+        private XDes DesCipher = new XDes(Program.DesKey);
 
         public ServerPackets()
         {
@@ -20,10 +22,10 @@ namespace Client.Network
             PacketsDb = new Dictionary<ushort, PacketAction>();
 
             #region Packets
-            PacketsDb.Add(0x0001, SC_LoginResult);
             PacketsDb.Add(0x0011, SC_UpdateIndex);
             PacketsDb.Add(0x0012, SC_UpdateIndexEnd);
             PacketsDb.Add(0x0021, SC_File);
+            PacketsDb.Add(0x0031, SC_Arguments);
             #endregion
         }
 
@@ -45,17 +47,6 @@ namespace Client.Network
         }
 
         #region Server-Client Packets (SC)
-
-        /// <summary>
-        /// Result of login try
-        /// </summary>
-        /// <param name="stream"></param>
-        private void SC_LoginResult(PacketStream stream)
-        {
-            int result = stream.ReadInt32();
-
-            GUI.LoginResponse(result);
-        }
 
         /// <summary>
         /// UpdateIndex entry received
@@ -84,24 +75,24 @@ namespace Client.Network
             UpdateHandler.Instance.OnFileDataReceived(offset, endOfFile, data);
         }
 
+        private void SC_Arguments(PacketStream stream)
+        {
+            int len = stream.ReadInt32();
+            byte[] arguments = stream.ReadBytes(len);
+
+            GUI.OnArgumentsReceived(DesCipher.Decrypt(arguments));
+        }
+
         #endregion
 
         #region Client-Server Packets (CS)
 
         /// <summary>
-        /// Sends a login request
+        /// Requests the list of files
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="password"></param>
-        /// <param name="fingerprint"></param>
-        public void Login(string userId, byte[] password, string fingerprint)
+        internal void RequestUpdateIndex()
         {
-            PacketStream stream = new PacketStream(0x0000);
-
-            stream.WriteString(userId, 61);
-            stream.WriteBytes(password);
-            stream.WriteString(fingerprint, 60);
-
+            PacketStream stream = new PacketStream(0x0010);
             ServerManager.Instance.Send(stream);
         }
 
@@ -116,12 +107,10 @@ namespace Client.Network
             ServerManager.Instance.Send(stream);
         }
 
-        /// <summary>
-        /// Requests the list of files
-        /// </summary>
-        public void RequestUpdateIndex()
+        internal void RequestArguments(string username)
         {
-            PacketStream stream = new PacketStream(0x0010);
+            PacketStream stream = new PacketStream(0x0030);
+            stream.WriteString(username, username.Length + 1);
             ServerManager.Instance.Send(stream);
         }
 

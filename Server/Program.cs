@@ -16,7 +16,7 @@ namespace Server
 
         /// <summary>
         /// Server and client must have the same DES Key
-        /// It's used to encrypt passwords
+        /// It's used to encrypt arguments
         /// </summary>
         public static string DesKey = "password2";
 
@@ -45,47 +45,10 @@ namespace Server
             Console.ReadLine();
         }
 
-        public static void OnUserLogin(Client client, string userId, byte[] pPassword, string fingerPrint)
+        internal static void OnUserRequestArguments(Client user)
         {
-            string username = userId;
-            string password = DesCipher.Decrypt(pPassword);
-            string fingerprint = fingerPrint;
-
-            switch (User.ValidateCredentials(username, password, fingerprint))
-            {
-                case 0:
-                    client.Id = Client.GetNewUserId();
-                    clientList.Add(client.Id, client);
-                    ClientPackets.Instance.LoginResult(client, 0); // Success
-                    break;
-
-                case 1:
-                    ClientPackets.Instance.LoginResult(client, 1);
-                    break;
-
-                case 2:
-                    ClientPackets.Instance.LoginResult(client, 2);
-                    break;
-
-                case 3:
-                    ClientPackets.Instance.LoginResult(client, 3);
-                    break;
-
-                case 4:
-                    ClientPackets.Instance.LoginResult(client, 4);
-                    break;
-            }        
-            
-#if DEBUG
-    Console.WriteLine("Now there're {0} users connected to the launcher server.", clientCount);
-#endif
-        }
-
-        public static void OnUserLogout(Client client)
-        {
-            clientList.Remove(client.Id);
-            client.Dispose();
-            Console.WriteLine("User disconnected");
+            // TODO : Replace placeholder launch arguments here
+            ClientPackets.Instance.Arguments(user, "Start SFrame.exe /auth_ip:192.168.0.101 /auth_port:8841 /locale:ASCII /country:US /cash /commercial_shop");
         }
     }
 }
