@@ -141,7 +141,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structures\BlankIndexEntry.cs" />
-    <Compile Include="Structures\IndexEntry.cs" />
     <Compile Include="Structures\LegacyEntry.cs" />
     <Compile Include="Structures\LoginCredentials.cs" />
     <Compile Include="Structures\Settings.cs" />
@@ -195,6 +194,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\eye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TOP.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

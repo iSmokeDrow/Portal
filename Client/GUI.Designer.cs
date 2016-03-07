@@ -29,54 +29,30 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.close = new System.Windows.Forms.Button();
-            this.browser = new Awesomium.Windows.Forms.WebControl(this.components);
             this.totalProgress = new System.Windows.Forms.ProgressBar();
-            this.start_btn = new System.Windows.Forms.Button();
             this.totalStatus = new System.Windows.Forms.Label();
             this.currentStatus = new System.Windows.Forms.Label();
             this.currentProgress = new System.Windows.Forms.ProgressBar();
             this.sessionProvider = new Awesomium.Windows.Forms.WebSessionProvider(this.components);
-            this.launcherSettings_btn = new System.Windows.Forms.Button();
-            this.gameSettings_btn = new System.Windows.Forms.Button();
+            this.browser = new Awesomium.Windows.Forms.WebControl(this.components);
+            this.start_lb = new System.Windows.Forms.Label();
+            this.gameSettings_lb = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.close_lb = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // close
-            // 
-            this.close.Location = new System.Drawing.Point(962, 12);
-            this.close.Name = "close";
-            this.close.Size = new System.Drawing.Size(26, 23);
-            this.close.TabIndex = 0;
-            this.close.Text = "X";
-            this.close.UseVisualStyleBackColor = true;
-            this.close.Click += new System.EventHandler(this.close_Click);
-            // 
-            // browser
-            // 
-            this.browser.Location = new System.Drawing.Point(12, 45);
-            this.browser.Size = new System.Drawing.Size(973, 559);
-            this.browser.TabIndex = 7;
             // 
             // totalProgress
             // 
-            this.totalProgress.Location = new System.Drawing.Point(153, 632);
+            this.totalProgress.Location = new System.Drawing.Point(10, 500);
             this.totalProgress.Name = "totalProgress";
-            this.totalProgress.Size = new System.Drawing.Size(696, 13);
+            this.totalProgress.Size = new System.Drawing.Size(992, 13);
             this.totalProgress.TabIndex = 8;
-            // 
-            // start_btn
-            // 
-            this.start_btn.Location = new System.Drawing.Point(867, 626);
-            this.start_btn.Name = "start_btn";
-            this.start_btn.Size = new System.Drawing.Size(121, 56);
-            this.start_btn.TabIndex = 9;
-            this.start_btn.Text = "START";
-            this.start_btn.UseVisualStyleBackColor = true;
             // 
             // totalStatus
             // 
             this.totalStatus.AutoSize = true;
-            this.totalStatus.Location = new System.Drawing.Point(155, 616);
+            this.totalStatus.ForeColor = System.Drawing.Color.White;
+            this.totalStatus.Location = new System.Drawing.Point(12, 484);
             this.totalStatus.Name = "totalStatus";
             this.totalStatus.Size = new System.Drawing.Size(0, 13);
             this.totalStatus.TabIndex = 10;
@@ -84,16 +60,17 @@
             // currentStatus
             // 
             this.currentStatus.AutoSize = true;
-            this.currentStatus.Location = new System.Drawing.Point(154, 648);
+            this.currentStatus.ForeColor = System.Drawing.Color.White;
+            this.currentStatus.Location = new System.Drawing.Point(11, 514);
             this.currentStatus.Name = "currentStatus";
             this.currentStatus.Size = new System.Drawing.Size(0, 13);
             this.currentStatus.TabIndex = 12;
             // 
             // currentProgress
             // 
-            this.currentProgress.Location = new System.Drawing.Point(153, 664);
+            this.currentProgress.Location = new System.Drawing.Point(10, 532);
             this.currentProgress.Name = "currentProgress";
-            this.currentProgress.Size = new System.Drawing.Size(696, 13);
+            this.currentProgress.Size = new System.Drawing.Size(992, 13);
             this.currentProgress.TabIndex = 11;
             // 
             // sessionProvider
@@ -102,43 +79,80 @@
     "ource";
             this.sessionProvider.Views.Add(this.browser);
             // 
-            // launcherSettings_btn
+            // browser
             // 
-            this.launcherSettings_btn.Location = new System.Drawing.Point(12, 626);
-            this.launcherSettings_btn.Name = "launcherSettings_btn";
-            this.launcherSettings_btn.Size = new System.Drawing.Size(121, 27);
-            this.launcherSettings_btn.TabIndex = 13;
-            this.launcherSettings_btn.Text = "Launcher Settings";
-            this.launcherSettings_btn.UseVisualStyleBackColor = true;
-            this.launcherSettings_btn.Click += new System.EventHandler(this.launcherSettings_btn_Click);
+            this.browser.Location = new System.Drawing.Point(2, 17);
+            this.browser.Size = new System.Drawing.Size(1007, 460);
+            this.browser.TabIndex = 15;
             // 
-            // gameSettings_btn
+            // start_lb
             // 
-            this.gameSettings_btn.Location = new System.Drawing.Point(12, 655);
-            this.gameSettings_btn.Name = "gameSettings_btn";
-            this.gameSettings_btn.Size = new System.Drawing.Size(121, 27);
-            this.gameSettings_btn.TabIndex = 14;
-            this.gameSettings_btn.Text = "Game Settings";
-            this.gameSettings_btn.UseVisualStyleBackColor = true;
+            this.start_lb.AutoSize = true;
+            this.start_lb.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.start_lb.ForeColor = System.Drawing.Color.White;
+            this.start_lb.Location = new System.Drawing.Point(962, 561);
+            this.start_lb.Name = "start_lb";
+            this.start_lb.Size = new System.Drawing.Size(40, 14);
+            this.start_lb.TabIndex = 16;
+            this.start_lb.Text = "START";
+            this.start_lb.Click += new System.EventHandler(this.start_btn_Click);
+            // 
+            // gameSettings_lb
+            // 
+            this.gameSettings_lb.AutoSize = true;
+            this.gameSettings_lb.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gameSettings_lb.ForeColor = System.Drawing.Color.White;
+            this.gameSettings_lb.Location = new System.Drawing.Point(151, 561);
+            this.gameSettings_lb.Name = "gameSettings_lb";
+            this.gameSettings_lb.Size = new System.Drawing.Size(89, 14);
+            this.gameSettings_lb.TabIndex = 17;
+            this.gameSettings_lb.Text = "GAME SETTINGS";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(11, 561);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(114, 14);
+            this.label1.TabIndex = 18;
+            this.label1.Text = "LAUNCHER SETTINGS";
+            this.label1.Click += new System.EventHandler(this.launcherSettings_btn_Click);
+            // 
+            // close_lb
+            // 
+            this.close_lb.AutoSize = true;
+            this.close_lb.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.close_lb.ForeColor = System.Drawing.Color.White;
+            this.close_lb.Location = new System.Drawing.Point(997, 0);
+            this.close_lb.Name = "close_lb";
+            this.close_lb.Size = new System.Drawing.Size(13, 14);
+            this.close_lb.TabIndex = 19;
+            this.close_lb.Text = "x";
+            this.close_lb.Click += new System.EventHandler(this.close_Click);
             // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(1000, 700);
-            this.Controls.Add(this.gameSettings_btn);
-            this.Controls.Add(this.launcherSettings_btn);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
+            this.ClientSize = new System.Drawing.Size(1013, 584);
+            this.Controls.Add(this.close_lb);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.gameSettings_lb);
+            this.Controls.Add(this.start_lb);
+            this.Controls.Add(this.browser);
             this.Controls.Add(this.currentStatus);
             this.Controls.Add(this.currentProgress);
             this.Controls.Add(this.totalStatus);
-            this.Controls.Add(this.start_btn);
             this.Controls.Add(this.totalProgress);
-            this.Controls.Add(this.browser);
-            this.Controls.Add(this.close);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "GUI";
-            this.Text = "Form1";
+            this.ShowIcon = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Horizons Launcher";
             this.Load += new System.EventHandler(this.GUI_Load);
             this.Shown += new System.EventHandler(this.GUI_Shown);
             this.ResumeLayout(false);
@@ -147,17 +161,16 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button close;
-        private Awesomium.Windows.Forms.WebControl browser;
-        private System.Windows.Forms.Button start_btn;
         private Awesomium.Windows.Forms.WebSessionProvider sessionProvider;
-        private System.Windows.Forms.Button launcherSettings_btn;
-        private System.Windows.Forms.Button gameSettings_btn;
         public System.Windows.Forms.ProgressBar totalProgress;
         public System.Windows.Forms.Label totalStatus;
         public System.Windows.Forms.Label currentStatus;
         public System.Windows.Forms.ProgressBar currentProgress;
+        private Awesomium.Windows.Forms.WebControl browser;
+        private System.Windows.Forms.Label start_lb;
+        private System.Windows.Forms.Label gameSettings_lb;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label close_lb;
     }
 }
 

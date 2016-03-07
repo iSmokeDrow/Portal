@@ -1,6 +1,7 @@
 ﻿using Server.Functions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,9 +80,14 @@ namespace Server.Network
         /// </summary>
         /// <param name="client"></param>
         /// <param name="stream"></param>
+        /// TODO: Fix the username part???
         private void CS_RequestArguments(Client client, PacketStream stream)
         {
-            Program.OnUserRequestArguments(client);
+            using (StreamReader sr = new StreamReader(stream))
+            {
+                string username = sr.ReadToEnd();
+                Program.OnUserRequestArguments(client, username);
+            }
         }
 
         #endregion
@@ -153,7 +159,7 @@ namespace Server.Network
         }
 
         /// <summary>
-        /// Informs the end of UpdateIndex sending
+        /// Informs the client of required start arguments
         /// </summary>
         /// <param name="client"></param>
         public void Arguments(Client client, string arguments)

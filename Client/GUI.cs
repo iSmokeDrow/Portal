@@ -44,6 +44,7 @@ namespace Client
         internal LoginGUI loginGUI;
         internal LoginCredentials loginCreds;
         public static GUI Instance;
+        internal string fingerPrint;
 
         public GUI()
         {
@@ -61,27 +62,23 @@ namespace Client
         {
             bool close = false;
 
-            // Start a connection to the server, if failed exit
-            if (!ServerManager.Instance.Start(this.ip, this.port))
-            {
-                MessageBox.Show(ServerManager.Instance.ErrorMessage, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
             // Gather the users login credentials
             loginCreds = GetCredentials();
             if (loginCreds != null)
             {
+                // Assign a fingerprint before the login attempt
+                fingerPrint = FingerPrint.Value;
+
                 // Attempt a login
                 if (Login(loginCreds.Username, loginCreds.Password, loginCreds.Pin, loginCreds.Remember))
                 {
                     if (checkForClient())
                     {
-                        //TODO: navigateToSplash();
+                        navigateToSplash();
 
                         UpdateHandler.Instance.Start();
 
-                        // TODO: navigateToHome();
+                        navigateToHome(loginCreds.Username, loginCreds.Password, fingerPrint);
                     }
                     else { close = true; }
                 }
@@ -166,19 +163,13 @@ namespace Client
         /// <param name="password"></param>
         private bool Login(string username, string password, string pin, bool remembered)
         {            
-            // Sets the fingerprint
-            string fingerprint = FingerPrint.Value;
-
-            // TODO: Remove in favor of website based authentication
-            //ServerPackets.Instance.Login(username, pass, fingerprint);
-
             string loginCode = null;
 
             UriBuilder uriBuilder = new UriBuilder("http://rappelz.team-vendetta.com/user/login_validation.aspx");
             var parameters = HttpUtility.ParseQueryString(string.Empty);
             parameters["username"] = username;
             parameters["password"] = password;
-            parameters["fingerprint"] = fingerprint;
+            parameters["fingerprint"] = fingerPrint;
             parameters["pin"] = pin;
             uriBuilder.Query = parameters.ToString();
             WebRequest validationRequest = WebRequest.Create(uriBuilder.Uri);
@@ -254,15 +245,18 @@ namespace Client
 
         public static void OnUpdateComplete()
         {
-            MessageBox.Show("Patching process completed.");
-            
-            // TODO : Put username here
-            ServerPackets.Instance.RequestArguments("myusername");
+            //MessageBox.Show("Patching process completed.");          
+        }
+
+        private void start_btn_Click(object sender, EventArgs e)
+        {
+            ServerPackets.Instance.RequestArguments(loginCreds.Username);
         }
 
         public static void OnArgumentsReceived(string arguments)
         {
             // TODO : What to do with start arguments
+            MessageBox.Show(string.Format("Start arguments received:\n{0}", arguments));
         }
 
         private void close_Click(object sender, EventArgs e)

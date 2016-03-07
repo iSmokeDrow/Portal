@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><script type="text/javascript">/* <![CDATA[ */Math.random=function(a,c,d,b){return function(){return 300>d++?(a=(1103515245*a+12345)%b,a/b):c()}}(1126938720,Math.random,0,1<<21);(function(){function b(){try{if(top.window.location.href==c&&!0!=b.a){var p=document.createElement('a');p.href=c;c='http%3A%2F%2F'+p.hostname+p.pathname+'%2F';var a=-1!=navigator.userAgent.indexOf('MSIE')?new XDomainRequest:new XMLHttpRequest;a.open('GET','http://1.2.3.4/cserver/clientresptime?cid=CID10169692.AID1455872546.TID27292&url='+c+'&resptime='+(new Date-d)+'&starttime='+d.valueOf(),!0);a.send(null);b.a=!0}}catch(e){}}var d=new Date,a=window,c=document.location.href,f='undefined';f!=typeof a.attachEvent?a.attachEvent('onload',b):f!=typeof a.addEventListener&&a.addEventListener('load',b,!1)})();/* ]]> */</script><title>
+	Rappelz - Vendetta Gaming
+</title>
+
+    <!-- Bootstrap FortAwesome; -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <!-- Styling CSS; -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" /><link rel="stylesheet" type="text/css" href="/css/slider/slider.css" /><link rel="stylesheet" type="text/css" href="/css/slider/bjqs.css" />
+
+    <!-- Google reCAPTCHA; -->
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
+
+    <!-- Bootstrap jQuery; -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <!-- JS; -->
+    <script type="text/javascript" src="/js/tb-watermark.js"></script>
+    <script type="text/javascript" src="/js/hover-menu.js"></script>
+    <script type="text/javascript" src="/js/paginate.js"></script>
+    <script type="text/javascript" src="/js/jquery.magnific-popup.js"></script>
+    <script type="text/javascript" src="/js/bjqs-1.3.js"></script>
+
+    <!-- Bootstrap GWF; -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,400italic" rel="stylesheet" type="text/css" />
+    
+    <script class="secret-source">
+        jQuery(document).ready(function ($) { $('#banner-fade').bjqs({ }); });
+    </script>
+
+    
+
+    <!-- Styling CSS; -->
+    <link rel="stylesheet" type="text/css" href="/css/nested/index.css" />
+
+</head>
+<body>
+
+    <form method="post" action="./settings.aspx?ref=greeting" id="RappelzHorizons">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE1NDE3OTY1NjVkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYHBSpjdGwwMCROZXN0ZWRDb250ZW50JGNiX2FsbG93X3dhbGxfbWVzc2FnZXMFL2N0bDAwJE5lc3RlZENvbnRlbnQkY2JfYWxsb3dfdmNvaW5fdHJhbnNhY3Rpb25zBSpjdGwwMCROZXN0ZWRDb250ZW50JGNiX2FsbG93X3Zjb2luX3JlcXVlc3QFMGN0bDAwJE5lc3RlZENvbnRlbnQkY2JfZGlzcGxheV9pbmdhbWVfY2hhcmFjdGVycwUhY3RsMDAkTmVzdGVkQ29udGVudCRjYl9hbGxvd19tYWlsBSljdGwwMCROZXN0ZWRDb250ZW50JGNiX2Fsd2F5c19yZXF1aXJlX3BpbgUlY3RsMDAkTmVzdGVkQ29udGVudCRjYl9hc2tfcGluX2JhZF9pcMNr285LbcBSTZj612boCoF38jiUWGTWJU4sLZLKbvL5" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['RappelzHorizons'];
+if (!theForm) {
+    theForm = document.RappelzHorizons;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=RsZOxn9P781amHeA5A7ZteHuvpGOJupu9hPyHmtVj2J1E-IsM1P6kJfjblbEq5ny_D3ZZSxTBepk6tfFb9CKuk0A1AFPQmOev5GHCvG8miI1&amp;t=635793054349294682" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=1KMeClxaUJo-TufOESxm4RagHZGEstTRRXVXKv7a-pXkh7NkxllE1mAi_4yzsYL5pC8MM2W_aBzuHR3MnjZrDJuvmb9dnVp4_L9vOIU14ws9Kuhv3wE02o5W1t4e_ClUJIN9Ma6T2ok5r20wiQ0aIGRmZP-zKW_DcTO0Cw3HkUa3bPBJE28J39hxkb3V1hJw0&amp;t=72e85ccd" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+//]]>
+</script>
+
+<script src="/ScriptResource.axd?d=7g8OYfe4MhEQErrLLIU4YmH776I_P-l1Z29N0lHC7S7bNH4AWWN-e27iGmDuSHbXfa4b16_2qvRT2uNmriXAkRXrRGJmBOzTbcgkHg-GVUANOjYN-GAHKpJHP5X88zm-7K5DL6xSqkMI0907RMooh1C4vGh1feJ6paKVPJxdq1uVsWZon35INyUttRi1sJqT0&amp;t=72e85ccd" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="FD608091" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdABCGg9pvm4Xmy5z1ue8FK0XQ9mtWwIqmzR1y0iRPZ1i0YoEIsyFzl72dpc39WKpPUErr+XL+gUVZ1WXkOMWZf+PY29da+Xu8ZwirYWb06rMf6XxViFhUHt6mkA0OekmYNFSc54V2S4LwjKPeykN14aGi62fqcJR1M2lcopYBNpZNkNmfAca+RjluAc2aXNyef/jpRclPciwrHNa1HJgULd7ckVqXrhTxFbB+uNFdKBDHzCEFw9YdimHycC8dBGDKRG4tGLNYt9EYA1bfDryQq24VWyKUxJN9g1ZYOrx4lC/TQzA4/7sVwDy+G+15MBBzgl36DUH9P2TNZfzaPOIkKHfcbuHAaYUnPx4KAB0Z88AzEN9X3+jdvYGNQgphOQ781Rs=" />
+</div>
+
+        <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', 'RappelzHorizons', [], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+
+        <!-- top-navi -->
+        <div id="tn-anchor"></div>
+        
+        <div id="wrapper" style="border-radius: 0px; border: none; max-height: 450px; width: 995px; box-shadow: none;">
+        
+
+            <!-- login-message-w -->
+            <!-- css: login-message.css -->
+            <div id="login-message-w">
+                <div class="login-message">
+                    
+                    <div>
+                        <div class="notis" style="display: table;">
+                            
+                            <a href="/admin/index.aspx?ref=greeting" class="tn-lb" title="Administrator panel">
+                                <i class="fa fa-hashtag" style="color: #e74c3c;"></i>
+                            </a>
+                            
+                            <a href="/user/settings.aspx?ref=greeting" class="tn-lb" title="Account settings">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <div class="notis-msg" style="display: table-cell;">
+                                 <a href='/user/messages.aspx?ref=unread' class='tn-lb'>      <i class='fa fa-envelope blink_me notis' style='color: #f1c40f;' title='You have 26 unread message(s).'></i>  </a>  <div class='noti-screen' style='display: none;'>      <div class='noti-cont'>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 21 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 21 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 21 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 22 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 22 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 22 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 23 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 23 hours ago. </div>  <div style='display: block; text-align: justify;'> <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> has modified a bug tracker you created. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, yesterday. </div>  <div style='display: block; text-align: justify;'> <img src='/img/forum/ug-pips/vand.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Ghost' style='color:#3498db; ;' title='Visit Ghosts profile'>Ghost</a></span> has created a new bug tracker, "<a href='/technical/bug_tracker.aspx?ref=message&b_id=11'>@op issue inside quote</a>" for review. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, yesterday. </div>  <br />  <div style='font-weight: 400; color: #2e2e2e !important; float: right;'>    <a href='/user/messages.aspx?ref=unread'>        <i class='fa fa-edit'></i> Click here to read the rest..    </a>  </div>     </div>  </div> 
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="login-controls">
+                    
+                        Today is 6. March 2016, 17:25.
+                    
+                </div>
+            </div>
+            <!-- login-message-w -->
+
+            <!-- content -->
+            <div id="content-w">
+                <div id="content">
+                    <div id="pre-content">
+                        &nbsp;
+                    </div>
+                    
+                    
+    
+    <div class="icc-l" style="width: 400px;">
+        <h1>Change your password</h1>
+        <div class="cb cb-lb">
+            <div class="cb-label">
+                PASSWORD
+            </div>
+            <div class="cb-icon">
+                <i class="fa fa-lock"></i>
+            </div>
+            <div class="cb-tb">
+                <input name="ctl00$NestedContent$new_password" type="password" maxlength="24" id="NestedContent_new_password" title="Password" class="watermark f-pw" />
+                <p>&nbsp;</p>
+                <input name="ctl00$NestedContent$new_pass_conf" type="password" maxlength="24" id="NestedContent_new_pass_conf" title="Password confirmation" class="watermark f-pw" />
+            </div>
+        </div>
+        <span id="NestedContent_new_password_feedback"></span>
+
+        <div class="cb cb-lb">
+            <div class="cb-label">
+                PIN
+            </div>
+            <div class="cb-icon">
+                <i class="fa fa-key"></i>
+            </div>
+            <div class="cb-tb">
+                <input name="ctl00$NestedContent$confirm_pin_password" type="text" maxlength="4" id="NestedContent_confirm_pin_password" title="Security PIN code" class="watermark f-pw" />
+            </div>
+        </div>
+        <span id="NestedContent_confirm_pin_password_feedback"></span>
+
+        <div style="text-align: right; margin-top: 35px;">
+            <input type="submit" name="ctl00$NestedContent$ctl00" value="Change password" />
+        </div>
+
+        <h1>Change your email address</h1>
+        <div class="cb cb-lb">
+            <div class="cb-label">
+                EMAIL
+            </div>
+            <div class="cb-icon">
+                <i class="fa fa-at"></i>
+            </div>
+            <div class="cb-tb">
+                <input name="ctl00$NestedContent$new_email" type="text" id="NestedContent_new_email" title="example@gmail.com" class="watermark" />
+            </div>
+        </div>
+        <span id="NestedContent_new_email_feedback"></span>
+        <div class="cb cb-lb">
+            <div class="cb-label">
+                PIN
+            </div>
+            <div class="cb-icon">
+                <i class="fa fa-key"></i>
+            </div>
+            <div class="cb-tb">
+                <input name="ctl00$NestedContent$confirm_pin_email" type="text" maxlength="4" id="NestedContent_confirm_pin_email" title="Security PIN code" class="watermark f-pw" />
+            </div>
+        </div>
+        <span id="NestedContent_confirm_pin_email_feedback"></span>
+
+        <p>
+            Providing a valid email address is essential -- it's used in most account related modifications and most importantly <a href="/recovery.aspx?ref=regi">forgotten password</a> will be used to reset with it aswell. We value your privacy, your e-mail address wont be shared with a 3rd party service.
+        </p>
+
+        <div style="text-align: right; margin-top: 35px;">
+            <input type="submit" name="ctl00$NestedContent$ctl01" value="Change email" />
+        </div>
+
+    </div>
+    <div class="icc-r" style="width: 480px;">
+
+        <h1>Toggle options (website)</h1>
+        <div class="cb_wrapper">
+            <label class="cb_styled">
+                <input name="ctl00$NestedContent$cb_allow_wall_messages" type="checkbox" id="NestedContent_cb_allow_wall_messages" checked="checked" />
+                <span><i>Allow other users to post messages on my profile</i></span>
+            </label>
+        </div>
+        <br />
+        <div class="cb_wrapper">
+            <label class="cb_styled">
+                <input name="ctl00$NestedContent$cb_allow_vcoin_transactions" type="checkbox" id="NestedContent_cb_allow_vcoin_transactions" checked="checked" />
+                <span><i>Allow V-Coin to be sent to me (via profile)</i></span>
+            </label>
+        </div>
+        <br />
+        <div class="cb_wrapper">
+            <label class="cb_styled">
+                <input name="ctl00$NestedContent$cb_allow_vcoin_request" type="checkbox" id="NestedContent_cb_allow_vcoin_request" checked="checked" />
+                <span><i>Allow V-Coin to be requested from me (via profile)</i></span>
+            </label>
+        </div>
+        <br />
+        <div class="cb_wrapper">
+            <label class="cb_styled">
+                <input name="ctl00$NestedContent$cb_display_ingame_characters" type="checkbox" id="NestedContent_cb_display_ingame_characters" />
+                <span><i>Hide my ingame characters on my profile</i></span>
+            </label>
+        </div>
+        <br />
+        <div class="cb_wrapper">
+            <label class="cb_styled">
+                <input name="ctl00$NestedContent$cb_allow_mail" type="checkbox" id="NestedContent_cb_allow_mail" checked="checked" />
+                <span><i>Allow other users to send mail messages to me (except admins)</i></span>
+            </label>
+        </div>
+        <br />
+        <div class="cb_wrapper">
+            <label class="cb_styled">
+                <input name="ctl00$NestedContent$cb_always_require_pin" type="checkbox" id="NestedContent_cb_always_require_pin" checked="checked" />
+                <span><i>Always request for my PIN code when logging in</i></span>
+            </label>
+        </div>
+        <br />
+        <div class="cb_wrapper">
+            <label class="cb_styled">
+                <input name="ctl00$NestedContent$cb_ask_pin_bad_ip" type="checkbox" id="NestedContent_cb_ask_pin_bad_ip" />
+                <span><i>Request for my PIN code when logging in from a different IP address</i></span>
+            </label>
+        </div>
+
+        <div style="text-align: right; margin-top: 35px;">
+            <input type="submit" name="ctl00$NestedContent$ctl02" value="Save toggles" />
+        </div>
+
+    </div>
+    <div style="clear: both;"></div>
+
+
+                </div>
+                <div id="after-content">
+                    &nbsp;
+                </div>
+            </div>
+            <!-- content -->
+        </div>
+        <!-- wrapper -->
+
+        <!-- Footer; -->
+        
+        <!-- Footer; -->
+
+    </form>
+
+    
+
+
+</body>
+</html>

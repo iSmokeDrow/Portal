@@ -28,6 +28,8 @@ namespace Client
 
         private GUI guiInstance = GUI.Instance;
 
+        public bool NetworkError = false;
+
         public class UpdateIndex
         {
             public string FileName { get; set; }
@@ -90,6 +92,14 @@ namespace Client
         public void Start()
         {
             index = core.Load(indexPath, false);
+            // Start a connection to the server, if failed exit
+            if (!ServerManager.Instance.Start(guiInstance.ip, guiInstance.port))
+            {
+                MessageBox.Show(ServerManager.Instance.ErrorMessage, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                NetworkError = true;
+                return;
+            }
+
             ServerPackets.Instance.RequestUpdateIndex();
         }
 
@@ -139,7 +149,7 @@ namespace Client
         {
             string name = this.FileList[this.CurrentIndex].FileName;
             int offset = 0;
-            string partialHash = "";
+            string partialHash = string.Empty;
 
             if (File.Exists(name))
             {
@@ -153,14 +163,9 @@ namespace Client
         public void OnFileDataReceived(int offset, bool isEOF, byte[] data)
         {
             string zipName = String.Concat(this.FileList[this.CurrentIndex].FileName, ".zip");
-
             string filePath = Path.Combine(tempPath, zipName);
 
-            if (offset == 0 && File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-
+            if (offset == 0 && File.Exists(filePath)) { File.Delete(filePath); }
             using (FileStream fs = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
             {
                 fs.Seek(offset, SeekOrigin.Begin);
@@ -168,13 +173,9 @@ namespace Client
                 fs.Close();
             }
 
-            if (isEOF)
-            {
-                OnUpdateDownloadCompleted();
-            }
+            if (isEOF) { OnUpdateDownloadCompleted(); }
         }
 
-        // TODO: Convert me to the new system
         private void OnUpdateDownloadCompleted()
         {
             UpdateIndex file = this.FileList[this.CurrentIndex];
@@ -187,10 +188,7 @@ namespace Client
             
             if (file.IsLegacy)
             {
-                if (File.Exists(resourceFolder + file.FileName))
-                {
-                    File.Delete(resourceFolder + file.FileName);
-                }
+                if (File.Exists(resourceFolder + file.FileName)) { File.Delete(resourceFolder + file.FileName); }
                 File.Move(resourcePath, resourceFolder + file.FileName);
             }
             else
@@ -200,6 +198,9 @@ namespace Client
                 File.Delete(resourcePath);
                 File.Delete(zipPath);
             }
+
+            // Check that the file update actually took
+            if (Hash.GetSHA512Hash(resourcePath) == file.FileHash) { CurrentIndex++; }
             
             CheckFiles();
         }

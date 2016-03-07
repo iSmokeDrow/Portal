@@ -45,10 +45,10 @@ namespace Server
             Console.ReadLine();
         }
 
-        internal static void OnUserRequestArguments(Client user)
+        internal static void OnUserRequestArguments(Client client, string username)
         {
             // TODO : Replace placeholder launch arguments here
-            ClientPackets.Instance.Arguments(user, "Start SFrame.exe /auth_ip:192.168.0.101 /auth_port:8841 /locale:ASCII /country:US /cash /commercial_shop");
+            ClientPackets.Instance.Arguments(client, string.Format("Start SFrame.exe /auth_ip:192.168.0.101 /auth_port:8841 /locale:ASCII /country:US /cash /commercial_shop /imbc_login /username:{0}", username));
         }
     }
 }

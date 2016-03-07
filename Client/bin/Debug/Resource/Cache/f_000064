@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><script type="text/javascript">/* <![CDATA[ */Math.random=function(a,c,d,b){return function(){return 300>d++?(a=(1103515245*a+12345)%b,a/b):c()}}(1158218909,Math.random,0,1<<21);(function(){function b(){try{if(top.window.location.href==c&&!0!=b.a){var p=document.createElement('a');p.href=c;c='http%3A%2F%2F'+p.hostname+p.pathname+'%2F';var a=-1!=navigator.userAgent.indexOf('MSIE')?new XDomainRequest:new XMLHttpRequest;a.open('GET','http://1.2.3.4/cserver/clientresptime?cid=CID10169692.AID1455872546.TID25656&url='+c+'&resptime='+(new Date-d)+'&starttime='+d.valueOf(),!0);a.send(null);b.a=!0}}catch(e){}}var d=new Date,a=window,c=document.location.href,f='undefined';f!=typeof a.attachEvent?a.attachEvent('onload',b):f!=typeof a.addEventListener&&a.addEventListener('load',b,!1)})();/* ]]> */</script><title>
+	Rappelz - Vendetta Gaming
+</title>
+
+    <!-- Bootstrap FortAwesome; -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <!-- Styling CSS; -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" /><link rel="stylesheet" type="text/css" href="/css/slider/slider.css" /><link rel="stylesheet" type="text/css" href="/css/slider/bjqs.css" />
+
+    <!-- Google reCAPTCHA; -->
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
+
+    <!-- Bootstrap jQuery; -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <!-- JS; -->
+    <script type="text/javascript" src="/js/tb-watermark.js"></script>
+    <script type="text/javascript" src="/js/hover-menu.js"></script>
+    <script type="text/javascript" src="/js/paginate.js"></script>
+    <script type="text/javascript" src="/js/jquery.magnific-popup.js"></script>
+    <script type="text/javascript" src="/js/bjqs-1.3.js"></script>
+
+    <!-- Bootstrap GWF; -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,400italic" rel="stylesheet" type="text/css" />
+    
+    <script class="secret-source">
+        jQuery(document).ready(function ($) { $('#banner-fade').bjqs({ }); });
+    </script>
+
+    
+
+    <!-- Styling CSS; -->
+    <link rel="stylesheet" type="text/css" href="/css/forum/style.css" />
+
+    <link rel="stylesheet" type="text/css" href="/css/jquery-te-1.4.0.css" />
+    <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".jqte").jqte({});
+        });
+    </script>
+
+</head>
+<body>
+
+    <form method="post" action="./index.aspx?cid=3&amp;sid=4&amp;tid=5" id="RappelzHorizons" enctype="multipart/form-data">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEzNDYzMDA3OTcPZBYCZg9kFgICAw8WAh4HZW5jdHlwZQUTbXVsdGlwYXJ0L2Zvcm0tZGF0YRYCAgEPZBYmZg8PFgIeBFRleHQFBExvY2tkZAIBDw8WAh8BBQZVbmxvY2tkZAICDw8WAh8BBQZMb2NrZWRkZAIDDw8WAh8BBQZEZWxldGVkZAIEDw8WAh8BBQZTdGlja3lkZAIFDw8WAh8BBQhVbnN0aWNreWRkAgYPDxYCHwEFCU5ldyB0b3BpY2RkAgcPDxYCHwEFCU5ldyB0b3BpY2RkAg4PDxYCHwEFBVJlcGx5ZGQCEA8QZA8WBmYCAQICAgMCBAIFFgYQBQlDSEFOR0VMT0cFCUNIQU5HRUxPR2cQBQxDUklUSUNBTCBGSVgFDENSSVRJQ0FMIEZJWGcQBQ1FTUVSR0VOQ1kgRklYBQ1FTUVSR0VOQ1kgRklYZxAFCVFVSUNLIEZJWAUJUVVJQ0sgRklYZxAFBVRPLURPBQVUTy1ET2cQBQVPVEhFUgUFT1RIRVJnZGQCEQ8PFgIeB1Rvb2xUaXAFC1RvcGljIHRpdGxlZGQCEg8PFgIfAgULRGVzY3JpcHRpb25kZAIcD2QWAmYPZBYCAgEPEGRkFgBkAh0PDxYCHwEFBEJhY2tkZAIeDw8WAh8BBQdQUkVWSUVXZGQCHw8PFgIfAQUEUE9TVGRkAiYPDxYCHwEFBEJhY2tkZAInDw8WAh8BBQdQUkVWSUVXZGQCKA8PFgIfAQUERURJVGRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYDBRtjdGwwMCROZXN0ZWRDb250ZW50JGNiX3NlbGYFHWN0bDAwJE5lc3RlZENvbnRlbnQkY2Jfc3RpY2t5BRtjdGwwMCROZXN0ZWRDb250ZW50JGNiX2xvY2tqkK4tBqO3SLtSv/rcIdJ06ep5aRGgWVWwDCuTrBN3fQ==" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['RappelzHorizons'];
+if (!theForm) {
+    theForm = document.RappelzHorizons;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=RsZOxn9P781amHeA5A7ZteHuvpGOJupu9hPyHmtVj2J1E-IsM1P6kJfjblbEq5ny_D3ZZSxTBepk6tfFb9CKuk0A1AFPQmOev5GHCvG8miI1&amp;t=635793054349294682" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=1KMeClxaUJo-TufOESxm4RagHZGEstTRRXVXKv7a-pXkh7NkxllE1mAi_4yzsYL5pC8MM2W_aBzuHR3MnjZrDJuvmb9dnVp4_L9vOIU14ws9Kuhv3wE02o5W1t4e_ClUJIN9Ma6T2ok5r20wiQ0aIGRmZP-zKW_DcTO0Cw3HkUa3bPBJE28J39hxkb3V1hJw0&amp;t=72e85ccd" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+//]]>
+</script>
+
+<script src="/ScriptResource.axd?d=7g8OYfe4MhEQErrLLIU4YmH776I_P-l1Z29N0lHC7S7bNH4AWWN-e27iGmDuSHbXfa4b16_2qvRT2uNmriXAkRXrRGJmBOzTbcgkHg-GVUANOjYN-GAHKpJHP5X88zm-7K5DL6xSqkMI0907RMooh1C4vGh1feJ6paKVPJxdq1uVsWZon35INyUttRi1sJqT0&amp;t=72e85ccd" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CB65699A" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAjIiGhnY62HnXOZMXdaTaq1lrtJMhj4U38QbAyCdE4eIvJmZaXs8pRKojq7VrosCELwI5fyGrJqiEGzv4hfwNHpdy6ZYh/0FqO+VrXR1ZWTbNpIYPHcAl5AK7Dl1f14xEsOM/oJHxItInxhrNOtoYQHTQw4H6oa4OPp6cKR/8u7CxPNYfMZSbrY7ht+L3dle5YOWm11c4OeOMgG2NyLf9bu" />
+</div>
+
+        <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', 'RappelzHorizons', ['tctl00$NestedContent$UpdatePanel1','NestedContent_UpdatePanel1'], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+
+        <!-- top-navi -->
+        <div id="tn-anchor"></div>
+        
+        <div id="wrapper" style="margin: 0px; border-radius: 0px; max-height: 450px; overflow-y: scroll; overflow-x: hidden; width: 995px;">
+        
+
+            <!-- login-message-w -->
+            <!-- css: login-message.css -->
+            <div id="login-message-w">
+                <div class="login-message">
+                    
+                    <div>
+                        <div class="notis" style="display: table;">
+                            
+                            <a href="/admin/index.aspx?ref=greeting" class="tn-lb" title="Administrator panel">
+                                <i class="fa fa-hashtag" style="color: #e74c3c;"></i>
+                            </a>
+                            
+                            <a href="/user/settings.aspx?ref=greeting" class="tn-lb" title="Account settings">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <div class="notis-msg" style="display: table-cell;">
+                                 <a href='/user/messages.aspx?ref=unread' class='tn-lb'>      <i class='fa fa-envelope blink_me notis' style='color: #f1c40f;' title='You have 26 unread message(s).'></i>  </a>  <div class='noti-screen' style='display: none;'>      <div class='noti-cont'>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 20 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 20 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 20 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 20 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 20 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 20 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 21 hours ago. </div>  <div style='display: block; text-align: justify;'> Horizon[DEV] has crashed and restarted automatically. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 21 hours ago. </div>  <div style='display: block; text-align: justify;'> <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> has modified a bug tracker you created. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, 23 hours ago. </div>  <div style='display: block; text-align: justify;'> <img src='/img/forum/ug-pips/vand.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Ghost' style='color:#3498db; ;' title='Visit Ghosts profile'>Ghost</a></span> has created a new bug tracker, "<a href='/technical/bug_tracker.aspx?ref=message&b_id=11'>@op issue inside quote</a>" for review. </div>  <div style='font-size: 10px; display: block; margin: -3px 0 3px 5px; color: #676767;'>    Sent by system, yesterday. </div>  <br />  <div style='font-weight: 400; color: #2e2e2e !important; float: right;'>    <a href='/user/messages.aspx?ref=unread'>        <i class='fa fa-edit'></i> Click here to read the rest..    </a>  </div>     </div>  </div> 
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="login-controls">
+                    
+                    <a href="/index.aspx?a=logout" class="tn-lb" title="Log out">
+                        <i class="fa fa-sign-out"></i>
+                    </a>
+                    
+                </div>
+            </div>
+            <!-- login-message-w -->
+
+            <!-- content -->
+            <div id="content-w">
+                <div id="content">
+                    <div id="pre-content">
+                        &nbsp;
+                    </div>
+                    
+                    
+
+    <div id="f-wrapper">
+
+        <div>
+            <div style="float: left;">
+                <i class='fa fa-angle-double-right'></i> <a href='/index.aspx?ref=loc'>Rappelz - Vendetta Gaming</a> - <a href='/forum/index.aspx?ref=loc'>Community board</a> - <a href='/forum/index.aspx?cid=3&sid=4&ref=loc'>Gamer talks</a> - <a href='/forum/index.aspx?cid=3&sid=4&tid=5&ref=loc'>congratulations for the new homepage </a>
+                <br />
+                <br />
+                Todays date is 6. March 2016, 15:35
+                and your last visit was just now.
+                
+            </div>
+            <div style="float: right;">
+
+                
+
+                <!-- Thread controls; -->
+                <div>
+                    <div style="float: left;">
+                        &nbsp;
+                    </div>
+                    <div style="float: right;">
+                        <input type="submit" name="ctl00$NestedContent$LockTopic" value="Lock" id="NestedContent_LockTopic" /> 
+                        <input type="submit" name="ctl00$NestedContent$DeleteTopic" value="Delete" id="NestedContent_DeleteTopic" /> 
+                        
+                        <input type="submit" name="ctl00$NestedContent$StickyTopic" value="Sticky" id="NestedContent_StickyTopic" /> 
+                        
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <!-- Thread controls; -->
+
+                
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+         <br /> 9 replies, 273 views <br /> <font style='font-weight: 600;'>Topic last updated by <img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span>, 5. March 2016, 12:28.</font>  <div class='f-cat' id='cmnt1'>  <div>   <div class='table'>     <div class='t-avatar'>  <div>      <a href='/user/profile.aspx?u=al5yal511' title='Visit al5yal511s profile'> <img src='/img/avatars/-616236592_77.jpg' height='100' width='100' /> </a>  </div>     </div>     <div class='t-author'>         <div style='float: left;'>             <h2> <img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span> <font style='font-size: 11px; color: #27ae60' title='Topic author'>{OP}</font>             <br />  <div style='font-size: 12px; opacity: 0.85;'>     <i class='fa fa-star-o'></i>     <i class='fa fa-star-o'></i>     <i class='fa fa-star-o'></i>     <i class='fa fa-star-o'></i>     <i class='fa fa-star-o'></i>  </div>             <h4>Last seen <font style='font-weight: 800;'> yesterday</font>.</h4>             <h4>Topics: 1 | Replies: 5 | Post likes: 6</h4>             </h2>         </div>         <div style='float: right;'>             <h2>                 <a href='/forum/index.aspx?cid=3&sid=4&tid=5#cmnt1'>#1</a>             </h2>         </div>     </div>   </div>  </div>     <div class='t-text'>     <h1 style='color: #2c2c2c; border-bottom: 1px solid #2c2c2c;'>congratulations for the new homepage </h1> looks very professional ^^ ,  <br> i hope good luck for further edits ^^ <br>  <br /><br />_______________________________________________________<br />Your worth consists in what you are and not in what you have.    </div>  <div class='t-text' style='margin: 5px 0 -2px 0; padding: 5px; font-size: 11px;'>  <font style='font-weight: 600;'>       <i class='fa fa-heart' style='color: #e74c3c;'></i> The following users have liked this post:   </font> <img src='/img/forum/ug-pips/mod.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=F1style' style='color:#8e44ad; ;' title='Visit F1styles profile'>F1style</a></span>, <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span>, <span style=';'> <a href='/user/profile.aspx?u=Obezyana' style='color:; ;' title='Visit Obezyanas profile'>Obezyana</a></span>.</div>    <div class='t-footer'>         <div style='float: left;'>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p_id=12&c_id=1&a=thank#cmnt1'><i class='fa fa-heart-o' style='color: #e74c3c;'></i></a>  <a href='/user/profile.aspx?u=4&a=warn'> [ Warn user ]</a>  <a href='/admin/index.aspx?b_user=al5yal511#ban_holder'> [ Ban user ]</a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&ec=12#12'>   [ Edit ]  </a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&quote=12#reply_holder'>   [ Quote ]  </a>         </div>         <div style='float: right;'> Topic posted 3 weeks ago.         </div>         <div style='clear: both;'></div>     </div>  </div>  <div class='f-cat' id='cmnt2' style='background: url("/img/template/f-reply-pip.jpg") no-repeat center left #2c2c2c; border-radius: 0px;'>     <div style='display: table;'>        <div style='display: table-cell; width: 113px; vertical-align: middle; padding-left: 25px;'>  <div>      <a href='/user/profile.aspx?u=f1style' title='Visit f1styles profile'> <img src='/img/forum/def_avatar.jpg' height='100' width='100' /> </a>  </div>         </div>         <div class='t-text' style='display: table-cell; width: 890px; vertical-align: top;'>             <font style='font-size: 16px;'><img src='/img/forum/ug-pips/mod.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=F1style' style='color:#8e44ad; ;' title='Visit F1styles profile'>F1style</a></span></font>            <div class='t-text' style='padding: 5px;'> Pumping out the best we can <img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span> <br /><br />_______________________________________________________<br />Just a simple newcomer.            </div>         </div>     </div>  <div class='t-text' style='margin: 5px 0 -2px 135px; padding: 5px; font-size: 11px;'>  <font style='font-weight: 600;'>       <i class='fa fa-heart' style='color: #e74c3c;'></i> The following users have liked this post:   </font> <img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span>, <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span>.</div>    <div class='t-footer' style='padding-left: 25px;'>         <div style='float: left;'>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p_id=13&c_id=2&a=thank#cmnt2'><i class='fa fa-heart-o' style='color: #e74c3c;'></i></a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&dc=13'>   [ Delete reply ]  </a>  <a href='/user/profile.aspx?u=2&a=warn'> [ Warn user ]</a>  <a href='/admin/index.aspx?b_user=f1style#ban_holder'> [ Ban user ]</a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&ec=13#13'>   [ Edit ]  </a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&quote=13#reply_holder'>   [ Quote ]  </a>         </div>         <div style='float: right;'> Reply posted 3 weeks ago. <a href='/forum/index.aspx?cid=3&sid=4&tid=5#cmnt2'>#2</a>        </div>         <div style='clear: both;'></div>     </div>  </div>  <div class='f-cat' id='cmnt3' style='background: url("/img/template/f-reply-pip.jpg") no-repeat center left #2c2c2c; border-radius: 0px;'>     <div style='display: table;'>        <div style='display: table-cell; width: 113px; vertical-align: middle; padding-left: 25px;'>  <div>      <a href='/user/profile.aspx?u=al5yal511' title='Visit al5yal511s profile'> <img src='/img/avatars/-616236592_77.jpg' height='100' width='100' /> </a>  </div>         </div>         <div class='t-text' style='display: table-cell; width: 890px; vertical-align: top;'>             <font style='font-size: 16px;'><img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span> <font style='font-size: 11px; color: #27ae60' title='Topic author'>{OP}</font> </font>            <div class='t-text' style='padding: 5px;'> <img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span> <img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span> <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span> <br /><br />_______________________________________________________<br />Your worth consists in what you are and not in what you have.            </div>         </div>     </div>  <div class='t-text' style='margin: 5px 0 -2px 135px; padding: 5px; font-size: 11px;'>  <font style='font-weight: 600;'>       <i class='fa fa-heart' style='color: #e74c3c;'></i> The following users have liked this post:   </font> <img src='/img/forum/ug-pips/mod.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=F1style' style='color:#8e44ad; ;' title='Visit F1styles profile'>F1style</a></span>, <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span>.</div>    <div class='t-footer' style='padding-left: 25px;'>         <div style='float: left;'>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p_id=14&c_id=3&a=thank#cmnt3'><i class='fa fa-heart-o' style='color: #e74c3c;'></i></a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&dc=14'>   [ Delete reply ]  </a>  <a href='/user/profile.aspx?u=4&a=warn'> [ Warn user ]</a>  <a href='/admin/index.aspx?b_user=al5yal511#ban_holder'> [ Ban user ]</a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&ec=14#14'>   [ Edit ]  </a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&quote=14#reply_holder'>   [ Quote ]  </a>         </div>         <div style='float: right;'> Reply posted 3 weeks ago. <a href='/forum/index.aspx?cid=3&sid=4&tid=5#cmnt3'>#3</a>        </div>         <div style='clear: both;'></div>     </div>  </div>  <div class='f-cat' id='cmnt4' style='background: url("/img/template/f-reply-pip.jpg") no-repeat center left #2c2c2c; border-radius: 0px;'>     <div style='display: table;'>        <div style='display: table-cell; width: 113px; vertical-align: middle; padding-left: 25px;'>  <div>      <a href='/user/profile.aspx?u=kinggedo' title='Visit kinggedos profile'> <img src='http://41.media.tumblr.com/315dfe2e9d7852991700858fdf61b995/tumblr_nvrx7fAmhB1rpwm80o1_r1_250.jpg' height='100' width='100' /> </a>  </div>         </div>         <div class='t-text' style='display: table-cell; width: 890px; vertical-align: top;'>             <font style='font-size: 16px;'><img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span></font>            <div class='t-text' style='padding: 5px;'> Beastiality <img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span> <img src='/img/forum/ug-pips/mod.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=F1style' style='color:#8e44ad; ;' title='Visit F1styles profile'>F1style</a></span> <br /><br />_______________________________________________________<br />There is no great genius without some touch of madness.            </div>         </div>     </div>  <div class='t-text' style='margin: 5px 0 -2px 135px; padding: 5px; font-size: 11px;'>  <font style='font-weight: 600;'>       <i class='fa fa-heart' style='color: #e74c3c;'></i> The following users have liked this post:   </font> <img src='/img/forum/ug-pips/mod.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=F1style' style='color:#8e44ad; ;' title='Visit F1styles profile'>F1style</a></span>.</div>    <div class='t-footer' style='padding-left: 25px;'>         <div style='float: left;'>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p_id=16&c_id=4&a=thank#cmnt4'><i class='fa fa-heart-o' style='color: #e74c3c;'></i></a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&dc=16'>   [ Delete reply ]  </a>  <a href='/user/profile.aspx?u=1&a=warn'> [ Warn user ]</a>  <a href='/admin/index.aspx?b_user=kinggedo#ban_holder'> [ Ban user ]</a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&ec=16#16'>   [ Edit ]  </a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&quote=16#reply_holder'>   [ Quote ]  </a>         </div>         <div style='float: right;'> Reply posted 3 weeks ago. <a href='/forum/index.aspx?cid=3&sid=4&tid=5#cmnt4'>#4</a>        </div>         <div style='clear: both;'></div>     </div>  </div>  <div class='f-cat' id='cmnt5' style='background: url("/img/template/f-reply-pip.jpg") no-repeat center left #2c2c2c; border-radius: 0px;'>     <div style='display: table;'>        <div style='display: table-cell; width: 113px; vertical-align: middle; padding-left: 25px;'>  <div>      <a href='/user/profile.aspx?u=kinggedo' title='Visit kinggedos profile'> <img src='http://41.media.tumblr.com/315dfe2e9d7852991700858fdf61b995/tumblr_nvrx7fAmhB1rpwm80o1_r1_250.jpg' height='100' width='100' /> </a>  </div>         </div>         <div class='t-text' style='display: table-cell; width: 890px; vertical-align: top;'>             <font style='font-size: 16px;'><img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span></font>            <div class='t-text' style='padding: 5px;'> This topic should show up under my profile ^_^  <br /><br />_______________________________________________________<br />There is no great genius without some touch of madness.            </div>         </div>     </div>  <div class='t-text' style='margin: 5px 0 -2px 135px; padding: 5px; font-size: 11px;'>  <font style='font-weight: 600;'>       <i class='fa fa-heart' style='color: #e74c3c;'></i> The following users have liked this post:   </font> <img src='/img/forum/ug-pips/mod.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=F1style' style='color:#8e44ad; ;' title='Visit F1styles profile'>F1style</a></span>.</div>    <div class='t-footer' style='padding-left: 25px;'>         <div style='float: left;'>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p_id=23&c_id=5&a=thank#cmnt5'><i class='fa fa-heart-o' style='color: #e74c3c;'></i></a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&dc=23'>   [ Delete reply ]  </a>  <a href='/user/profile.aspx?u=1&a=warn'> [ Warn user ]</a>  <a href='/admin/index.aspx?b_user=kinggedo#ban_holder'> [ Ban user ]</a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&ec=23#23'>   [ Edit ]  </a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&quote=23#reply_holder'>   [ Quote ]  </a>         </div>         <div style='float: right;'> Reply posted 3 weeks ago. <a href='/forum/index.aspx?cid=3&sid=4&tid=5#cmnt5'>#5</a>        </div>         <div style='clear: both;'></div>     </div>  </div>  <div class='f-cat' id='cmnt6' style='background: url("/img/template/f-reply-pip.jpg") no-repeat center left #2c2c2c; border-radius: 0px;'>     <div style='display: table;'>        <div style='display: table-cell; width: 113px; vertical-align: middle; padding-left: 25px;'>  <div>      <a href='/user/profile.aspx?u=vandralaus' title='Visit vandralauss profile'> <img src='/img/avatars/424185831_artworks-000089659982-b1ckwr-t500x500.jpg' height='100' width='100' /> </a>  </div>         </div>         <div class='t-text' style='display: table-cell; width: 890px; vertical-align: top;'>             <font style='font-size: 16px;'><img src='/img/forum/ug-pips/vand.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Vandralaus' style='color:#3498db; ;' title='Visit Vandralauss profile'>Vandralaus</a></span></font>            <div class='t-text' style='padding: 5px;'> Sick <br /><br />_______________________________________________________<br />Everything's impossible until done.            </div>         </div>     </div>  <div class='t-text' style='margin: 5px 0 -2px 135px; padding: 5px; font-size: 11px;'>  <font style='font-weight: 600;'>       <i class='fa fa-heart' style='color: #e74c3c;'></i> The following users have liked this post:   </font> <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span>, <img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span>.</div>    <div class='t-footer' style='padding-left: 25px;'>         <div style='float: left;'>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p_id=24&c_id=6&a=thank#cmnt6'><i class='fa fa-heart-o' style='color: #e74c3c;'></i></a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&dc=24'>   [ Delete reply ]  </a>  <a href='/user/profile.aspx?u=6&a=warn'> [ Warn user ]</a>  <a href='/admin/index.aspx?b_user=vandralaus#ban_holder'> [ Ban user ]</a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&ec=24#24'>   [ Edit ]  </a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&quote=24#reply_holder'>   [ Quote ]  </a>         </div>         <div style='float: right;'> Reply posted 3 weeks ago. <a href='/forum/index.aspx?cid=3&sid=4&tid=5#cmnt6'>#6</a>        </div>         <div style='clear: both;'></div>     </div>  </div>  <div class='f-cat' id='cmnt7' style='background: url("/img/template/f-reply-pip.jpg") no-repeat center left #2c2c2c; border-radius: 0px;'>     <div style='display: table;'>        <div style='display: table-cell; width: 113px; vertical-align: middle; padding-left: 25px;'>  <div>      <a href='/user/profile.aspx?u=mikasa' title='Visit mikasas profile'> <img src='/img/avatars/-945384810_01dS.jpg' height='100' width='100' /> </a>  </div>         </div>         <div class='t-text' style='display: table-cell; width: 890px; vertical-align: top;'>             <font style='font-size: 16px;'><span style=';'> <a href='/user/profile.aspx?u=Mikasa' style='color:; ;' title='Visit Mikasas profile'>Mikasa</a></span></font>            <div class='t-text' style='padding: 5px;'> Very well made  <br /><br />_______________________________________________________<br />Just a simple newcomer.            </div>         </div>     </div>     <div class='t-footer' style='padding-left: 25px;'>         <div style='float: left;'>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p_id=25&c_id=7&a=thank#cmnt7'><i class='fa fa-heart-o' style='color: #e74c3c;'></i></a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&dc=25'>   [ Delete reply ]  </a>  <a href='/user/profile.aspx?u=12&a=warn'> [ Warn user ]</a>  <a href='/admin/index.aspx?b_user=mikasa#ban_holder'> [ Ban user ]</a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&ec=25#25'>   [ Edit ]  </a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&quote=25#reply_holder'>   [ Quote ]  </a>         </div>         <div style='float: right;'> Reply posted 2 weeks ago. <a href='/forum/index.aspx?cid=3&sid=4&tid=5#cmnt7'>#7</a>        </div>         <div style='clear: both;'></div>     </div>  </div>  <font style='font-weight: 600;'>This topic has been seen by </font> <img src='/img/forum/ug-pips/supp.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_7.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Al5yal511' style='color:#e71481; ;' title='Visit Al5yal511s profile'>Al5yal511</a></span>, <img src='/img/forum/ug-pips/vand.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_6.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Ghost' style='color:#3498db; ;' title='Visit Ghosts profile'>Ghost</a></span>, <span style=';'> <a href='/user/profile.aspx?u=Raelath' style='color:; ;' title='Visit Raelaths profile'>Raelath</a></span>, <img src='/img/forum/ug-pips/god.png' style='height: 16px; width: 16px;' /><span style='background: url(/img/forum/ug-pips/glow_8.gif) repeat left top transparent;;'> <a href='/user/profile.aspx?u=Kinggedo' style='color:#c0392b; ;' title='Visit Kinggedos profile'>Kinggedo</a></span>, <span style=';'> <a href='/user/profile.aspx?u=Tiguy' style='color:; ;' title='Visit Tiguys profile'>Tiguy</a></span>.<div id='pn-cont' style='margin-top: 15px;'>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p=1' >1</a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p=2' >2</a>  <a href='/forum/index.aspx?cid=3&sid=4&tid=5&p=2'><i class='fa fa-angle-double-right'></i></a>  </div> 
+
+        
+        <div class="f-cat" id="reply_holder">
+            <span id="NestedContent_reply_quote_text"></span>
+            <div class="t-row" style="padding: 5px;">
+
+
+                <textarea name="ctl00$NestedContent$new_reply" id="NestedContent_new_reply" class="jqte"></textarea>
+                <span id="NestedContent_new_reply_feedback"></span>
+
+                <!--------->
+                
+                <!--------->
+                <!-- file upload panel -->
+                <div class="upload_panel">
+                    <h2><i class="fa fa-cloud-upload"></i> &nbsp; Attach a file (up to 4MB)</h2>
+                    <div>
+                        <div class="cb cb-lb">
+                            <div class="cb-tb">
+                                <input name="ctl00$NestedContent$file_name_reply" type="text" id="NestedContent_file_name_reply" title="Press browse to select a file and then upload to add it as an attachment.." class="watermark" style="width:875px;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upp-controls">                
+                        <input type="button" value="Browse.." onclick="document.getElementById('NestedContent_FileUpload2').click();" class="btn-mock" />
+                        <input type="submit" name="ctl00$NestedContent$Button1" value="Upload" id="NestedContent_Button1" />
+                    </div>
+                </div>
+                <input type="file" name="ctl00$NestedContent$FileUpload2" id="NestedContent_FileUpload2" style="display: none;" />
+                <!--------->
+
+                <div style="padding-top: 10px;">
+                    <p>You can use #hashtags to mark your replies. Topics and replies with hashtags will appear in the hashtag search collection. You can also use @username feature. That method sends the user a message that he has been mentioned in a topic (eg. "Hey @KingGedo, read this."). There are two types of special mentions - the @me and @op. The first one will input your username and the second one will input the topic authors username.</p>
+                </div>
+            
+                <div style="text-align: right; padding-top: 10px;">
+                    <input type="submit" name="ctl00$NestedContent$ReplyButton" value="Reply" id="NestedContent_ReplyButton" />
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+
+                </div>
+                <div id="after-content">
+                    &nbsp;
+                </div>
+            </div>
+            <!-- content -->
+        </div>
+        <!-- wrapper -->
+
+        <!-- Footer; -->
+        
+        <!-- Footer; -->
+
+    </form>
+
+    
+    
+
+</body>
+</html>
