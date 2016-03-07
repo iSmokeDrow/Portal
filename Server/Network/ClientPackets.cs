@@ -80,14 +80,10 @@ namespace Server.Network
         /// </summary>
         /// <param name="client"></param>
         /// <param name="stream"></param>
-        /// TODO: Fix the username part???
         private void CS_RequestArguments(Client client, PacketStream stream)
         {
-            using (StreamReader sr = new StreamReader(stream))
-            {
-                string username = sr.ReadToEnd();
-                Program.OnUserRequestArguments(client, username);
-            }
+            string name = stream.ReadString();
+            Program.OnUserRequestArguments(client, name);
         }
 
         #endregion
