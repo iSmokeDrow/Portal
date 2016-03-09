@@ -177,6 +177,8 @@ namespace Client
             string zipName = String.Concat(this.FileList[this.CurrentIndex].FileName, ".zip");
             string filePath = Path.Combine(tempPath, zipName);
 
+            Directory.CreateDirectory("tmp");
+
             if (offset == 0 && File.Exists(filePath)) { File.Delete(filePath); }
             using (FileStream fs = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
             {
