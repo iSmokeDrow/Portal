@@ -33,7 +33,6 @@
             this.totalStatus = new System.Windows.Forms.Label();
             this.currentStatus = new System.Windows.Forms.Label();
             this.currentProgress = new System.Windows.Forms.ProgressBar();
-            this.sessionProvider = new Awesomium.Windows.Forms.WebSessionProvider(this.components);
             this.browser = new Awesomium.Windows.Forms.WebControl(this.components);
             this.start_lb = new System.Windows.Forms.Label();
             this.gameSettings_lb = new System.Windows.Forms.Label();
@@ -73,12 +72,6 @@
             this.currentProgress.Size = new System.Drawing.Size(992, 13);
             this.currentProgress.TabIndex = 11;
             // 
-            // sessionProvider
-            // 
-            this.sessionProvider.DataPath = "F:\\Users\\Switch\\Documents\\Visual Studio 2015\\Projects\\Portal\\Client\\bin\\Debug\\Res" +
-    "ource";
-            this.sessionProvider.Views.Add(this.browser);
-            // 
             // browser
             // 
             this.browser.Location = new System.Drawing.Point(2, 17);
@@ -107,6 +100,7 @@
             this.gameSettings_lb.Size = new System.Drawing.Size(89, 14);
             this.gameSettings_lb.TabIndex = 17;
             this.gameSettings_lb.Text = "GAME SETTINGS";
+            this.gameSettings_lb.Click += new System.EventHandler(this.gameSettings_lb_Click);
             // 
             // label1
             // 
@@ -148,6 +142,10 @@
             this.Controls.Add(this.totalStatus);
             this.Controls.Add(this.totalProgress);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(1013, 584);
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1013, 584);
             this.Name = "GUI";
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
@@ -155,13 +153,13 @@
             this.Text = "Horizons Launcher";
             this.Load += new System.EventHandler(this.GUI_Load);
             this.Shown += new System.EventHandler(this.GUI_Shown);
+            this.DoubleClick += new System.EventHandler(this.GUI_DoubleClick);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private Awesomium.Windows.Forms.WebSessionProvider sessionProvider;
         public System.Windows.Forms.ProgressBar totalProgress;
         public System.Windows.Forms.Label totalStatus;
         public System.Windows.Forms.Label currentStatus;

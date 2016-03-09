@@ -14,9 +14,11 @@ using System.IO;
 using System.Security.Cryptography;
 using Client.Functions;
 using Client.Structures;
+using Awesomium.Core;
 
 namespace Client
 {
+    // TODO: Make it so that if validation fails (while rememberMe) user has option to forget credentials
     public partial class GUI : Form
     {
         #region Drag Hack
@@ -36,7 +38,7 @@ namespace Client
         }
         #endregion
 
-        internal readonly string ip = "127.0.0.1";
+        internal readonly string ip = "176.31.181.127";
         internal readonly short port = 13545;
         internal readonly string md5Key = "1337";
         XDes DesCipher;
@@ -45,6 +47,8 @@ namespace Client
         internal LoginCredentials loginCreds;
         public static GUI Instance;
         internal string fingerPrint;
+        internal bool validated = false;
+        internal WebSession webSession;
 
         public GUI()
         {
@@ -52,6 +56,8 @@ namespace Client
             DesCipher = new XDes(Program.DesKey);
             settings = Properties.Settings.Default;
             Instance = this;
+            webSession = WebCore.CreateWebSession(string.Concat(Directory.GetCurrentDirectory(), @"\web\"), WebPreferences.Default);
+            //browser.WebSession = webSession;
         }
 
         private void GUI_Load(object sender, EventArgs e)
@@ -60,31 +66,66 @@ namespace Client
 
         private void GUI_Shown(object sender, EventArgs e)
         {
-            bool close = false;
+            int failedAttempts = 0;
 
-            // Gather the users login credentials
+            while (!attemptLogin())
+            {
+                if (failedAttempts == 2 && settings.remember)
+                {
+                    if (MessageBox.Show("Yould you like to forget your Login Credentials?", "Login Exception", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        settings.username = string.Empty;
+                        settings.password = string.Empty;
+                        settings.remember = false;
+                        settings.Save();
+                        settings.Reload();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cannot continue without login, shutting down!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Close();
+                    }
+                }
+
+                failedAttempts++;
+
+                attemptLogin();
+            }
+
+            validated = true;
+
+            if (checkForClient())
+            {
+                navigateToSplash();
+
+                totalStatus.Text = "Updating the client...";
+                UpdateHandler.Instance.Start();
+
+                //if (UpdateHandler.Instance.NetworkError) { return; }
+            }
+            else
+            {
+                MessageBox.Show("Cannot continue without a valid client path, shuttimng down!", "Update Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
+        }
+
+        protected bool attemptLogin()
+        {
+            // Assign a fingerprint before the login attempt
+            fingerPrint = FingerPrint.Value;
+
             loginCreds = GetCredentials();
+
             if (loginCreds != null)
             {
-                // Assign a fingerprint before the login attempt
-                fingerPrint = FingerPrint.Value;
-
-                // Attempt a login
                 if (Login(loginCreds.Username, loginCreds.Password, loginCreds.Pin, loginCreds.Remember))
                 {
-                    if (checkForClient())
-                    {
-                        navigateToSplash();
-
-                        UpdateHandler.Instance.Start();
-
-                        navigateToHome(loginCreds.Username, loginCreds.Password, fingerPrint);
-                    }
-                    else { close = true; }
+                    return true;
                 }
             }
 
-            if (close) { this.Close(); }
+            return false;
         }
 
         protected bool checkForClient()
@@ -117,6 +158,8 @@ namespace Client
 
         private LoginCredentials GetCredentials()
         {
+            bool close = false;
+
             LoginCredentials tempCreds = null;
 
             if (settings.remember)
@@ -145,7 +188,12 @@ namespace Client
                             Remember = loginGUI.RememberMe
                         };
                     }
-                    else { /*Close connection, state cannot continue without login*/ }
+                    else if (loginGUI.CancelClicked)
+                    {
+                        MessageBox.Show("Cannot continue without login, shutting down!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        close = true;
+                    }
+                    else if (!loginGUI.LoginClicked) { MessageBox.Show("You didn't provide proper credentials, please try again!", "Credentials Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
                     loginGUI.Dispose();
                 };
@@ -153,6 +201,7 @@ namespace Client
                 loginGUI.ShowDialog(this);
             }
 
+            if (close) { this.Close(); }
             return tempCreds;
         }
 
@@ -192,9 +241,11 @@ namespace Client
                         return true;
 
                     case "no_username":
+                        MessageBox.Show("You have not set your Username, please do so before trying again", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
 
                     case "no_password":
+                        MessageBox.Show("You have not set your Password, please do so before trying again", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
 
                     case "invalid_username":
@@ -210,12 +261,15 @@ namespace Client
                         break;
 
                     case "invalid_pin":
+                        MessageBox.Show("Failed to Login!\nThe pin you provided is invalid!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
 
                     case "account_locked":
+                        MessageBox.Show("Failed to Login!\nYour account is current locked!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
 
                     case "ban_type_1": case "ban_type_2": case "ban_type_3":
+                        MessageBox.Show("Failed to Login!\nYour account has been banned!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
                 }
             }
@@ -235,6 +289,7 @@ namespace Client
 
         protected void navigateToHome(string username, string password, string fingerprint)
         {
+            browser.WebSession.SetCookie(new Uri("http://rappelz.team-vendetta.com"), "LOGIN=FAKE", true, true);
             browser.WebSession.SetCookie(new Uri("http://rappelz.team-vendetta.com"), string.Format("P_SESSION_ID={0};", username), true, true);
             browser.WebSession.SetCookie(new Uri("http://rappelz.team-vendetta.com"), string.Format("P_VAR_1={0};", PasswordCipher.CreateHash(md5Key, password)), true, true);
             browser.WebSession.SetCookie(new Uri("http://rappelz.team-vendetta.com"), string.Format("P_VAR_2={0};", fingerprint), true, true);
@@ -245,12 +300,63 @@ namespace Client
 
         public static void OnUpdateComplete()
         {
-            //MessageBox.Show("Patching process completed.");          
+            Instance.totalStatus.ResetText();
+            Instance.totalProgress.Maximum = 100;
+            Instance.totalProgress.Value = 0;
+            Instance.currentStatus.ResetText();
+            Instance.currentProgress.Maximum = 100;
+            Instance.currentProgress.Value = 0;
+            Instance.navigateToHome(Instance.loginCreds.Username, Instance.loginCreds.Password, Instance.fingerPrint);
+        }
+
+        public void UpdateStatus(int type, string text)
+        {
+            switch (type)
+            {
+                case 0: // total
+                    this.Invoke(new MethodInvoker(delegate { totalStatus.Text = text; }));
+                    break;
+
+                case 1: // current
+                    this.Invoke(new MethodInvoker(delegate { currentStatus.Text = text; }));
+                    break;
+            }
+        }
+
+        public void UpdateProgressMaximum(int type, int maximum)
+        {
+            switch (type)
+            {
+                case 0: // total
+                    this.Invoke(new MethodInvoker(delegate { totalProgress.Maximum = maximum; }));
+                    break;
+
+                case 1: // current
+                    this.Invoke(new MethodInvoker(delegate { currentProgress.Maximum = maximum; }));
+                    break;
+            }
+        }
+
+        public void UpdateProgressValue(int type, int value)
+        {
+            switch (type)
+            {
+                case 0: // total
+                    this.Invoke(new MethodInvoker(delegate { totalProgress.Value = value; }));
+                    break;
+
+                case 1: // current
+                    this.Invoke(new MethodInvoker(delegate { currentProgress.Value = value; }));
+                    break;
+            }
         }
 
         private void start_btn_Click(object sender, EventArgs e)
         {
-            ServerPackets.Instance.RequestArguments(loginCreds.Username);
+            if (validated)
+            {
+                ServerPackets.Instance.RequestArguments(loginCreds.Username);
+            }
         }
 
         public static void OnArgumentsReceived(string arguments)
@@ -267,11 +373,30 @@ namespace Client
 
         private void launcherSettings_btn_Click(object sender, EventArgs e)
         {
-            UserSettings settings = new UserSettings();
-            GeneralSettingsGUI settingsGUI = new GeneralSettingsGUI(settings);
-            settingsGUI.FormClosing += (o, x) => { settings = settingsGUI.userSettings; };
-            settingsGUI.FormClosed += (o, x) => { settings.Save(); };
-            settingsGUI.ShowDialog();
+            if (validated)
+            {
+                UserSettings settings = new UserSettings();
+                GeneralSettingsGUI settingsGUI = new GeneralSettingsGUI(settings);
+                settingsGUI.FormClosing += (o, x) => { settings = settingsGUI.userSettings; };
+                settingsGUI.FormClosed += (o, x) => { settings.Save(); };
+                settingsGUI.ShowDialog(this);
+            }
+        }
+
+        private void GUI_DoubleClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gameSettings_lb_Click(object sender, EventArgs e)
+        {
+            if (validated)
+            {
+                SettingsManager.InitRappelzSettings();
+                RappelzSettingsGUI settings = new RappelzSettingsGUI(SettingsManager.RappelzSettings);
+                settings.FormClosing += (o, x) => { SettingsManager.SaveSettings(SettingsManager.RappelzSettings); };
+                settings.ShowDialog(this);
+            }
         }
     }
 }

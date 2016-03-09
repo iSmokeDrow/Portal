@@ -9,7 +9,7 @@ namespace Server.Functions
     /// </summary>
     public class Database
     {
-        public static string ConnectionString
+        private static string connectionString
         {
             get
             {
@@ -26,10 +26,7 @@ namespace Server.Functions
         /// </summary>
         /// <param name="connectionString">Connection settings for this connection</param>
         /// <returns>Prepared SqlConnection</returns>
-        public static SqlConnection CreateConnection(string connectionString)
-        {
-            return new SqlConnection(connectionString);
-        }
+        public static SqlConnection CreateConnection { get { return new SqlConnection(connectionString); } }
 
         /// <summary>
         /// Executes a prepared Sql Statement on a prepared and opened Sql Connection

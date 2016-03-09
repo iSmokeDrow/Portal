@@ -10,6 +10,8 @@ namespace Client.Network
 {
     public class ServerManager
     {
+        internal bool started = false;
+
         /// <summary>
         /// Holds the instance to server manager
         /// </summary>
@@ -50,6 +52,8 @@ namespace Client.Network
 
                 // Starts to receive data
                 socket.BeginReceive(_Server.Buffer, 0, PacketStream.MaxBuffer, SocketFlags.None, new AsyncCallback(ReadCallback), null);
+
+                started = true;
             }
             catch (Exception e)
             {
@@ -216,7 +220,8 @@ namespace Client.Network
 
         internal void Close()
         {
-            _Server.ClSocket.Close();
+            if (started)
+                _Server.ClSocket.Close();
         }
 
         /// <summary>

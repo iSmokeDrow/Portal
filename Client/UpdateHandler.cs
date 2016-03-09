@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Client
@@ -58,7 +58,7 @@ namespace Client
                 guiInstance.Invoke(new MethodInvoker(delegate
                 {
                     guiInstance.totalProgress.Value = 0;
-                    guiInstance.totalProgress.Maximum = 0;
+                    guiInstance.totalProgress.Maximum = 100;
                     guiInstance.totalStatus.ResetText();
                 }));
             };
@@ -76,7 +76,7 @@ namespace Client
                 guiInstance.Invoke(new MethodInvoker(delegate
                 {
                     guiInstance.currentProgress.Value = 0;
-                    guiInstance.currentProgress.Maximum = 0;
+                    guiInstance.currentProgress.Maximum = 100;
                     guiInstance.currentStatus.ResetText();
                 }));
             };
@@ -111,6 +111,7 @@ namespace Client
         public void OnUpdateIndexEnd()
         {
             this.CurrentIndex = 0;
+            guiInstance.UpdateProgressMaximum(0, this.FileList.Count);
             CheckFiles();
         }
 
@@ -118,8 +119,12 @@ namespace Client
         {
             for (; this.CurrentIndex < this.FileList.Count; ++this.CurrentIndex)
             {
+                guiInstance.UpdateProgressValue(0, this.CurrentIndex);
+
                 UpdateIndex file = this.FileList[this.CurrentIndex];
                 bool download = false;
+
+                guiInstance.UpdateStatus(1, string.Format("Checking file: {0}", file.FileName));
 
                 if (file.IsLegacy)
                 {
@@ -135,7 +140,11 @@ namespace Client
                     {
                         string fileHash = Hash.GetSHA512Hash(core.GetFileBytes(settings.clientDirectory, Path.GetExtension(core.DecodeName(fileEntry.Name)).Remove(0, 1), fileEntry.DataID, fileEntry.Offset, fileEntry.Length), fileEntry.Length);
 
-                        if (file.FileHash != fileHash) { download = true; }
+                        if (file.FileHash != fileHash)
+                        {
+                            guiInstance.UpdateStatus(1, string.Format("File: {0} is out of date!", file.FileName));
+                            download = true;
+                        }
                     }
                 }
 
@@ -157,9 +166,12 @@ namespace Client
                 partialHash = Hash.GetSHA512Hash(currentData, currentData.Length);
                 offset = currentData.Length;
             }
+
+            guiInstance.UpdateStatus(1, string.Format("Downloading file: {0}", name));
             ServerPackets.Instance.RequestFile(name, offset, partialHash);
         }
 
+        // TODO: Add timer to do timeout if file quits downloading
         public void OnFileDataReceived(int offset, bool isEOF, byte[] data)
         {
             string zipName = String.Concat(this.FileList[this.CurrentIndex].FileName, ".zip");
@@ -170,7 +182,7 @@ namespace Client
             {
                 fs.Seek(offset, SeekOrigin.Begin);
                 fs.Write(data, 0, data.Length);
-                fs.Close();
+                fs.Dispose();
             }
 
             if (isEOF) { OnUpdateDownloadCompleted(); }
@@ -179,6 +191,8 @@ namespace Client
         private void OnUpdateDownloadCompleted()
         {
             UpdateIndex file = this.FileList[this.CurrentIndex];
+
+            guiInstance.UpdateStatus(1, string.Format("Applying update file: {0}", file.FileName));
 
             string zipPath = Path.Combine(tempPath, string.Concat(file.FileName, ".zip"));
             string resourcePath = Path.Combine(tempPath, file.FileName);
@@ -199,8 +213,12 @@ namespace Client
                 File.Delete(zipPath);
             }
 
+            guiInstance.UpdateStatus(1, string.Format("Verifying update: {0}", file.FileName));
+
             // Check that the file update actually took
             if (Hash.GetSHA512Hash(resourcePath) == file.FileHash) { CurrentIndex++; }
+
+            guiInstance.UpdateStatus(1, "");
             
             CheckFiles();
         }

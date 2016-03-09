@@ -106,8 +106,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.shadowSelfQuality = new System.Windows.Forms.TrackBar();
             this.label13 = new System.Windows.Forms.Label();
-            this.saveBtn = new System.Windows.Forms.Button();
             this.volumeMixerlb = new System.Windows.Forms.Label();
+            this.save_lb = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gfxPreset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightness)).BeginInit();
@@ -145,9 +145,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.resolutionWidth);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(12, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(587, 135);
+            this.groupBox1.Size = new System.Drawing.Size(587, 145);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Graphics (Basic)";
@@ -155,9 +155,9 @@
             // cameraCriticalShake
             // 
             this.cameraCriticalShake.AutoSize = true;
-            this.cameraCriticalShake.Location = new System.Drawing.Point(432, 103);
+            this.cameraCriticalShake.Location = new System.Drawing.Point(432, 111);
             this.cameraCriticalShake.Name = "cameraCriticalShake";
-            this.cameraCriticalShake.Size = new System.Drawing.Size(136, 17);
+            this.cameraCriticalShake.Size = new System.Drawing.Size(139, 18);
             this.cameraCriticalShake.TabIndex = 14;
             this.cameraCriticalShake.Text = "Camera Shake (Critical)";
             this.cameraCriticalShake.UseVisualStyleBackColor = true;
@@ -165,9 +165,9 @@
             // cameraCollisions
             // 
             this.cameraCollisions.AutoSize = true;
-            this.cameraCollisions.Location = new System.Drawing.Point(237, 103);
+            this.cameraCollisions.Location = new System.Drawing.Point(237, 111);
             this.cameraCollisions.Name = "cameraCollisions";
-            this.cameraCollisions.Size = new System.Drawing.Size(108, 17);
+            this.cameraCollisions.Size = new System.Drawing.Size(111, 18);
             this.cameraCollisions.TabIndex = 13;
             this.cameraCollisions.Text = "Camera Collisions";
             this.cameraCollisions.UseVisualStyleBackColor = true;
@@ -175,9 +175,9 @@
             // useDesktopBrightness
             // 
             this.useDesktopBrightness.AutoSize = true;
-            this.useDesktopBrightness.Location = new System.Drawing.Point(21, 103);
+            this.useDesktopBrightness.Location = new System.Drawing.Point(21, 111);
             this.useDesktopBrightness.Name = "useDesktopBrightness";
-            this.useDesktopBrightness.Size = new System.Drawing.Size(140, 17);
+            this.useDesktopBrightness.Size = new System.Drawing.Size(142, 18);
             this.useDesktopBrightness.TabIndex = 12;
             this.useDesktopBrightness.Text = "Use Desktop Brightness";
             this.useDesktopBrightness.UseVisualStyleBackColor = true;
@@ -186,10 +186,10 @@
             // gfxPreset
             // 
             this.gfxPreset.LargeChange = 2;
-            this.gfxPreset.Location = new System.Drawing.Point(301, 62);
+            this.gfxPreset.Location = new System.Drawing.Point(301, 67);
             this.gfxPreset.Maximum = 5;
             this.gfxPreset.Name = "gfxPreset";
-            this.gfxPreset.Size = new System.Drawing.Size(132, 45);
+            this.gfxPreset.Size = new System.Drawing.Size(132, 42);
             this.gfxPreset.TabIndex = 11;
             this.gfxPreset.Value = 1;
             this.gfxPreset.ValueChanged += new System.EventHandler(this.gfxPreset_ValueChanged);
@@ -197,36 +197,36 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(235, 62);
+            this.label5.Location = new System.Drawing.Point(235, 67);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(40, 13);
+            this.label5.Size = new System.Drawing.Size(41, 14);
             this.label5.TabIndex = 10;
             this.label5.Text = "Preset:";
             // 
             // brightness
             // 
             this.brightness.LargeChange = 2;
-            this.brightness.Location = new System.Drawing.Point(84, 62);
+            this.brightness.Location = new System.Drawing.Point(84, 67);
             this.brightness.Maximum = 5;
             this.brightness.Name = "brightness";
-            this.brightness.Size = new System.Drawing.Size(132, 45);
+            this.brightness.Size = new System.Drawing.Size(132, 42);
             this.brightness.TabIndex = 9;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 62);
+            this.label4.Location = new System.Drawing.Point(18, 67);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 13);
+            this.label4.Size = new System.Drawing.Size(62, 14);
             this.label4.TabIndex = 8;
             this.label4.Text = "Brightness:";
             // 
             // windowed
             // 
             this.windowed.AutoSize = true;
-            this.windowed.Location = new System.Drawing.Point(491, 25);
+            this.windowed.Location = new System.Drawing.Point(491, 27);
             this.windowed.Name = "windowed";
-            this.windowed.Size = new System.Drawing.Size(77, 17);
+            this.windowed.Size = new System.Drawing.Size(78, 18);
             this.windowed.TabIndex = 6;
             this.windowed.Text = "Windowed";
             this.windowed.UseVisualStyleBackColor = true;
@@ -238,23 +238,23 @@
             this.refreshRate.Items.AddRange(new object[] {
             "60 Hz",
             "75 Hz"});
-            this.refreshRate.Location = new System.Drawing.Point(314, 25);
+            this.refreshRate.Location = new System.Drawing.Point(314, 27);
             this.refreshRate.Name = "refreshRate";
-            this.refreshRate.Size = new System.Drawing.Size(119, 21);
+            this.refreshRate.Size = new System.Drawing.Size(119, 22);
             this.refreshRate.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(235, 27);
+            this.label3.Location = new System.Drawing.Point(235, 29);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 13);
+            this.label3.Size = new System.Drawing.Size(74, 14);
             this.label3.TabIndex = 4;
             this.label3.Text = "Refresh Rate:";
             // 
             // resolutionHeight
             // 
-            this.resolutionHeight.Location = new System.Drawing.Point(162, 25);
+            this.resolutionHeight.Location = new System.Drawing.Point(162, 27);
             this.resolutionHeight.Maximum = new decimal(new int[] {
             1080,
             0,
@@ -278,15 +278,15 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(144, 27);
+            this.label2.Location = new System.Drawing.Point(144, 29);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(12, 13);
+            this.label2.Size = new System.Drawing.Size(13, 14);
             this.label2.TabIndex = 2;
             this.label2.Text = "x";
             // 
             // resolutionWidth
             // 
-            this.resolutionWidth.Location = new System.Drawing.Point(84, 25);
+            this.resolutionWidth.Location = new System.Drawing.Point(84, 27);
             this.resolutionWidth.Maximum = new decimal(new int[] {
             1920,
             0,
@@ -310,9 +310,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 27);
+            this.label1.Location = new System.Drawing.Point(18, 29);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.Size = new System.Drawing.Size(60, 14);
             this.label1.TabIndex = 0;
             this.label1.Text = "Resolution:";
             // 
@@ -332,16 +332,16 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.enviromentDistance);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(12, 153);
+            this.groupBox2.Location = new System.Drawing.Point(12, 165);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(587, 97);
+            this.groupBox2.Size = new System.Drawing.Size(587, 104);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Graphics (Draw Distance)";
             // 
             // shadowDistance
             // 
-            this.shadowDistance.Location = new System.Drawing.Point(353, 59);
+            this.shadowDistance.Location = new System.Drawing.Point(353, 64);
             this.shadowDistance.Maximum = new decimal(new int[] {
             4,
             0,
@@ -360,15 +360,15 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(298, 61);
+            this.label12.Location = new System.Drawing.Point(298, 66);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(49, 13);
+            this.label12.Size = new System.Drawing.Size(51, 14);
             this.label12.TabIndex = 12;
             this.label12.Text = "Shadow:";
             // 
             // characterDistance
             // 
-            this.characterDistance.Location = new System.Drawing.Point(221, 59);
+            this.characterDistance.Location = new System.Drawing.Point(221, 64);
             this.characterDistance.Maximum = new decimal(new int[] {
             4,
             0,
@@ -387,15 +387,15 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(159, 61);
+            this.label11.Location = new System.Drawing.Point(159, 66);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(56, 13);
+            this.label11.Size = new System.Drawing.Size(58, 14);
             this.label11.TabIndex = 10;
             this.label11.Text = "Character:";
             // 
             // grassDistance
             // 
-            this.grassDistance.Location = new System.Drawing.Point(93, 59);
+            this.grassDistance.Location = new System.Drawing.Point(93, 64);
             this.grassDistance.Maximum = new decimal(new int[] {
             4,
             0,
@@ -414,15 +414,15 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(18, 61);
+            this.label10.Location = new System.Drawing.Point(18, 66);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(37, 13);
+            this.label10.Size = new System.Drawing.Size(40, 14);
             this.label10.TabIndex = 8;
             this.label10.Text = "Grass:";
             // 
             // speedDistance
             // 
-            this.speedDistance.Location = new System.Drawing.Point(487, 25);
+            this.speedDistance.Location = new System.Drawing.Point(487, 27);
             this.speedDistance.Maximum = new decimal(new int[] {
             4,
             0,
@@ -441,15 +441,15 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(440, 27);
+            this.label9.Location = new System.Drawing.Point(440, 29);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 13);
+            this.label9.Size = new System.Drawing.Size(41, 14);
             this.label9.TabIndex = 6;
             this.label9.Text = "Speed:";
             // 
             // propDistance
             // 
-            this.propDistance.Location = new System.Drawing.Point(353, 27);
+            this.propDistance.Location = new System.Drawing.Point(353, 29);
             this.propDistance.Maximum = new decimal(new int[] {
             4,
             0,
@@ -468,15 +468,15 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(298, 29);
+            this.label8.Location = new System.Drawing.Point(298, 31);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(32, 13);
+            this.label8.Size = new System.Drawing.Size(32, 14);
             this.label8.TabIndex = 4;
             this.label8.Text = "Prop:";
             // 
             // terrainDistance
             // 
-            this.terrainDistance.Location = new System.Drawing.Point(221, 27);
+            this.terrainDistance.Location = new System.Drawing.Point(221, 29);
             this.terrainDistance.Maximum = new decimal(new int[] {
             4,
             0,
@@ -495,15 +495,15 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(159, 29);
+            this.label7.Location = new System.Drawing.Point(159, 31);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(43, 13);
+            this.label7.Size = new System.Drawing.Size(43, 14);
             this.label7.TabIndex = 2;
             this.label7.Text = "Terrain:";
             // 
             // enviromentDistance
             // 
-            this.enviromentDistance.Location = new System.Drawing.Point(93, 27);
+            this.enviromentDistance.Location = new System.Drawing.Point(93, 29);
             this.enviromentDistance.Maximum = new decimal(new int[] {
             4,
             0,
@@ -522,9 +522,9 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 29);
+            this.label6.Location = new System.Drawing.Point(18, 31);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(69, 13);
+            this.label6.Size = new System.Drawing.Size(69, 14);
             this.label6.TabIndex = 0;
             this.label6.Text = "Environment:";
             // 
@@ -568,9 +568,9 @@
             this.groupBox3.Controls.Add(this.betterTrees);
             this.groupBox3.Controls.Add(this.waterReflections);
             this.groupBox3.Controls.Add(this.bloom);
-            this.groupBox3.Location = new System.Drawing.Point(12, 256);
+            this.groupBox3.Location = new System.Drawing.Point(12, 276);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(587, 274);
+            this.groupBox3.Size = new System.Drawing.Size(587, 295);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Graphics (Render)";
@@ -578,9 +578,9 @@
             // creatureDamage
             // 
             this.creatureDamage.AutoSize = true;
-            this.creatureDamage.Location = new System.Drawing.Point(237, 215);
+            this.creatureDamage.Location = new System.Drawing.Point(237, 232);
             this.creatureDamage.Name = "creatureDamage";
-            this.creatureDamage.Size = new System.Drawing.Size(109, 17);
+            this.creatureDamage.Size = new System.Drawing.Size(110, 18);
             this.creatureDamage.TabIndex = 41;
             this.creatureDamage.Text = "Creature Damage";
             this.creatureDamage.UseVisualStyleBackColor = true;
@@ -588,9 +588,9 @@
             // playerDamage
             // 
             this.playerDamage.AutoSize = true;
-            this.playerDamage.Location = new System.Drawing.Point(120, 215);
+            this.playerDamage.Location = new System.Drawing.Point(120, 232);
             this.playerDamage.Name = "playerDamage";
-            this.playerDamage.Size = new System.Drawing.Size(98, 17);
+            this.playerDamage.Size = new System.Drawing.Size(98, 18);
             this.playerDamage.TabIndex = 40;
             this.playerDamage.Text = "Player Damage";
             this.playerDamage.UseVisualStyleBackColor = true;
@@ -598,9 +598,9 @@
             // damage
             // 
             this.damage.AutoSize = true;
-            this.damage.Location = new System.Drawing.Point(21, 215);
+            this.damage.Location = new System.Drawing.Point(21, 232);
             this.damage.Name = "damage";
-            this.damage.Size = new System.Drawing.Size(66, 17);
+            this.damage.Size = new System.Drawing.Size(65, 18);
             this.damage.TabIndex = 39;
             this.damage.Text = "Damage";
             this.damage.UseVisualStyleBackColor = true;
@@ -608,9 +608,9 @@
             // monsterAvatar
             // 
             this.monsterAvatar.AutoSize = true;
-            this.monsterAvatar.Location = new System.Drawing.Point(237, 146);
+            this.monsterAvatar.Location = new System.Drawing.Point(237, 157);
             this.monsterAvatar.Name = "monsterAvatar";
-            this.monsterAvatar.Size = new System.Drawing.Size(98, 17);
+            this.monsterAvatar.Size = new System.Drawing.Size(100, 18);
             this.monsterAvatar.TabIndex = 38;
             this.monsterAvatar.Text = "Monster Avatar";
             this.monsterAvatar.UseVisualStyleBackColor = true;
@@ -618,9 +618,9 @@
             // targetHPGauge
             // 
             this.targetHPGauge.AutoSize = true;
-            this.targetHPGauge.Location = new System.Drawing.Point(355, 192);
+            this.targetHPGauge.Location = new System.Drawing.Point(355, 207);
             this.targetHPGauge.Name = "targetHPGauge";
-            this.targetHPGauge.Size = new System.Drawing.Size(110, 17);
+            this.targetHPGauge.Size = new System.Drawing.Size(107, 18);
             this.targetHPGauge.TabIndex = 37;
             this.targetHPGauge.Text = "Target HP Gauge";
             this.targetHPGauge.UseVisualStyleBackColor = true;
@@ -628,9 +628,9 @@
             // mobHPGauge
             // 
             this.mobHPGauge.AutoSize = true;
-            this.mobHPGauge.Location = new System.Drawing.Point(237, 192);
+            this.mobHPGauge.Location = new System.Drawing.Point(237, 207);
             this.mobHPGauge.Name = "mobHPGauge";
-            this.mobHPGauge.Size = new System.Drawing.Size(117, 17);
+            this.mobHPGauge.Size = new System.Drawing.Size(116, 18);
             this.mobHPGauge.TabIndex = 36;
             this.mobHPGauge.Text = "Monster HP Gauge";
             this.mobHPGauge.UseVisualStyleBackColor = true;
@@ -638,9 +638,9 @@
             // playerHPGauge
             // 
             this.playerHPGauge.AutoSize = true;
-            this.playerHPGauge.Location = new System.Drawing.Point(120, 192);
+            this.playerHPGauge.Location = new System.Drawing.Point(120, 207);
             this.playerHPGauge.Name = "playerHPGauge";
-            this.playerHPGauge.Size = new System.Drawing.Size(108, 17);
+            this.playerHPGauge.Size = new System.Drawing.Size(107, 18);
             this.playerHPGauge.TabIndex = 35;
             this.playerHPGauge.Text = "Player HP Gauge";
             this.playerHPGauge.UseVisualStyleBackColor = true;
@@ -648,9 +648,9 @@
             // hpGauges
             // 
             this.hpGauges.AutoSize = true;
-            this.hpGauges.Location = new System.Drawing.Point(21, 192);
+            this.hpGauges.Location = new System.Drawing.Point(21, 207);
             this.hpGauges.Name = "hpGauges";
-            this.hpGauges.Size = new System.Drawing.Size(81, 17);
+            this.hpGauges.Size = new System.Drawing.Size(80, 18);
             this.hpGauges.TabIndex = 34;
             this.hpGauges.Text = "HP Gauges";
             this.hpGauges.UseVisualStyleBackColor = true;
@@ -658,9 +658,9 @@
             // npcNames
             // 
             this.npcNames.AutoSize = true;
-            this.npcNames.Location = new System.Drawing.Point(463, 169);
+            this.npcNames.Location = new System.Drawing.Point(463, 182);
             this.npcNames.Name = "npcNames";
-            this.npcNames.Size = new System.Drawing.Size(84, 17);
+            this.npcNames.Size = new System.Drawing.Size(82, 18);
             this.npcNames.TabIndex = 33;
             this.npcNames.Text = "NPC Names";
             this.npcNames.UseVisualStyleBackColor = true;
@@ -668,9 +668,9 @@
             // monsterNames
             // 
             this.monsterNames.AutoSize = true;
-            this.monsterNames.Location = new System.Drawing.Point(355, 169);
+            this.monsterNames.Location = new System.Drawing.Point(355, 182);
             this.monsterNames.Name = "monsterNames";
-            this.monsterNames.Size = new System.Drawing.Size(100, 17);
+            this.monsterNames.Size = new System.Drawing.Size(101, 18);
             this.monsterNames.TabIndex = 32;
             this.monsterNames.Text = "Monster Names";
             this.monsterNames.UseVisualStyleBackColor = true;
@@ -678,9 +678,9 @@
             // creatureNames
             // 
             this.creatureNames.AutoSize = true;
-            this.creatureNames.Location = new System.Drawing.Point(237, 169);
+            this.creatureNames.Location = new System.Drawing.Point(237, 182);
             this.creatureNames.Name = "creatureNames";
-            this.creatureNames.Size = new System.Drawing.Size(102, 17);
+            this.creatureNames.Size = new System.Drawing.Size(104, 18);
             this.creatureNames.TabIndex = 31;
             this.creatureNames.Text = "Creature Names";
             this.creatureNames.UseVisualStyleBackColor = true;
@@ -688,9 +688,9 @@
             // playerNames
             // 
             this.playerNames.AutoSize = true;
-            this.playerNames.Location = new System.Drawing.Point(120, 169);
+            this.playerNames.Location = new System.Drawing.Point(120, 182);
             this.playerNames.Name = "playerNames";
-            this.playerNames.Size = new System.Drawing.Size(91, 17);
+            this.playerNames.Size = new System.Drawing.Size(92, 18);
             this.playerNames.TabIndex = 30;
             this.playerNames.Text = "Player Names";
             this.playerNames.UseVisualStyleBackColor = true;
@@ -698,9 +698,9 @@
             // names
             // 
             this.names.AutoSize = true;
-            this.names.Location = new System.Drawing.Point(21, 169);
+            this.names.Location = new System.Drawing.Point(21, 182);
             this.names.Name = "names";
-            this.names.Size = new System.Drawing.Size(59, 17);
+            this.names.Size = new System.Drawing.Size(59, 18);
             this.names.TabIndex = 29;
             this.names.Text = "Names";
             this.names.UseVisualStyleBackColor = true;
@@ -708,9 +708,9 @@
             // chatBalloons
             // 
             this.chatBalloons.AutoSize = true;
-            this.chatBalloons.Location = new System.Drawing.Point(120, 146);
+            this.chatBalloons.Location = new System.Drawing.Point(120, 157);
             this.chatBalloons.Name = "chatBalloons";
-            this.chatBalloons.Size = new System.Drawing.Size(86, 17);
+            this.chatBalloons.Size = new System.Drawing.Size(86, 18);
             this.chatBalloons.TabIndex = 28;
             this.chatBalloons.Text = "Chat Balloon";
             this.chatBalloons.UseVisualStyleBackColor = true;
@@ -718,9 +718,9 @@
             // targetOutline
             // 
             this.targetOutline.AutoSize = true;
-            this.targetOutline.Location = new System.Drawing.Point(21, 146);
+            this.targetOutline.Location = new System.Drawing.Point(21, 157);
             this.targetOutline.Name = "targetOutline";
-            this.targetOutline.Size = new System.Drawing.Size(93, 17);
+            this.targetOutline.Size = new System.Drawing.Size(92, 18);
             this.targetOutline.TabIndex = 27;
             this.targetOutline.Text = "Target Outline";
             this.targetOutline.UseVisualStyleBackColor = true;
@@ -728,9 +728,9 @@
             // lowQualityShadows
             // 
             this.lowQualityShadows.AutoSize = true;
-            this.lowQualityShadows.Location = new System.Drawing.Point(355, 54);
+            this.lowQualityShadows.Location = new System.Drawing.Point(355, 58);
             this.lowQualityShadows.Name = "lowQualityShadows";
-            this.lowQualityShadows.Size = new System.Drawing.Size(128, 17);
+            this.lowQualityShadows.Size = new System.Drawing.Size(134, 18);
             this.lowQualityShadows.TabIndex = 21;
             this.lowQualityShadows.Text = "Low Quality Shadows";
             this.lowQualityShadows.UseVisualStyleBackColor = true;
@@ -738,9 +738,9 @@
             // shadows
             // 
             this.shadows.AutoSize = true;
-            this.shadows.Location = new System.Drawing.Point(237, 54);
+            this.shadows.Location = new System.Drawing.Point(237, 58);
             this.shadows.Name = "shadows";
-            this.shadows.Size = new System.Drawing.Size(70, 17);
+            this.shadows.Size = new System.Drawing.Size(73, 18);
             this.shadows.TabIndex = 7;
             this.shadows.Text = "Shadows";
             this.shadows.UseVisualStyleBackColor = true;
@@ -748,9 +748,9 @@
             // titles
             // 
             this.titles.AutoSize = true;
-            this.titles.Location = new System.Drawing.Point(355, 123);
+            this.titles.Location = new System.Drawing.Point(355, 132);
             this.titles.Name = "titles";
-            this.titles.Size = new System.Drawing.Size(51, 17);
+            this.titles.Size = new System.Drawing.Size(51, 18);
             this.titles.TabIndex = 25;
             this.titles.Text = "Titles";
             this.titles.UseVisualStyleBackColor = true;
@@ -758,9 +758,9 @@
             // deco
             // 
             this.deco.AutoSize = true;
-            this.deco.Location = new System.Drawing.Point(237, 123);
+            this.deco.Location = new System.Drawing.Point(237, 132);
             this.deco.Name = "deco";
-            this.deco.Size = new System.Drawing.Size(52, 17);
+            this.deco.Size = new System.Drawing.Size(51, 18);
             this.deco.TabIndex = 24;
             this.deco.Text = "Deco";
             this.deco.UseVisualStyleBackColor = true;
@@ -768,9 +768,9 @@
             // helmets
             // 
             this.helmets.AutoSize = true;
-            this.helmets.Location = new System.Drawing.Point(120, 123);
+            this.helmets.Location = new System.Drawing.Point(120, 132);
             this.helmets.Name = "helmets";
-            this.helmets.Size = new System.Drawing.Size(64, 17);
+            this.helmets.Size = new System.Drawing.Size(64, 18);
             this.helmets.TabIndex = 23;
             this.helmets.Text = "Helmets";
             this.helmets.UseVisualStyleBackColor = true;
@@ -778,9 +778,9 @@
             // cloaks
             // 
             this.cloaks.AutoSize = true;
-            this.cloaks.Location = new System.Drawing.Point(21, 123);
+            this.cloaks.Location = new System.Drawing.Point(21, 132);
             this.cloaks.Name = "cloaks";
-            this.cloaks.Size = new System.Drawing.Size(58, 17);
+            this.cloaks.Size = new System.Drawing.Size(58, 18);
             this.cloaks.TabIndex = 22;
             this.cloaks.Text = "Cloaks";
             this.cloaks.UseVisualStyleBackColor = true;
@@ -788,9 +788,9 @@
             // effect_o
             // 
             this.effect_o.AutoSize = true;
-            this.effect_o.Location = new System.Drawing.Point(355, 100);
+            this.effect_o.Location = new System.Drawing.Point(355, 108);
             this.effect_o.Name = "effect_o";
-            this.effect_o.Size = new System.Drawing.Size(106, 17);
+            this.effect_o.Size = new System.Drawing.Size(111, 18);
             this.effect_o.TabIndex = 19;
             this.effect_o.Text = "Effect (Monsters)";
             this.effect_o.UseVisualStyleBackColor = true;
@@ -798,9 +798,9 @@
             // effect_p
             // 
             this.effect_p.AutoSize = true;
-            this.effect_p.Location = new System.Drawing.Point(237, 100);
+            this.effect_p.Location = new System.Drawing.Point(237, 108);
             this.effect_p.Name = "effect_p";
-            this.effect_p.Size = new System.Drawing.Size(87, 17);
+            this.effect_p.Size = new System.Drawing.Size(91, 18);
             this.effect_p.TabIndex = 18;
             this.effect_p.Text = "Effect (Party)";
             this.effect_p.UseVisualStyleBackColor = true;
@@ -808,9 +808,9 @@
             // effect_cs
             // 
             this.effect_cs.AutoSize = true;
-            this.effect_cs.Location = new System.Drawing.Point(120, 100);
+            this.effect_cs.Location = new System.Drawing.Point(120, 108);
             this.effect_cs.Name = "effect_cs";
-            this.effect_cs.Size = new System.Drawing.Size(81, 17);
+            this.effect_cs.Size = new System.Drawing.Size(85, 18);
             this.effect_cs.TabIndex = 17;
             this.effect_cs.Text = "Effect (Self)";
             this.effect_cs.UseVisualStyleBackColor = true;
@@ -818,9 +818,9 @@
             // effect
             // 
             this.effect.AutoSize = true;
-            this.effect.Location = new System.Drawing.Point(21, 100);
+            this.effect.Location = new System.Drawing.Point(21, 108);
             this.effect.Name = "effect";
-            this.effect.Size = new System.Drawing.Size(54, 17);
+            this.effect.Size = new System.Drawing.Size(55, 18);
             this.effect.TabIndex = 16;
             this.effect.Text = "Effect";
             this.effect.UseVisualStyleBackColor = true;
@@ -828,9 +828,9 @@
             // showOthers
             // 
             this.showOthers.AutoSize = true;
-            this.showOthers.Location = new System.Drawing.Point(237, 238);
+            this.showOthers.Location = new System.Drawing.Point(237, 256);
             this.showOthers.Name = "showOthers";
-            this.showOthers.Size = new System.Drawing.Size(135, 17);
+            this.showOthers.Size = new System.Drawing.Size(140, 18);
             this.showOthers.TabIndex = 15;
             this.showOthers.Text = "Show Others (In Town)";
             this.showOthers.UseVisualStyleBackColor = true;
@@ -838,9 +838,9 @@
             // minStructures
             // 
             this.minStructures.AutoSize = true;
-            this.minStructures.Location = new System.Drawing.Point(21, 238);
+            this.minStructures.Location = new System.Drawing.Point(21, 256);
             this.minStructures.Name = "minStructures";
-            this.minStructures.Size = new System.Drawing.Size(166, 17);
+            this.minStructures.Size = new System.Drawing.Size(169, 18);
             this.minStructures.TabIndex = 14;
             this.minStructures.Text = "Minimum Structures (In Town)";
             this.minStructures.UseVisualStyleBackColor = true;
@@ -848,9 +848,9 @@
             // lastingEffects_o
             // 
             this.lastingEffects_o.AutoSize = true;
-            this.lastingEffects_o.Location = new System.Drawing.Point(355, 77);
+            this.lastingEffects_o.Location = new System.Drawing.Point(355, 83);
             this.lastingEffects_o.Name = "lastingEffects_o";
-            this.lastingEffects_o.Size = new System.Drawing.Size(128, 17);
+            this.lastingEffects_o.Size = new System.Drawing.Size(133, 18);
             this.lastingEffects_o.TabIndex = 13;
             this.lastingEffects_o.Text = "Lasting FX (Monsters)";
             this.lastingEffects_o.UseVisualStyleBackColor = true;
@@ -858,9 +858,9 @@
             // lastingEffects_p
             // 
             this.lastingEffects_p.AutoSize = true;
-            this.lastingEffects_p.Location = new System.Drawing.Point(237, 77);
+            this.lastingEffects_p.Location = new System.Drawing.Point(237, 83);
             this.lastingEffects_p.Name = "lastingEffects_p";
-            this.lastingEffects_p.Size = new System.Drawing.Size(112, 17);
+            this.lastingEffects_p.Size = new System.Drawing.Size(116, 18);
             this.lastingEffects_p.TabIndex = 12;
             this.lastingEffects_p.Text = "Lastting FX (Party)";
             this.lastingEffects_p.UseVisualStyleBackColor = true;
@@ -868,9 +868,9 @@
             // lastingEffects_cs
             // 
             this.lastingEffects_cs.AutoSize = true;
-            this.lastingEffects_cs.Location = new System.Drawing.Point(120, 77);
+            this.lastingEffects_cs.Location = new System.Drawing.Point(120, 83);
             this.lastingEffects_cs.Name = "lastingEffects_cs";
-            this.lastingEffects_cs.Size = new System.Drawing.Size(103, 17);
+            this.lastingEffects_cs.Size = new System.Drawing.Size(107, 18);
             this.lastingEffects_cs.TabIndex = 11;
             this.lastingEffects_cs.Text = "Lasting FX (Self)";
             this.lastingEffects_cs.UseVisualStyleBackColor = true;
@@ -878,9 +878,9 @@
             // lastingEffects
             // 
             this.lastingEffects.AutoSize = true;
-            this.lastingEffects.Location = new System.Drawing.Point(21, 77);
+            this.lastingEffects.Location = new System.Drawing.Point(21, 83);
             this.lastingEffects.Name = "lastingEffects";
-            this.lastingEffects.Size = new System.Drawing.Size(76, 17);
+            this.lastingEffects.Size = new System.Drawing.Size(77, 18);
             this.lastingEffects.TabIndex = 10;
             this.lastingEffects.Text = "Lasting FX";
             this.lastingEffects.UseVisualStyleBackColor = true;
@@ -888,9 +888,9 @@
             // lightMap
             // 
             this.lightMap.AutoSize = true;
-            this.lightMap.Location = new System.Drawing.Point(120, 54);
+            this.lightMap.Location = new System.Drawing.Point(120, 58);
             this.lightMap.Name = "lightMap";
-            this.lightMap.Size = new System.Drawing.Size(73, 17);
+            this.lightMap.Size = new System.Drawing.Size(72, 18);
             this.lightMap.TabIndex = 6;
             this.lightMap.Text = "Light Map";
             this.lightMap.UseVisualStyleBackColor = true;
@@ -898,9 +898,9 @@
             // grass
             // 
             this.grass.AutoSize = true;
-            this.grass.Location = new System.Drawing.Point(21, 54);
+            this.grass.Location = new System.Drawing.Point(21, 58);
             this.grass.Name = "grass";
-            this.grass.Size = new System.Drawing.Size(53, 17);
+            this.grass.Size = new System.Drawing.Size(56, 18);
             this.grass.TabIndex = 5;
             this.grass.Text = "Grass";
             this.grass.UseVisualStyleBackColor = true;
@@ -908,9 +908,9 @@
             // trees
             // 
             this.trees.AutoSize = true;
-            this.trees.Location = new System.Drawing.Point(237, 31);
+            this.trees.Location = new System.Drawing.Point(237, 33);
             this.trees.Name = "trees";
-            this.trees.Size = new System.Drawing.Size(53, 17);
+            this.trees.Size = new System.Drawing.Size(54, 18);
             this.trees.TabIndex = 4;
             this.trees.Text = "Trees";
             this.trees.UseVisualStyleBackColor = true;
@@ -918,9 +918,9 @@
             // enchantmentEffects
             // 
             this.enchantmentEffects.AutoSize = true;
-            this.enchantmentEffects.Location = new System.Drawing.Point(463, 31);
+            this.enchantmentEffects.Location = new System.Drawing.Point(463, 33);
             this.enchantmentEffects.Name = "enchantmentEffects";
-            this.enchantmentEffects.Size = new System.Drawing.Size(105, 17);
+            this.enchantmentEffects.Size = new System.Drawing.Size(104, 18);
             this.enchantmentEffects.TabIndex = 3;
             this.enchantmentEffects.Text = "Enchantment FX";
             this.enchantmentEffects.UseVisualStyleBackColor = true;
@@ -928,9 +928,9 @@
             // betterTrees
             // 
             this.betterTrees.AutoSize = true;
-            this.betterTrees.Location = new System.Drawing.Point(355, 31);
+            this.betterTrees.Location = new System.Drawing.Point(355, 33);
             this.betterTrees.Name = "betterTrees";
-            this.betterTrees.Size = new System.Drawing.Size(84, 17);
+            this.betterTrees.Size = new System.Drawing.Size(86, 18);
             this.betterTrees.TabIndex = 2;
             this.betterTrees.Text = "Better Trees";
             this.betterTrees.UseVisualStyleBackColor = true;
@@ -938,9 +938,9 @@
             // waterReflections
             // 
             this.waterReflections.AutoSize = true;
-            this.waterReflections.Location = new System.Drawing.Point(120, 31);
+            this.waterReflections.Location = new System.Drawing.Point(120, 33);
             this.waterReflections.Name = "waterReflections";
-            this.waterReflections.Size = new System.Drawing.Size(111, 17);
+            this.waterReflections.Size = new System.Drawing.Size(112, 18);
             this.waterReflections.TabIndex = 1;
             this.waterReflections.Text = "Water Reflections";
             this.waterReflections.UseVisualStyleBackColor = true;
@@ -948,9 +948,9 @@
             // bloom
             // 
             this.bloom.AutoSize = true;
-            this.bloom.Location = new System.Drawing.Point(21, 31);
+            this.bloom.Location = new System.Drawing.Point(21, 33);
             this.bloom.Name = "bloom";
-            this.bloom.Size = new System.Drawing.Size(55, 17);
+            this.bloom.Size = new System.Drawing.Size(55, 18);
             this.bloom.TabIndex = 0;
             this.bloom.Text = "Bloom";
             this.bloom.UseVisualStyleBackColor = true;
@@ -965,9 +965,9 @@
             this.groupBox4.Controls.Add(this.label14);
             this.groupBox4.Controls.Add(this.shadowSelfQuality);
             this.groupBox4.Controls.Add(this.label13);
-            this.groupBox4.Location = new System.Drawing.Point(15, 536);
+            this.groupBox4.Location = new System.Drawing.Point(15, 577);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(584, 127);
+            this.groupBox4.Size = new System.Drawing.Size(584, 137);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Graphics (Quality)";
@@ -975,108 +975,112 @@
             // weatherQuality
             // 
             this.weatherQuality.LargeChange = 2;
-            this.weatherQuality.Location = new System.Drawing.Point(312, 84);
+            this.weatherQuality.Location = new System.Drawing.Point(312, 90);
             this.weatherQuality.Maximum = 3;
             this.weatherQuality.Name = "weatherQuality";
-            this.weatherQuality.Size = new System.Drawing.Size(104, 45);
+            this.weatherQuality.Size = new System.Drawing.Size(104, 42);
             this.weatherQuality.TabIndex = 29;
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(232, 84);
+            this.label16.Location = new System.Drawing.Point(232, 90);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(51, 13);
+            this.label16.Size = new System.Drawing.Size(51, 14);
             this.label16.TabIndex = 28;
             this.label16.Text = "Weather:";
             // 
             // speedQuality
             // 
             this.speedQuality.LargeChange = 2;
-            this.speedQuality.Location = new System.Drawing.Point(312, 33);
+            this.speedQuality.Location = new System.Drawing.Point(312, 36);
             this.speedQuality.Maximum = 3;
             this.speedQuality.Name = "speedQuality";
-            this.speedQuality.Size = new System.Drawing.Size(104, 45);
+            this.speedQuality.Size = new System.Drawing.Size(104, 42);
             this.speedQuality.TabIndex = 27;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(232, 33);
+            this.label15.Location = new System.Drawing.Point(232, 36);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(41, 13);
+            this.label15.Size = new System.Drawing.Size(41, 14);
             this.label15.TabIndex = 26;
             this.label15.Text = "Speed:";
             // 
             // textureQuality
             // 
             this.textureQuality.LargeChange = 2;
-            this.textureQuality.Location = new System.Drawing.Point(95, 33);
+            this.textureQuality.Location = new System.Drawing.Point(95, 36);
             this.textureQuality.Maximum = 3;
             this.textureQuality.Name = "textureQuality";
-            this.textureQuality.Size = new System.Drawing.Size(104, 45);
+            this.textureQuality.Size = new System.Drawing.Size(104, 42);
             this.textureQuality.TabIndex = 25;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(15, 33);
+            this.label14.Location = new System.Drawing.Point(15, 36);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(46, 13);
+            this.label14.Size = new System.Drawing.Size(46, 14);
             this.label14.TabIndex = 24;
             this.label14.Text = "Texture:";
             // 
             // shadowSelfQuality
             // 
             this.shadowSelfQuality.LargeChange = 2;
-            this.shadowSelfQuality.Location = new System.Drawing.Point(95, 84);
+            this.shadowSelfQuality.Location = new System.Drawing.Point(95, 90);
             this.shadowSelfQuality.Maximum = 3;
             this.shadowSelfQuality.Name = "shadowSelfQuality";
-            this.shadowSelfQuality.Size = new System.Drawing.Size(104, 45);
+            this.shadowSelfQuality.Size = new System.Drawing.Size(104, 42);
             this.shadowSelfQuality.TabIndex = 23;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(15, 84);
+            this.label13.Location = new System.Drawing.Point(15, 90);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(76, 13);
+            this.label13.Size = new System.Drawing.Size(81, 14);
             this.label13.TabIndex = 22;
             this.label13.Text = "Shadow (Self):";
-            // 
-            // saveBtn
-            // 
-            this.saveBtn.Location = new System.Drawing.Point(524, 679);
-            this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(75, 23);
-            this.saveBtn.TabIndex = 4;
-            this.saveBtn.Text = "Save";
-            this.saveBtn.UseVisualStyleBackColor = true;
-            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
             // volumeMixerlb
             // 
             this.volumeMixerlb.AutoSize = true;
             this.volumeMixerlb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.volumeMixerlb.Location = new System.Drawing.Point(12, 684);
+            this.volumeMixerlb.Location = new System.Drawing.Point(12, 737);
             this.volumeMixerlb.Name = "volumeMixerlb";
             this.volumeMixerlb.Size = new System.Drawing.Size(99, 13);
             this.volumeMixerlb.TabIndex = 5;
             this.volumeMixerlb.Text = "Open Volume Mixer";
             this.volumeMixerlb.Click += new System.EventHandler(this.volumeMixerlb_Click);
             // 
+            // save_lb
+            // 
+            this.save_lb.AutoSize = true;
+            this.save_lb.Font = new System.Drawing.Font("Arial", 10.25F);
+            this.save_lb.Location = new System.Drawing.Point(559, 735);
+            this.save_lb.Name = "save_lb";
+            this.save_lb.Size = new System.Drawing.Size(40, 16);
+            this.save_lb.TabIndex = 6;
+            this.save_lb.Text = "Save";
+            this.save_lb.Click += new System.EventHandler(this.saveBtn_Click);
+            // 
             // RappelzSettingsGUI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(613, 714);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
+            this.ClientSize = new System.Drawing.Size(613, 769);
+            this.Controls.Add(this.save_lb);
             this.Controls.Add(this.volumeMixerlb);
-            this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ForeColor = System.Drawing.Color.White;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RappelzSettingsGUI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Game Settings";
@@ -1188,7 +1192,7 @@
         private System.Windows.Forms.CheckBox cloaks;
         private System.Windows.Forms.TrackBar weatherQuality;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Label volumeMixerlb;
+        private System.Windows.Forms.Label save_lb;
     }
 }

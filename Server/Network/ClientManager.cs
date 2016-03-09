@@ -193,9 +193,9 @@ namespace Server.Network
                 // Complete sending the data to the remote device.
                 int bytesSent = client.ClSocket.EndSend(ar);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Failed to send packet to client.");
+                Console.WriteLine("Failed to send packet to client.\nError: {0}", ex.Message);
             }
         }
         #endregion

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Client.Structures
 {
@@ -161,6 +162,74 @@ namespace Client.Structures
             get { return _value; }
             set { _value = value; }
         }
+    }
+
+    public class SettingsManager
+    {
+        internal static Properties.Settings settings = Properties.Settings.Default;
+
+        public static ClientSettings[] RappelzSettings;
+
+        public static void InitRappelzSettings()
+        {
+            RappelzSettings = new ClientSettings[File.ReadLines(Path.Combine(settings.clientDirectory, @"rappelz_v1.opt")).Count() - 1];
+            ReadOPT_v1();
+        }
+
+        public static void ReadOPT_v1()
+        {
+            try
+            {
+                using (StreamReader sr = new StreamReader(File.Open("rappelz_v1.opt", FileMode.Open, FileAccess.Read)))
+                {
+                    if (sr.ReadLine() == "[RAPPELZ]")
+                    {
+                        for (int i = 0; i < RappelzSettings.Length; i++)
+                        {
+                            string currentLine = sr.ReadLine();
+
+                            if (currentLine.Contains('='))
+                            {
+                                string[] lineBlocks = currentLine.Split('=');
+
+                                ClientSettings currentSetting = new ClientSettings { Name = lineBlocks[0], Value = lineBlocks[1] };
+                                RappelzSettings[i] = currentSetting;
+                            }
+                            else
+                            {
+                                ClientSettings currentSetting = new ClientSettings { Name = currentLine, Value = null };
+                                RappelzSettings[i] = currentSetting;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Bad Header", "OPT Exception #0", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch (Exception Ex) { MessageBox.Show(Ex.ToString(), "OPT Exception #1", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+        }
+
+        public static bool SaveSettings(ClientSettings[] settings)
+        {
+            using (StreamWriter sw = new StreamWriter(File.Open("rappelz_v1.opt", FileMode.Open, FileAccess.Write), Encoding.Default))
+            {
+                sw.Write("[RAPPELZ]\n");
+
+                for (int i = 0; i < settings.Length; i++)
+                {
+                    ClientSettings currentSetting = settings[i];
+                    string output = String.Empty;
+                    if (currentSetting.Name.Contains('[')) { output = string.Concat(currentSetting.Name, "\n"); }
+                    else { output = string.Format("{0}={1}\n", currentSetting.Name, currentSetting.Value); }
+                    sw.Write(output);
+                }
+            }
+
+            return false;
+        }
+
     }
 
     public class ClientSettingsOld

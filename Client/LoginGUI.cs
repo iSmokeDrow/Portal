@@ -17,6 +17,7 @@ namespace Client
         public string Pin;
         public bool RememberMe;
         public bool LoginClicked = false;
+        public bool CancelClicked = false;
 
         public LoginGUI()
         {
@@ -45,17 +46,27 @@ namespace Client
 
         private void cancelBtn_Click(object sender, EventArgs e)
         {
+            CancelClicked = true;
             this.Close();
         }
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            if (username.Text.Length > 0) { Username = username.Text; }
-            if (password.Text.Length > 0) { Password = password.Text; }
-            if (pin.Text.Length > 0) { Pin = pin.Text; }
-            RememberMe = rememberCredentials.Checked;
-            LoginClicked = true;
+            if (username.Text.Length > 0 && password.Text.Length > 0 && pin.Text.Length > 0)
+            {
+                Username = username.Text;
+                Password = password.Text;
+                Pin = pin.Text;
+                RememberMe = rememberCredentials.Checked;
+                LoginClicked = true;
+            }
+
             this.Close();
+        }
+
+        private void LoginGUI_DoubleClick(object sender, EventArgs e)
+        {
+
         }
     }
 }
