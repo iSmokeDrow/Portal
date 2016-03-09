@@ -126,7 +126,7 @@ namespace Server.Network
         /// <param name="data">file data</param>
         public void File(Client client, int offset, byte[] data)
         {
-            const int bytesPerPacket = 256;
+            const int bytesPerPacket = 2048;
 
             for (; offset < data.Length; offset += bytesPerPacket)
             {
