@@ -300,13 +300,16 @@ namespace Client
 
         public static void OnUpdateComplete()
         {
-            Instance.totalStatus.ResetText();
-            Instance.totalProgress.Maximum = 100;
-            Instance.totalProgress.Value = 0;
-            Instance.currentStatus.ResetText();
-            Instance.currentProgress.Maximum = 100;
-            Instance.currentProgress.Value = 0;
-            Instance.navigateToHome(Instance.loginCreds.Username, Instance.loginCreds.Password, Instance.fingerPrint);
+            Instance.Invoke(new MethodInvoker(delegate
+            {
+                Instance.totalStatus.ResetText();
+                Instance.totalProgress.Maximum = 100;
+                Instance.totalProgress.Value = 0;
+                Instance.currentStatus.ResetText();
+                Instance.currentProgress.Maximum = 100;
+                Instance.currentProgress.Value = 0;
+                Instance.navigateToHome(Instance.loginCreds.Username, Instance.loginCreds.Password, Instance.fingerPrint);
+            }));
         }
 
         public void UpdateStatus(int type, string text)

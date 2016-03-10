@@ -68,11 +68,9 @@ namespace Client.Network
 
         private void SC_File(PacketStream stream)
         {
-            int offset = stream.ReadInt32();
-            bool endOfFile = stream.ReadBool();
-            byte[] data = stream.ReadBytes(stream.GetSize() - PacketStream.HeaderLength - 5);
-
-            UpdateHandler.Instance.OnFileDataReceived(offset, endOfFile, data);
+            string path = stream.ReadString();
+            UpdateHandler.Instance.OnUpdateFileNameReceived(path);
+            //UpdateHandler.Instance.OnFileDataReceived(offset, endOfFile, data);
         }
 
         private void SC_Arguments(PacketStream stream)

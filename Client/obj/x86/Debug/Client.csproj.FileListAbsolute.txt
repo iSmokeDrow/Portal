@@ -1,10 +1,3 @@
-C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.csprojResolveAssemblyReference.cache
-C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.GeneralSettingsGUI.resources
-C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.GUI.resources
-C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.LoginGUI.resources
-C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.Properties.Resources.resources
-C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.RappelzSettingsGUI.resources
-C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.csproj.GenerateResource.Cache
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\x86\Debug\Client.exe.config
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\x86\Debug\Client.exe
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\x86\Debug\Client.pdb
@@ -35,3 +28,32 @@ F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debu
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debug\Client.exe
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debug\Client.pdb
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debug\Client.csprojResolveAssemblyReference.cache
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Client.exe.config
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Client.exe
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Client.pdb
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Awesomium.Core.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Awesomium.Windows.Forms.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\DataCore.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\zlibnet.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Awesomium.Core.xml
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Awesomium.Windows.Forms.xml
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\DataCore.xml
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\awesomium.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\icudt.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\avcodec-53.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\avformat-53.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\avutil-51.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\libEGL.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\libGLESv2.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\awesomium_process
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\inspector.pak
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\xinput9_1_0.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\pdf_js.pak
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.GeneralSettingsGUI.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.GUI.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.LoginGUI.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.Properties.Resources.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.RappelzSettingsGUI.resources
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.csproj.GenerateResource.Cache
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.exe
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.pdb

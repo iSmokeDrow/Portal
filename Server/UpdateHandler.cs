@@ -33,41 +33,56 @@ namespace Server
         internal void OnUserRequestFile(Client client, string name, int offset, string partialHash)
         {
             string filePath = Path.Combine(@"updates/", name);
+            Console.WriteLine(filePath);
             if (!File.Exists(filePath)) { return; }
-
+            
             string zipPath = compressFile(filePath);
+            client.filesInUse.Add(zipPath);
+            
+            ClientPackets.Instance.File(client, zipPath);
 
-            byte[] zipData = File.ReadAllBytes(string.Concat(zipPath, ".zip"));
+            //byte[] zipData = File.ReadAllBytes(string.Concat(zipPath, ".zip"));
 
-            if (partialHash != Hash.GetSHA512Hash(filePath))
+            /*if (partialHash != Hash.GetSHA512Hash(filePath))
             {
                 // Hashes are different, start from the beggining
+                //ClientPackets.Instance.File(client, 0, zipData);
                 ClientPackets.Instance.File(client, 0, zipData);
             }
             else
             {
                 // Hashes are the same, resume
                 ClientPackets.Instance.File(client, offset, zipData);
-            }
+            }*/
 
-            zipData = null;
+            //zipData = null;
 
             // TODO: Delete the zip file (zipPath)
-            File.Delete(zipPath);
+            //File.Delete(zipPath);
         }
 
         internal string compressFile(string filePath)
         {
-            string zipPath = Path.Combine(@"tmp/", OTP.GenerateRandomPassword(10));
-
+            string name = OTP.GenerateRandomPassword(10);
+            string zipPath = Path.Combine(@"tmp/", name);
+            
             Zipper z = new Zipper();
             z.ItemList.Add(filePath);
             z.ZipFile = zipPath;
             z.Zip();
             z = null;
-
-            return zipPath;
+            
+            return name;
         }
 
+        internal void OnUserDisconnect(Client client)
+        {
+            foreach (string fileName in client.filesInUse)
+            {
+                string fName = Path.Combine(@"tmp/", fileName);
+                if (File.Exists(fName))
+                    File.Delete(fName);
+            }
+        }
     }
 }

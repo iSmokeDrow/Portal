@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -17,6 +18,8 @@ namespace Client
         private string indexPath;
         private string resourceFolder;
         private string tempPath;
+
+        private const string patcherUrl = "http://176.31.181.127:13546/";
 
         private readonly Core core;
 
@@ -151,29 +154,84 @@ namespace Client
                 if (download) { DoUpdate(); break; }
             }
 
-            if (this.CurrentIndex == this.FileList.Count) { GUI.OnUpdateComplete(); }
+            if (this.CurrentIndex == this.FileList.Count) {
+                System.IO.DirectoryInfo di = new DirectoryInfo(tempPath);
+
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+                GUI.OnUpdateComplete();
+
+            }
         }
+
+        internal void OnUpdateFileNameReceived(string path)
+        {
+            string name = String.Concat(this.FileList[this.CurrentIndex].FileName, ".zip");
+            string filePath = Path.Combine(tempPath, name);
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            guiInstance.UpdateStatus(1, string.Format("Downloading file: {0}", name));
+
+            WebClient client = new WebClient();
+            client.DownloadProgressChanged += Client_DownloadProgressChanged;
+            client.DownloadFileCompleted += Client_DownloadFileCompleted;
+            string url = String.Concat(patcherUrl, path, ".zip");
+            MessageBox.Show(url);
+            client.DownloadFileAsync(new Uri(url), filePath, client);
+        }
+
 
         private void DoUpdate()
         {
             string name = this.FileList[this.CurrentIndex].FileName;
-            int offset = 0;
-            string partialHash = string.Empty;
-
-            if (File.Exists(name))
-            {
-                byte[] currentData = File.ReadAllBytes(name);
-                partialHash = Hash.GetSHA512Hash(currentData, currentData.Length);
-                offset = currentData.Length;
-            }
-
-            guiInstance.UpdateStatus(1, string.Format("Downloading file: {0}", name));
-            ServerPackets.Instance.RequestFile(name, offset, partialHash);
+            ServerPackets.Instance.RequestFile(name, 0, "");
         }
 
-        // TODO: Add timer to do timeout if file quits downloading
-        public void OnFileDataReceived(int offset, bool isEOF, byte[] data)
+        private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
+            WebClient client = (WebClient)e.UserState;
+            client.Dispose();
+            UpdateIndex file = this.FileList[this.CurrentIndex];
+            
+            string zipPath = Path.Combine(tempPath, string.Concat(file.FileName, ".zip"));
+            string resourcePath = Path.Combine(tempPath, file.FileName);
+
+            // Unzip the file
+            ZIP.Unpack(zipPath, tempPath);
+
+            if (file.IsLegacy)
+            {
+                if (File.Exists(resourceFolder + file.FileName)) { File.Delete(resourceFolder + file.FileName); }
+                File.Move(resourcePath, resourceFolder + file.FileName);
+            }
+            else
+            {
+                core.UpdateFileEntry(ref index, settings.clientDirectory, resourcePath, 0);
+                core.Save(ref index, indexPath, false);
+                File.Delete(resourcePath);
+                File.Delete(zipPath);
+            }
+            
+            guiInstance.UpdateStatus(1, string.Format("Verifying update: {0}", file.FileName));
+
+            // Check that the file update actually took
+            if (Hash.GetSHA512Hash(resourcePath) == file.FileHash) { CurrentIndex++; }
+
+            guiInstance.UpdateStatus(1, "");
+
+            CheckFiles();
+        }
+
+        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            // TODO : Update progress
+            /*
             string zipName = String.Concat(this.FileList[this.CurrentIndex].FileName, ".zip");
             string filePath = Path.Combine(tempPath, zipName);
 
@@ -188,41 +246,7 @@ namespace Client
             }
 
             if (isEOF) { OnUpdateDownloadCompleted(); }
-        }
-
-        private void OnUpdateDownloadCompleted()
-        {
-            UpdateIndex file = this.FileList[this.CurrentIndex];
-
-            guiInstance.UpdateStatus(1, string.Format("Applying update file: {0}", file.FileName));
-
-            string zipPath = Path.Combine(tempPath, string.Concat(file.FileName, ".zip"));
-            string resourcePath = Path.Combine(tempPath, file.FileName);
-
-            // Unzip the file
-            ZIP.Unpack(zipPath, tempPath);
-            
-            if (file.IsLegacy)
-            {
-                if (File.Exists(resourceFolder + file.FileName)) { File.Delete(resourceFolder + file.FileName); }
-                File.Move(resourcePath, resourceFolder + file.FileName);
-            }
-            else
-            {
-                core.UpdateFileEntry(ref index, settings.clientDirectory, resourcePath, 0);
-                core.Save(ref index, indexPath, false);
-                File.Delete(resourcePath);
-                File.Delete(zipPath);
-            }
-
-            guiInstance.UpdateStatus(1, string.Format("Verifying update: {0}", file.FileName));
-
-            // Check that the file update actually took
-            if (Hash.GetSHA512Hash(resourcePath) == file.FileHash) { CurrentIndex++; }
-
-            guiInstance.UpdateStatus(1, "");
-            
-            CheckFiles();
+            */
         }
     }
 }

@@ -37,6 +37,8 @@ namespace Server
         public XRC4Cipher InCipher { get; set; }
         public XRC4Cipher OutCipher { get; set; }
 
+        public List<string> filesInUse = new List<string>();
+
         public Client(Socket socket)
         {
             this.ClSocket = socket;

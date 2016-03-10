@@ -122,36 +122,12 @@ namespace Server.Network
         /// Sends bytes of a file
         /// </summary>
         /// <param name="client">target client</param>
-        /// <param name="offset">data offset</param>
-        /// <param name="data">file data</param>
-        public void File(Client client, int offset, byte[] data)
+        /// <param name="path">zip file path</param>
+        public void File(Client client, string path)
         {
-            const int bytesPerPacket = 2048;
-
-            for (; offset < data.Length; offset += bytesPerPacket)
-            {
-                int byteCount;
-
-                PacketStream s = new PacketStream(0x0021);
-
-                s.WriteInt32(offset);
-                if (offset + bytesPerPacket > data.Length)
-                {
-                    s.WriteBool(true);
-                    byteCount = data.Length - offset;
-                }
-                else
-                {
-                    s.WriteBool(false);
-                    byteCount = bytesPerPacket;
-                }
-
-                byte[] sendData = new byte[byteCount];
-                Array.Copy(data, offset, sendData, 0, byteCount);
-                s.WriteBytes(sendData);
-
-                ClientManager.Instance.Send(client, s);
-            }
+            PacketStream s = new PacketStream(0x0021);
+            s.WriteString(path, path.Length + 1);
+            ClientManager.Instance.Send(client, s);
         }
 
         /// <summary>

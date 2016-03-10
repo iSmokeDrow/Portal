@@ -1,8 +1,12 @@
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\Server.exe
-C:\Users\guilh\Documents\Dev\Rappelz\portal\Server\bin\x86\Debug\Server.exe.config
-C:\Users\guilh\Documents\Dev\Rappelz\portal\Server\obj\x86\Debug\Server.csprojResolveAssemblyReference.cache
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\Server.exe.config
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\Server.pdb
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\bin\x86\Debug\zlibnet.dll
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\obj\x86\Debug\Server.exe
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Server\obj\x86\Debug\Server.pdb
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Server\bin\x86\Debug\Server.exe.config
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Server\bin\x86\Debug\Server.exe
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Server\bin\x86\Debug\Server.pdb
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Server\bin\x86\Debug\zlibnet.dll
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Server\obj\x86\Debug\Server.exe
+C:\Users\guilh\Documents\Dev\Rappelz\portal\Server\obj\x86\Debug\Server.pdb
