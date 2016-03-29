@@ -44,36 +44,22 @@ namespace Server
             Console.Write("Initializing client listener... ");
             if (ClientManager.Instance.Start()) { Console.WriteLine("[OK]"); }
 
-            HandleOTP();
-            Console.WriteLine("OTP Handler Started.");
-
+            Console.Write("Cleaning up temp files...");
+            foreach (string filePath in Directory.GetFiles(string.Concat(Directory.GetCurrentDirectory(), @"\tmp\")))
+            {
+                File.Delete(filePath);
+            }
+            Console.WriteLine("[OK]");
                 
             Console.ReadLine();
-        }
-
-        internal static void HandleOTP()
-        {
-            Task.Run(() =>
-            {
-                TimerCallback otpTimerCallback = new TimerCallback(otpTick);
-                Timer otpTimer = new Timer(otpTimerCallback, null, 0, Convert.ToInt32(OPT.SettingsList["otp.check.interval"]) * 1000);
-                for (;;) { }
-            });
         }
 
         internal static void otpTick(Object state) { OTP.HandleOTP(); }
 
         internal static void OnUserRequestArguments(Client client, string username)
         {
-            // Set the OTP for this username
-            string otp = OTP.SetOTP(username);
-
-            if (!string.IsNullOrEmpty(otp))
-            {
-                // TODO : Replace placeholder launch arguments here
-                ClientPackets.Instance.Arguments(client, string.Format("Start SFrame.exe /auth_ip:192.168.0.101 /auth_port:8841 /locale:ASCII /country:US /cash /commercial_shop /imbc_login /username:{0} /password:{1}", username, otp));
-            }
-            else { Console.Write("Failed to send OTP for Username: {0}", username); }
+            // TODO : Replace placeholder launch arguments here
+            ClientPackets.Instance.Arguments(client, string.Format("/auth_ip:176.31.181.127 /auth_port:13544 /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:{0} /password:?", username));
         }
     }
 }

@@ -1,0 +1,5 @@
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Config_Reader\bin\Debug\Config_Reader.exe.config
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Config_Reader\bin\Debug\Config_Reader.exe
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Config_Reader\bin\Debug\Config_Reader.pdb
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Config_Reader\obj\Debug\Config_Reader.exe
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Config_Reader\obj\Debug\Config_Reader.pdb

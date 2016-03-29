@@ -29,23 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.totalProgress = new System.Windows.Forms.ProgressBar();
             this.totalStatus = new System.Windows.Forms.Label();
             this.currentStatus = new System.Windows.Forms.Label();
             this.currentProgress = new System.Windows.Forms.ProgressBar();
-            this.browser = new Awesomium.Windows.Forms.WebControl(this.components);
             this.start_lb = new System.Windows.Forms.Label();
             this.gameSettings_lb = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.close_lb = new System.Windows.Forms.Label();
+            this.browser = new Awesomium.Windows.Forms.WebControl(this.components);
+            this.totalProgress = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
-            // 
-            // totalProgress
-            // 
-            this.totalProgress.Location = new System.Drawing.Point(10, 500);
-            this.totalProgress.Name = "totalProgress";
-            this.totalProgress.Size = new System.Drawing.Size(992, 13);
-            this.totalProgress.TabIndex = 8;
             // 
             // totalStatus
             // 
@@ -67,25 +60,20 @@
             // 
             // currentProgress
             // 
+            this.currentProgress.ForeColor = System.Drawing.Color.White;
             this.currentProgress.Location = new System.Drawing.Point(10, 532);
             this.currentProgress.Name = "currentProgress";
             this.currentProgress.Size = new System.Drawing.Size(992, 13);
             this.currentProgress.TabIndex = 11;
             // 
-            // browser
-            // 
-            this.browser.Location = new System.Drawing.Point(2, 17);
-            this.browser.Size = new System.Drawing.Size(1007, 460);
-            this.browser.TabIndex = 15;
-            // 
             // start_lb
             // 
             this.start_lb.AutoSize = true;
-            this.start_lb.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.start_lb.Font = new System.Drawing.Font("Arial", 14F);
             this.start_lb.ForeColor = System.Drawing.Color.White;
-            this.start_lb.Location = new System.Drawing.Point(962, 561);
+            this.start_lb.Location = new System.Drawing.Point(929, 554);
             this.start_lb.Name = "start_lb";
-            this.start_lb.Size = new System.Drawing.Size(40, 14);
+            this.start_lb.Size = new System.Drawing.Size(73, 22);
             this.start_lb.TabIndex = 16;
             this.start_lb.Text = "START";
             this.start_lb.Click += new System.EventHandler(this.start_btn_Click);
@@ -126,21 +114,35 @@
             this.close_lb.Text = "x";
             this.close_lb.Click += new System.EventHandler(this.close_Click);
             // 
+            // browser
+            // 
+            this.browser.Location = new System.Drawing.Point(2, 21);
+            this.browser.Size = new System.Drawing.Size(1008, 460);
+            this.browser.TabIndex = 20;
+            // 
+            // totalProgress
+            // 
+            this.totalProgress.ForeColor = System.Drawing.Color.White;
+            this.totalProgress.Location = new System.Drawing.Point(10, 500);
+            this.totalProgress.Name = "totalProgress";
+            this.totalProgress.Size = new System.Drawing.Size(992, 13);
+            this.totalProgress.TabIndex = 21;
+            // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
             this.ClientSize = new System.Drawing.Size(1013, 584);
+            this.Controls.Add(this.totalProgress);
+            this.Controls.Add(this.browser);
             this.Controls.Add(this.close_lb);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.gameSettings_lb);
             this.Controls.Add(this.start_lb);
-            this.Controls.Add(this.browser);
             this.Controls.Add(this.currentStatus);
             this.Controls.Add(this.currentProgress);
             this.Controls.Add(this.totalStatus);
-            this.Controls.Add(this.totalProgress);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1013, 584);
@@ -154,21 +156,24 @@
             this.Load += new System.EventHandler(this.GUI_Load);
             this.Shown += new System.EventHandler(this.GUI_Shown);
             this.DoubleClick += new System.EventHandler(this.GUI_DoubleClick);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GUI_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GUI_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GUI_MouseUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        public System.Windows.Forms.ProgressBar totalProgress;
         public System.Windows.Forms.Label totalStatus;
         public System.Windows.Forms.Label currentStatus;
         public System.Windows.Forms.ProgressBar currentProgress;
-        private Awesomium.Windows.Forms.WebControl browser;
         private System.Windows.Forms.Label start_lb;
         private System.Windows.Forms.Label gameSettings_lb;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label close_lb;
+        private Awesomium.Windows.Forms.WebControl browser;
+        public System.Windows.Forms.ProgressBar totalProgress;
     }
 }
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using Handle = System.IntPtr;
+using System.IO;
 
 namespace Client.Functions
 {
@@ -83,15 +84,25 @@ namespace Client.Functions
         /// <returns>bool value indicating success or failure</returns>
         static public bool Start(int waitTime, string arguments)
         {
-            var p = new ProcessStartInfo();
-            p.FileName = "SFrame.exe";
-            p.Arguments = arguments;
-            p.EnvironmentVariables["SFrame.exe_PARENT"] = "Launcher.exe";
-            p.EnvironmentVariables["SFrame.exe_RUNNER"] = EventHandle;
-            p.UseShellExecute = false;
-            Process.Start(p);
+            try
+            {
+                var p = new ProcessStartInfo();
+                p.FileName = string.Concat(GUI.Instance.SettingsManager.GetStringValue("clientdirectory"), @"\SFrame.exe");
+                p.WorkingDirectory = GUI.Instance.SettingsManager.GetStringValue("clientdirectory");
+                p.Arguments = arguments;
+                p.EnvironmentVariables["SFrame.exe_PARENT"] = "Launcher.exe";
+                p.EnvironmentVariables["SFrame.exe_RUNNER"] = EventHandle;
+                p.UseShellExecute = false;
+                Process.Start(p);
 
-            return (Wait(waitTime)) ? true : false;
+                return (Wait(waitTime)) ? true : false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message, "Launch Exception", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);    
+            }
+
+            return false;
         }
     }
 }

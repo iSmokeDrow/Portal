@@ -1,5 +1,6 @@
 ﻿using System;
 using Client.Network;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using System.Net;
 using System.Web;
 using System.IO;
@@ -22,19 +24,31 @@ namespace Client
     public partial class GUI : Form
     {
         #region Drag Hack
-        private const int WM_NCHITTEST = 0x84;
-        private const int HTCLIENT = 0x1;
-        private const int HTCAPTION = 0x2;
+        internal bool isDragging = false;
+        internal Point lastLocation;
 
-        ///
-        /// Handling the window messages
-        ///
-        protected override void WndProc(ref Message message)
+        private void GUI_MouseDown(object sender, MouseEventArgs e)
         {
-            base.WndProc(ref message);
+            isDragging = true;
+            lastLocation = e.Location;
+        }
 
-            if (message.Msg == WM_NCHITTEST && (int)message.Result == HTCLIENT)
-                message.Result = (IntPtr)HTCAPTION;
+        private void GUI_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDragging = false;
+        }
+
+        private void GUI_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                this.Location = new Point(
+                    (this.Location.X - lastLocation.X) + e.X,
+                    (this.Location.Y - lastLocation.Y) + e.Y
+                    );
+
+                this.Update();
+            }
         }
         #endregion
 
@@ -42,96 +56,109 @@ namespace Client
         internal readonly short port = 13545;
         internal readonly string md5Key = "1337";
         XDes DesCipher;
-        internal Properties.Settings settings;
         internal LoginGUI loginGUI;
-        internal LoginCredentials loginCreds;
         public static GUI Instance;
         internal string fingerPrint;
         internal bool validated = false;
-        internal WebSession webSession;
+        internal bool canStart = false;
+        internal string otp = null;
+        public OPT SettingsManager = new OPT();
+        internal int loginFails = 0;
 
         public GUI()
         {
             InitializeComponent();
+            Application.VisualStyleState = VisualStyleState.NoneEnabled;
             DesCipher = new XDes(Program.DesKey);
-            settings = Properties.Settings.Default;
             Instance = this;
-            webSession = WebCore.CreateWebSession(string.Concat(Directory.GetCurrentDirectory(), @"\web\"), WebPreferences.Default);
-            //browser.WebSession = webSession;
         }
 
         private void GUI_Load(object sender, EventArgs e)
         {
+            Task.Run(() => 
+            {
+                if (Process.GetProcessesByName("Updater").Length > 0)
+                {
+                    foreach (var process in Process.GetProcessesByName("Updater")) { process.Kill(); }
+                }
+            });
         }
 
-        private void GUI_Shown(object sender, EventArgs e)
+        private async void GUI_Shown(object sender, EventArgs e)
         {
-            int failedAttempts = 0;
+            Instance.UpdateStatus(0, "Loading settings...");
+            await Task.Run(() => { SettingsManager.Start(); });
+            Instance.UpdateStatus(0, "Checking for SFrame...");
+            await Task.Run(() => { checkForSFrame(); });
+            Instance.UpdateStatus(0, "Connecting to Update Server...");
+            connectToServer();
+            Instance.UpdateStatus(0, "Checking for Updater Update...");
+            await Task.Run(() => { checkForUpdater(); });
+            Instance.UpdateStatus(0, "Checking for Launcher Update...");
+            await Task.Run(() => { checkForSelfUpdate(); });
+            Instance.UpdateStatus(0, "Attempting to Login via webservice...");
+            attemptLogin();
+            Instance.UpdateStatus(0, "");
+        }
 
-            while (!attemptLogin())
+
+        internal void connectToServer()
+        {
+            if (!ServerManager.Instance.Start(ip, port))
             {
-                if (failedAttempts == 2 && settings.remember)
-                {
-                    if (MessageBox.Show("Yould you like to forget your Login Credentials?", "Login Exception", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        settings.username = string.Empty;
-                        settings.password = string.Empty;
-                        settings.remember = false;
-                        settings.Save();
-                        settings.Reload();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Cannot continue without login, shutting down!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                    }
-                }
-
-                failedAttempts++;
-
-                attemptLogin();
-            }
-
-            validated = true;
-
-            if (checkForClient())
-            {
-                navigateToSplash();
-
-                totalStatus.Text = "Updating the client...";
-                UpdateHandler.Instance.Start();
-
-                //if (UpdateHandler.Instance.NetworkError) { return; }
-            }
-            else
-            {
-                MessageBox.Show("Cannot continue without a valid client path, shuttimng down!", "Update Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ServerManager.Instance.ErrorMessage, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
         }
 
-        protected bool attemptLogin()
+        internal void checkForSFrame()
         {
-            // Assign a fingerprint before the login attempt
-            fingerPrint = FingerPrint.Value;
-
-            loginCreds = GetCredentials();
-
-            if (loginCreds != null)
+            if (string.IsNullOrEmpty(SettingsManager.GetStringValue("clientdirectory")))
             {
-                if (Login(loginCreds.Username, loginCreds.Password, loginCreds.Pin, loginCreds.Remember))
-                {
-                    return true;
-                }
+                if (File.Exists("SFrame.exe")) { Instance.SettingsManager.UpdateValue("clientdirectory", "SFrame.exe"); }
             }
+        }
 
-            return false;
+        internal void checkForUpdater()
+        {
+            if (File.Exists("Updater.exe")) { ServerPackets.Instance.RequestUpdater(Hash.GetSHA512Hash("Updater.exe")); }
+            else { ServerPackets.Instance.RequestUpdater(null); }
+        }
+
+        internal void checkForSelfUpdate()
+        {
+            if (File.Exists("Launcher.exe"))
+            {
+                ServerPackets.Instance.RequestSelfUpdate(Hash.GetSHA512Hash("Launcher.exe"));
+            }
+        }
+
+        private void attemptLogin()
+        {
+            if (SettingsManager.GetBoolValue("remember"))
+            {
+                Login(SettingsManager.GetStringValue("username"), SettingsManager.GetStringValue("password"), SettingsManager.GetStringValue("pin"));
+            }
+            else
+            {
+                using (loginGUI = new LoginGUI())
+                {
+                    loginGUI.FormClosing += (o, x) =>
+                    {
+                        if (loginGUI.Cancelled)
+                        {
+                            MessageBox.Show("Cannot continue without login!\nShutting down.", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    };
+                    loginGUI.ShowDialog(this);
+                }          
+            }
         }
 
         protected bool checkForClient()
         {
             // Check that the provided client directory exists
-            if (!Directory.Exists(settings.clientDirectory))
+            if (!Directory.Exists(SettingsManager.GetStringValue("clientdirectory")))
             {
                 while (true)
                 {
@@ -139,7 +166,7 @@ namespace Client
                     {
                         launcherSettings_btn_Click(null, EventArgs.Empty);
 
-                        if (Directory.Exists(settings.clientDirectory) && File.Exists(Path.Combine(settings.clientDirectory, "sframe.exe")))
+                        if (Directory.Exists(SettingsManager.GetStringValue("clientdirectory")) && File.Exists(Path.Combine(SettingsManager.GetStringValue("clientdirectory"), "sframe.exe")))
                         {
                             return true;
                         }
@@ -156,62 +183,18 @@ namespace Client
             return false;
         }
 
-        private LoginCredentials GetCredentials()
-        {
-            bool close = false;
-
-            LoginCredentials tempCreds = null;
-
-            if (settings.remember)
-            {
-                tempCreds = new LoginCredentials
-                {
-                    Username = settings.username,
-                    Password = settings.password,
-                    Pin = settings.pin
-                };
-            }
-            else
-            {
-                loginGUI = new LoginGUI();
-
-                // When form is hidden 
-                loginGUI.FormClosing += (o, x) =>
-                {
-                    if (loginGUI.LoginClicked)
-                    {
-                        tempCreds = new LoginCredentials
-                        {
-                            Username = loginGUI.Username,
-                            Password = loginGUI.Password,
-                            Pin = loginGUI.Pin,
-                            Remember = loginGUI.RememberMe
-                        };
-                    }
-                    else if (loginGUI.CancelClicked)
-                    {
-                        MessageBox.Show("Cannot continue without login, shutting down!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        close = true;
-                    }
-                    else if (!loginGUI.LoginClicked) { MessageBox.Show("You didn't provide proper credentials, please try again!", "Credentials Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-
-                    loginGUI.Dispose();
-                };
-
-                loginGUI.ShowDialog(this);
-            }
-
-            if (close) { this.Close(); }
-            return tempCreds;
-        }
-
         /// <summary>
         /// Executes login validation using the webservice and then routes the browser to the homepage
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        private bool Login(string username, string password, string pin, bool remembered)
-        {            
+        public async void Login(string username, string password, string pin)
+        {
+            // Assign a fingerprint before the login attempt
+            fingerPrint = FingerPrint.Value;
+
+            Instance.UpdateStatus(0, "Validating Login Credentials...");
+
             string loginCode = null;
 
             UriBuilder uriBuilder = new UriBuilder("http://rappelz.team-vendetta.com/user/login_validation.aspx");
@@ -220,65 +203,119 @@ namespace Client
             parameters["password"] = password;
             parameters["fingerprint"] = fingerPrint;
             parameters["pin"] = pin;
+            parameters["otp"] = "1";
             uriBuilder.Query = parameters.ToString();
             WebRequest validationRequest = WebRequest.Create(uriBuilder.Uri);
 
-            // Request the login_code based on previously built Uri
-            using (WebResponse response = validationRequest.GetResponse())
-            {
-                using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8)) { loginCode = sr.ReadToEnd(); }
-                uriBuilder = null;
-                parameters = null;
-                validationRequest = null;
-                response.Dispose();
-            }
+            await Task.Run(() => 
+            {             
+                // Request the login_code based on previously built Uri
+                using (WebResponse response = validationRequest.GetResponse())
+                {
+                    using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8)) { loginCode = sr.ReadToEnd(); }
+                    uriBuilder = null;
+                    parameters = null;
+                    validationRequest = null;
+                    response.Dispose();
+                }
+            });
 
             if (!string.IsNullOrEmpty(loginCode))
             {
-                switch (loginCode)
+                if (loginCode.StartsWith("ok"))
                 {
-                    case "ok":
-                        return true;
+                    string[] codeParts = loginCode.Split(':');
+                    otp = codeParts[1];
+                    Instance.UpdateStatus(0, "Login Credentials Validated!");
+                    validated = true;
+                    updateClient();
+                }
+                else
+                {
+                    Instance.UpdateStatus(0, "Failed to validate Login Credentials!");
 
-                    case "no_username":
-                        MessageBox.Show("You have not set your Username, please do so before trying again", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
+                    loginFails++;
 
-                    case "no_password":
-                        MessageBox.Show("You have not set your Password, please do so before trying again", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
+                    switch (loginCode)
+                    {
+                        case "no_username":
+                            MessageBox.Show("You have not set your Username, please do so before trying again", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
 
-                    case "invalid_username":
-                        MessageBox.Show("Failed to Login!\nThe username you provided is invalid!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
+                        case "no_password":
+                            MessageBox.Show("You have not set your Password, please do so before trying again", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
 
-                    case "invalid_password":
-                        MessageBox.Show("Failed to Login!\nThe password you provided is invalid!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
+                        case "invalid_username":
+                            MessageBox.Show("Failed to Login!\nThe username you provided is invalid!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
 
-                    case "require_pin":
-                        MessageBox.Show("You have not set your pin, please do so before trying again", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
+                        case "invalid_password":
+                            MessageBox.Show("Failed to Login!\nThe password you provided is invalid!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
 
-                    case "invalid_pin":
-                        MessageBox.Show("Failed to Login!\nThe pin you provided is invalid!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
+                        case "require_pin":
+                            MessageBox.Show("You have not set your pin, please do so before trying again", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
 
-                    case "account_locked":
-                        MessageBox.Show("Failed to Login!\nYour account is current locked!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
+                        case "invalid_pin":
+                            MessageBox.Show("Failed to Login!\nThe pin you provided is invalid!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
 
-                    case "ban_type_1": case "ban_type_2": case "ban_type_3":
-                        MessageBox.Show("Failed to Login!\nYour account has been banned!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
+                        case "account_locked":
+                            MessageBox.Show("Failed to Login!\nYour account is current locked!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
+
+                        case "ban_type_1":
+                        case "ban_type_2":
+                        case "ban_type_3":
+                            MessageBox.Show("Failed to Login!\nYour account has been banned!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
+                    }
+
+                    if (loginFails > 0 && SettingsManager.GetBoolValue("remember"))
+                    {
+                        if (MessageBox.Show("It seems you have failed to login with remembered credentials, would you like to forget them?", "Login Exception", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            SettingsManager.UpdateValue("username", "");
+                            SettingsManager.UpdateValue("password", "");
+                            SettingsManager.UpdateValue("pin", "");
+                            SettingsManager.UpdateValue("remember", false);
+                            SettingsManager.writeOPT();
+                            attemptLogin();
+                        }
+                        else { MessageBox.Show("Cannot continue without login!\nShutting down.", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); this.Close(); }
+                    }
+                    else
+                    {
+                        if (MessageBox.Show("Would you like to try again?", "Login Exception", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            attemptLogin();
+                        }
+                        else { MessageBox.Show("Cannot continue without login!\nShutting down.", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); this.Close(); }
+                    }
                 }
             }
             else
             {
                 MessageBox.Show("Failed to get valid response from the Web service!", "Critical Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
 
-            return false;
+        internal void updateClient()
+        {
+            if (checkForClient())
+            {
+                navigateToSplash();
+
+                UpdateHandler.Instance.Start();
+                if (UpdateHandler.Instance.NetworkError) { return; }
+            }
+            else
+            {
+                MessageBox.Show("Cannot continue without a valid client path, shuttimng down!", "Update Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
         }
 
         protected void navigateToSplash()
@@ -298,17 +335,18 @@ namespace Client
             browser.Source = new Uri("http://rappelz.team-vendetta.com");
         }
 
-        public static void OnUpdateComplete()
+        public void OnUpdateComplete()
         {
             Instance.Invoke(new MethodInvoker(delegate
-            {
+            {   
                 Instance.totalStatus.ResetText();
                 Instance.totalProgress.Maximum = 100;
                 Instance.totalProgress.Value = 0;
                 Instance.currentStatus.ResetText();
                 Instance.currentProgress.Maximum = 100;
                 Instance.currentProgress.Value = 0;
-                Instance.navigateToHome(Instance.loginCreds.Username, Instance.loginCreds.Password, Instance.fingerPrint);
+                Instance.navigateToHome(SettingsManager.GetStringValue("username"), SettingsManager.GetStringValue("password"), Instance.fingerPrint);
+                Instance.canStart = true;
             }));
         }
 
@@ -356,16 +394,24 @@ namespace Client
 
         private void start_btn_Click(object sender, EventArgs e)
         {
-            if (validated)
+            if (validated && canStart)
             {
-                ServerPackets.Instance.RequestArguments(loginCreds.Username);
+                ServerPackets.Instance.RequestArguments(Instance.SettingsManager.GetStringValue("username"));
             }
         }
 
         public static void OnArgumentsReceived(string arguments)
         {
-            // TODO : What to do with start arguments
-            MessageBox.Show(string.Format("Start arguments received:\n{0}", arguments));
+            if (!string.IsNullOrEmpty(arguments))
+            {
+                string launchArgs = arguments.TrimEnd('\0');
+                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", Instance.SettingsManager.GetStringValue("codepage"));
+                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", Instance.SettingsManager.GetStringValue("country"));
+                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", Instance.otp);
+
+                if (SFrameBypass.Start(10, launchArgs)) { if (Instance.SettingsManager.GetBoolValue("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.Close(); })); } }
+                else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.Close(); }
+            }
         }
 
         private void close_Click(object sender, EventArgs e)
@@ -378,10 +424,7 @@ namespace Client
         {
             if (validated)
             {
-                UserSettings settings = new UserSettings();
-                GeneralSettingsGUI settingsGUI = new GeneralSettingsGUI(settings);
-                settingsGUI.FormClosing += (o, x) => { settings = settingsGUI.userSettings; };
-                settingsGUI.FormClosed += (o, x) => { settings.Save(); };
+                GeneralSettingsGUI settingsGUI = new GeneralSettingsGUI();
                 settingsGUI.ShowDialog(this);
             }
         }
@@ -395,10 +438,13 @@ namespace Client
         {
             if (validated)
             {
-                SettingsManager.InitRappelzSettings();
-                RappelzSettingsGUI settings = new RappelzSettingsGUI(SettingsManager.RappelzSettings);
-                settings.FormClosing += (o, x) => { SettingsManager.SaveSettings(SettingsManager.RappelzSettings); };
-                settings.ShowDialog(this);
+                if (MessageBox.Show("This menu is still under construction! Use at your own risk!", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand) == DialogResult.OK)
+                {
+                    Structures.SettingsManager.InitRappelzSettings();
+                    RappelzSettingsGUI settings = new RappelzSettingsGUI(Structures.SettingsManager.RappelzSettings);
+                    settings.FormClosing += (o, x) => { Structures.SettingsManager.SaveSettings(Structures.SettingsManager.RappelzSettings); };
+                    settings.ShowDialog(this);
+                }
             }
         }
     }

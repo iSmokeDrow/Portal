@@ -146,6 +146,31 @@ namespace Client.Structures
         }
     }
 
+    public class LauncherSetting
+    {
+        string _type;
+        string _name;
+        object _value;
+
+        public string Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        public object Value
+        {
+            get { return _value; }
+            set { _value = value; }
+        }
+    }
+
     public class ClientSettings
     {
         string _name;
@@ -170,9 +195,11 @@ namespace Client.Structures
 
         public static ClientSettings[] RappelzSettings;
 
+        internal static string optPath = Path.Combine(settings.clientDirectory, @"rappelz_v1.opt");
+
         public static void InitRappelzSettings()
         {
-            RappelzSettings = new ClientSettings[File.ReadLines(Path.Combine(settings.clientDirectory, @"rappelz_v1.opt")).Count() - 1];
+            RappelzSettings = new ClientSettings[File.ReadLines(optPath).Count() - 1];
             ReadOPT_v1();
         }
 
@@ -180,7 +207,7 @@ namespace Client.Structures
         {
             try
             {
-                using (StreamReader sr = new StreamReader(File.Open("rappelz_v1.opt", FileMode.Open, FileAccess.Read)))
+                using (StreamReader sr = new StreamReader(File.Open(optPath, FileMode.Open, FileAccess.Read)))
                 {
                     if (sr.ReadLine() == "[RAPPELZ]")
                     {
@@ -213,7 +240,7 @@ namespace Client.Structures
 
         public static bool SaveSettings(ClientSettings[] settings)
         {
-            using (StreamWriter sw = new StreamWriter(File.Open("rappelz_v1.opt", FileMode.Open, FileAccess.Write), Encoding.Default))
+            using (StreamWriter sw = new StreamWriter(File.Open(optPath, FileMode.Open, FileAccess.Write), Encoding.Default))
             {
                 sw.Write("[RAPPELZ]\n");
 

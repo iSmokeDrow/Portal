@@ -83,7 +83,7 @@
             // showPin
             // 
             this.showPin.Image = global::Client.Properties.Resources.eye;
-            this.showPin.Location = new System.Drawing.Point(31, 99);
+            this.showPin.Location = new System.Drawing.Point(31, 98);
             this.showPin.Name = "showPin";
             this.showPin.Size = new System.Drawing.Size(16, 17);
             this.showPin.TabIndex = 8;
@@ -210,6 +210,7 @@
             // 
             // countryList
             // 
+            this.countryList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.countryList.FormattingEnabled = true;
             this.countryList.Items.AddRange(new object[] {
             "US",
@@ -233,6 +234,7 @@
             // 
             // codepageList
             // 
+            this.codepageList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.codepageList.FormattingEnabled = true;
             this.codepageList.Items.AddRange(new object[] {
             "ASCII",

@@ -1,6 +1,7 @@
 ﻿using Client.Functions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,9 @@ namespace Client.Network
             PacketsDb = new Dictionary<ushort, PacketAction>();
 
             #region Packets
+            PacketsDb.Add(0x000A, SC_UpdateDateTime);
+            PacketsDb.Add(0x0014, SC_UpdateSelfUpdate);
+            PacketsDb.Add(0x001E, SC_UpdateUpdater);
             PacketsDb.Add(0x0011, SC_UpdateIndex);
             PacketsDb.Add(0x0012, SC_UpdateIndexEnd);
             PacketsDb.Add(0x0021, SC_File);
@@ -48,6 +52,24 @@ namespace Client.Network
 
         #region Server-Client Packets (SC)
 
+        private void SC_UpdateDateTime(PacketStream stream)
+        {
+            string dateString = stream.ReadString();
+            DateTime time = DateTime.Parse(dateString, CultureInfo.InvariantCulture);
+
+            UpdateHandler.Instance.OnUpdateDateTimeReceived(time);
+        }
+
+        private void SC_UpdateSelfUpdate(PacketStream stream)
+        {
+            UpdateHandler.Instance.ExecuteSelfUpdate(stream.ReadString());
+        }
+
+        private void SC_UpdateUpdater(PacketStream stream)
+        {
+            UpdateHandler.Instance.ExecuteUpdaterUpdate(stream.ReadString());
+        }
+
         /// <summary>
         /// UpdateIndex entry received
         /// </summary>
@@ -63,7 +85,7 @@ namespace Client.Network
 
         private void SC_UpdateIndexEnd(PacketStream stream)
         {
-            UpdateHandler.Instance.OnUpdateIndexEnd();
+            UpdateHandler.Instance.OnUpdateIndexEnd(stream.ReadInt32());
         }
 
         private void SC_File(PacketStream stream)
@@ -85,12 +107,42 @@ namespace Client.Network
 
         #region Client-Server Packets (CS)
 
+        internal void RequestUpdateDateTime()
+        {
+            PacketStream stream = new PacketStream(0x0001);
+            ServerManager.Instance.Send(stream);
+            
+        }
+
+        internal void RequestSelfUpdate(string hash)
+        {
+            PacketStream stream = new PacketStream(0x0002);
+            stream.WriteString(hash, hash.Length + 1);
+            ServerManager.Instance.Send(stream);
+        }
+
+        internal void RequestUpdater(string hash)
+        {
+            PacketStream stream = new PacketStream(0x0003);
+            if (hash != null)
+            {
+                stream.WriteString(hash, hash.Length + 1);
+            }
+            else
+            {
+                string tmp = "NO_HASH";
+                stream.WriteString(tmp, tmp.Length + 1);
+            }
+            ServerManager.Instance.Send(stream);
+        }
+
         /// <summary>
         /// Requests the list of files
         /// </summary>
-        internal void RequestUpdateIndex()
+        internal void RequestUpdateIndex(int type)
         {
             PacketStream stream = new PacketStream(0x0010);
+            stream.WriteInt32(type);
             ServerManager.Instance.Send(stream);
         }
 

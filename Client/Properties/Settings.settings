@@ -15,10 +15,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="codepage" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">ASCII</Value>
     </Setting>
     <Setting Name="country" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">US</Value>
     </Setting>
     <Setting Name="showFPS" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

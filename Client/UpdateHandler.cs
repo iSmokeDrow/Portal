@@ -1,6 +1,6 @@
 ﻿using Client.Functions;
 using Client.Network;
-using Client.Structures;
+using System.Diagnostics;
 using DataCore;
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ namespace Client
     {
         private string indexPath;
         private string resourceFolder;
+        private string disabledFolder;
         private string tempPath;
 
         private const string patcherUrl = "http://176.31.181.127:13546/";
@@ -25,14 +26,26 @@ namespace Client
 
         private List<IndexEntry> index;
 
-        public static readonly UpdateHandler Instance = new UpdateHandler();
+        internal static UpdateHandler instance;
 
-        private readonly Properties.Settings settings;
+        public static UpdateHandler Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new UpdateHandler();
+                }
+
+                return instance;
+            }
+        }
 
         private GUI guiInstance = GUI.Instance;
 
         public bool NetworkError = false;
 
+        // TODO: Remove isLegacy
         public class UpdateIndex
         {
             public string FileName { get; set; }
@@ -47,63 +60,98 @@ namespace Client
         public UpdateHandler()
         {
             core = new Core();
-            core.TotalMaxDetermined += (o, x) => { guiInstance.Invoke(new MethodInvoker(delegate { guiInstance.totalProgress.Maximum = x.Maximum; })); };
-            core.TotalProgressChanged += (o, x) => 
-            {
-                guiInstance.Invoke(new MethodInvoker(delegate
-                {
-                    guiInstance.totalProgress.Value = x.Value;
-                    guiInstance.totalStatus.Text = x.Status;
-                }));
-            };
-            core.TotalProgressReset += (o, x) => 
-            {
-                guiInstance.Invoke(new MethodInvoker(delegate
-                {
-                    guiInstance.totalProgress.Value = 0;
-                    guiInstance.totalProgress.Maximum = 100;
-                    guiInstance.totalStatus.ResetText();
-                }));
-            };
-            core.CurrentMaxDetermined += (o, x) => { guiInstance.Invoke(new MethodInvoker(delegate { guiInstance.currentProgress.Maximum = x.Maximum; })); };
-            core.CurrentProgressChanged += (o, x) => 
-            {
-                guiInstance.Invoke(new MethodInvoker(delegate
-                {
-                    guiInstance.currentProgress.Value = x.Value;
-                    guiInstance.currentStatus.Text = x.Status;
-                }));
-            };
-            core.CurrentProgressReset += (o, x) => 
-            {
-                guiInstance.Invoke(new MethodInvoker(delegate
-                {
-                    guiInstance.currentProgress.Value = 0;
-                    guiInstance.currentProgress.Maximum = 100;
-                    guiInstance.currentStatus.ResetText();
-                }));
-            };
+            //core.TotalMaxDetermined += (o, x) => { guiInstance.Invoke(new MethodInvoker(delegate { guiInstance.totalProgress.Maximum = x.Maximum; })); };
+            //core.TotalProgressChanged += (o, x) => 
+            //{
+            //    guiInstance.Invoke(new MethodInvoker(delegate
+            //    {
+            //        guiInstance.totalProgress.Value = x.Value;
+            //        guiInstance.totalStatus.Text = x.Status;
+            //    }));
+            //};
+            //core.TotalProgressReset += (o, x) => 
+            //{
+            //    guiInstance.Invoke(new MethodInvoker(delegate
+            //    {
+            //        guiInstance.totalProgress.Value = 0;
+            //        guiInstance.totalProgress.Maximum = 100;
+            //        guiInstance.totalStatus.ResetText();
+            //    }));
+            //};
+            //core.CurrentMaxDetermined += (o, x) => { guiInstance.Invoke(new MethodInvoker(delegate { guiInstance.currentProgress.Maximum = x.Maximum; })); };
+            //core.CurrentProgressChanged += (o, x) => 
+            //{
+            //    guiInstance.Invoke(new MethodInvoker(delegate
+            //    {
+            //        guiInstance.currentProgress.Value = x.Value;
+            //        guiInstance.currentStatus.Text = x.Status;
+            //    }));
+            //};
+            //core.CurrentProgressReset += (o, x) => 
+            //{
+            //    guiInstance.Invoke(new MethodInvoker(delegate
+            //    {
+            //        guiInstance.currentProgress.Value = 0;
+            //        guiInstance.currentProgress.Maximum = 100;
+            //        guiInstance.currentStatus.ResetText();
+            //    }));
+            //};
             core.WarningOccured += (o, x) => { MessageBox.Show(x.Warning, "DataCore Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); };
             core.ErrorOccured += (o, x) => { MessageBox.Show(x.Error, "DataCore Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); };
-            settings = Properties.Settings.Default;
-            indexPath = Path.Combine(settings.clientDirectory, "data.000");
-            resourceFolder = string.Concat(settings.clientDirectory, @"/Resource/");
+            resourceFolder = string.Concat(guiInstance.SettingsManager.GetStringValue("clientdirectory"), @"/Resource/");
+            disabledFolder = string.Concat(guiInstance.SettingsManager.GetStringValue("clientdirectory"), @"/Disabled/");
             tempPath = string.Concat(Directory.GetCurrentDirectory(), @"/tmp/");
             this.FileList = new List<UpdateIndex>();
         }
 
         public void Start()
         {
+            guiInstance.UpdateStatus(0, "Loading Client index...");
+            indexPath = Path.Combine(guiInstance.SettingsManager.GetStringValue("clientdirectory"), "data.000");
             index = core.Load(indexPath, false);
-            // Start a connection to the server, if failed exit
-            if (!ServerManager.Instance.Start(guiInstance.ip, guiInstance.port))
-            {
-                MessageBox.Show(ServerManager.Instance.ErrorMessage, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                NetworkError = true;
-                return;
-            }
 
-            ServerPackets.Instance.RequestUpdateIndex();
+            ServerPackets.Instance.RequestUpdateDateTime();
+        }
+
+        // TODO: Send trigger saying to check for legacy or neo updates?
+        public void OnUpdateDateTimeReceived(DateTime dateTime)
+        {
+            guiInstance.UpdateStatus(0, "Checking for updates...");
+
+            DateTime indexDateTime = File.GetLastWriteTimeUtc(indexPath);
+            DateTime resourceDateTime = Directory.GetLastWriteTime(resourceFolder);
+            bool updateRequired = false;
+            int updateType = 0;
+
+            if (indexDateTime < dateTime) { updateRequired = true; updateType = 1; }
+            if (resourceDateTime < dateTime) { updateRequired = true; updateType = 2; }
+
+             if (updateRequired && updateType != 0) { ServerPackets.Instance.RequestUpdateIndex(updateType); }
+             else { guiInstance.OnUpdateComplete(); }
+        }
+
+        public void ExecuteSelfUpdate(string fileName)
+        {
+            DownloadSelfUpdate(fileName);
+        }
+
+        internal void ExecuteUpdaterUpdate(string fileName)
+        {
+            guiInstance.UpdateStatus(0, "Downloading Updater...");
+
+            string zipPath = Path.Combine(tempPath, string.Concat(fileName, ".zip"));
+            WebClient client = new WebClient();
+            client.DownloadFileCompleted += (o, x) => 
+            {
+                if (File.Exists(zipPath))
+                {
+                    File.Delete("Updater.exe");
+                    ZIP.Unpack(zipPath, Directory.GetCurrentDirectory());
+                    File.Delete(zipPath);
+                }
+            };
+            string url = String.Concat(patcherUrl, fileName, ".zip");
+            client.DownloadFileAsync(new Uri(url), Path.Combine(tempPath, string.Concat(fileName, ".zip")), client);
         }
 
         public void OnUpdateIndexReceived(string fileName, string hash, bool isLegacy)
@@ -111,15 +159,28 @@ namespace Client
             this.FileList.Add(new UpdateIndex() { FileName = fileName, FileHash = hash, IsLegacy = isLegacy });
         }
 
-        public void OnUpdateIndexEnd()
+        public void OnUpdateIndexEnd(int indexType)
         {
             this.CurrentIndex = 0;
             guiInstance.UpdateProgressMaximum(0, this.FileList.Count);
-            CheckFiles();
+            guiInstance.UpdateStatus(0, "Updating Client...");
+
+            switch (indexType)
+            {
+                case 1: // New
+                    checkFiles();
+                    break;
+
+                case 2: // Legacy
+                    checkLegacyFiles();
+                    break;
+            }
         }
 
-        private void CheckFiles()
+        internal void checkFiles()
         {
+            guiInstance.UpdateStatus(0, "Checking Indexed Files...");
+
             for (; this.CurrentIndex < this.FileList.Count; ++this.CurrentIndex)
             {
                 guiInstance.UpdateProgressValue(0, this.CurrentIndex);
@@ -129,6 +190,44 @@ namespace Client
 
                 guiInstance.UpdateStatus(1, string.Format("Checking file: {0}", file.FileName));
 
+                IndexEntry fileEntry = core.GetEntry(ref index, file.FileName);
+                if (fileEntry != null)
+                {
+                    string fileHash = Hash.GetSHA512Hash(core.GetFileBytes(guiInstance.SettingsManager.GetStringValue("clientdirectory"), Path.GetExtension(core.DecodeName(fileEntry.Name)).Remove(0, 1), fileEntry.DataID, fileEntry.Offset, fileEntry.Length), fileEntry.Length);
+
+                    if (file.FileHash != fileHash)
+                    {
+                        guiInstance.UpdateStatus(1, string.Format("File: {0} is out of date!", file.FileName));
+                        download = true;
+                    }
+                }
+
+                if (download) { DoUpdate(); break; }
+            }
+
+            if (this.CurrentIndex == this.FileList.Count)
+            {
+                guiInstance.UpdateProgressMaximum(0, 100);
+                guiInstance.UpdateProgressValue(0, 0);
+                guiInstance.UpdateStatus(0, "Saving Client index...");
+                core.Save(ref index, indexPath, false);
+                guiInstance.OnUpdateComplete();
+            }
+        }
+
+        internal void checkLegacyFiles()
+        {
+            guiInstance.UpdateStatus(0, "Checking Resource Files...");
+
+            for (; this.CurrentIndex < this.FileList.Count; ++this.CurrentIndex)
+            {
+                guiInstance.UpdateProgressValue(0, this.CurrentIndex);
+
+                UpdateIndex file = this.FileList[this.CurrentIndex];
+                bool download = false;
+
+                guiInstance.UpdateStatus(1, string.Format("Checking resource: {0}", file.FileName));
+
                 if (file.IsLegacy)
                 {
                     if (!File.Exists(resourceFolder + file.FileName) || (Hash.GetSHA512Hash(resourceFolder + file.FileName) != file.FileHash))
@@ -136,34 +235,30 @@ namespace Client
                         download = true;
                     }
                 }
-                else
-                {
-                    IndexEntry fileEntry = core.GetEntry(ref index, file.FileName);
-                    if (fileEntry != null)
-                    {
-                        string fileHash = Hash.GetSHA512Hash(core.GetFileBytes(settings.clientDirectory, Path.GetExtension(core.DecodeName(fileEntry.Name)).Remove(0, 1), fileEntry.DataID, fileEntry.Offset, fileEntry.Length), fileEntry.Length);
-
-                        if (file.FileHash != fileHash)
-                        {
-                            guiInstance.UpdateStatus(1, string.Format("File: {0} is out of date!", file.FileName));
-                            download = true;
-                        }
-                    }
-                }
 
                 if (download) { DoUpdate(); break; }
             }
 
-            if (this.CurrentIndex == this.FileList.Count) {
-                System.IO.DirectoryInfo di = new DirectoryInfo(tempPath);
-
-                foreach (FileInfo file in di.GetFiles())
-                {
-                    file.Delete();
-                }
-                GUI.OnUpdateComplete();
-
+            if (this.CurrentIndex == this.FileList.Count)
+            {
+                guiInstance.UpdateProgressMaximum(0, 100);
+                guiInstance.UpdateProgressValue(0, 0);
+                guiInstance.OnUpdateComplete();
             }
+        }
+
+        private void DownloadSelfUpdate(string fileName)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"Updater.exe";
+            startInfo.Arguments = String.Concat(patcherUrl, fileName, ".zip") + " " + fileName;
+            Process.Start(startInfo);
+        }
+
+        private void DoUpdate()
+        {
+            string name = this.FileList[this.CurrentIndex].FileName;
+            ServerPackets.Instance.RequestFile(name, 0, "");
         }
 
         internal void OnUpdateFileNameReceived(string path)
@@ -176,21 +271,20 @@ namespace Client
                 File.Delete(filePath);
             }
 
-            guiInstance.UpdateStatus(1, string.Format("Downloading file: {0}", name));
+            guiInstance.UpdateStatus(1, string.Format("Downloading file: {0}", name.Replace(".zip", string.Empty)));
 
             WebClient client = new WebClient();
             client.DownloadProgressChanged += Client_DownloadProgressChanged;
             client.DownloadFileCompleted += Client_DownloadFileCompleted;
             string url = String.Concat(patcherUrl, path, ".zip");
-            MessageBox.Show(url);
             client.DownloadFileAsync(new Uri(url), filePath, client);
         }
 
-
-        private void DoUpdate()
+        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            string name = this.FileList[this.CurrentIndex].FileName;
-            ServerPackets.Instance.RequestFile(name, 0, "");
+            // TODO : Update progress
+            if (guiInstance.currentProgress.Maximum == 100) { guiInstance.UpdateProgressMaximum(1, (int)e.TotalBytesToReceive); }
+            if (guiInstance.currentProgress.Maximum > 100) { guiInstance.UpdateProgressValue(1, e.ProgressPercentage); }
         }
 
         private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
@@ -202,6 +296,9 @@ namespace Client
             string zipPath = Path.Combine(tempPath, string.Concat(file.FileName, ".zip"));
             string resourcePath = Path.Combine(tempPath, file.FileName);
 
+            // Check to make sure tmp exists
+            if (!Directory.Exists(tempPath)) { Directory.CreateDirectory(tempPath); }
+
             // Unzip the file
             ZIP.Unpack(zipPath, tempPath);
 
@@ -210,43 +307,41 @@ namespace Client
                 if (File.Exists(resourceFolder + file.FileName)) { File.Delete(resourceFolder + file.FileName); }
                 File.Move(resourcePath, resourceFolder + file.FileName);
             }
-            else
-            {
-                core.UpdateFileEntry(ref index, settings.clientDirectory, resourcePath, 0);
-                core.Save(ref index, indexPath, false);
-                File.Delete(resourcePath);
-                File.Delete(zipPath);
-            }
+            else { core.UpdateFileEntry(ref index, guiInstance.SettingsManager.GetStringValue("clientdirectory"), resourcePath, 0); }
             
             guiInstance.UpdateStatus(1, string.Format("Verifying update: {0}", file.FileName));
 
             // Check that the file update actually took
-            if (Hash.GetSHA512Hash(resourcePath) == file.FileHash) { CurrentIndex++; }
-
-            guiInstance.UpdateStatus(1, "");
-
-            CheckFiles();
-        }
-
-        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            // TODO : Update progress
-            /*
-            string zipName = String.Concat(this.FileList[this.CurrentIndex].FileName, ".zip");
-            string filePath = Path.Combine(tempPath, zipName);
-
-            Directory.CreateDirectory("tmp");
-
-            if (offset == 0 && File.Exists(filePath)) { File.Delete(filePath); }
-            using (FileStream fs = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write))
+            if (Hash.GetSHA512Hash(resourcePath) == file.FileHash)
             {
-                fs.Seek(offset, SeekOrigin.Begin);
-                fs.Write(data, 0, data.Length);
-                fs.Dispose();
+                CurrentIndex++;
+                File.Delete(resourcePath);
+                File.Delete(zipPath);
+                disableMatchingResource();
             }
 
-            if (isEOF) { OnUpdateDownloadCompleted(); }
-            */
+            guiInstance.UpdateStatus(1, "");
+            guiInstance.UpdateProgressMaximum(1, 100);
+            guiInstance.UpdateProgressValue(1, 0);
+
+            checkFiles();
+        }
+
+
+        internal void disableMatchingResource()
+        {
+            // Make sure /disabled/ exists, or create it
+            if (!Directory.Exists(disabledFolder)) { Directory.CreateDirectory(disabledFolder); }
+
+            string fileName = this.FileList[this.CurrentIndex].FileName;
+            string cfPath = Path.Combine(resourceFolder, fileName);
+            string nfPath = Path.Combine(disabledFolder, fileName);
+
+            if (File.Exists(cfPath))
+            {
+                File.Move(cfPath, nfPath);
+                MessageBox.Show(string.Format("A conflicting resource with the name: {0} was detected!\nThis file has been disabled and can be found in the /disabled/ folder of your client.", fileName), "Update Notice", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
     }
 }

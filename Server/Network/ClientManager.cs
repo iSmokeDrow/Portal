@@ -175,7 +175,6 @@ namespace Server.Network
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
                 UpdateHandler.Instance.OnUserDisconnect(client);
                 client.ClSocket.Close();
             }

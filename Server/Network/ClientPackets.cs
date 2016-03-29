@@ -23,6 +23,9 @@ namespace Server.Network
             PacketsDb = new Dictionary<ushort, PacketAction>();
 
             #region Packets
+            PacketsDb.Add(0x0001, CS_RequestUpdateDateTime);
+            PacketsDb.Add(0x0002, CS_RequestSelfUpdate);
+            PacketsDb.Add(0x0003, CS_RequestUpdater);
             PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
             PacketsDb.Add(0x0020, CS_RequestFile);
             PacketsDb.Add(0x0030, CS_RequestArguments);
@@ -49,6 +52,21 @@ namespace Server.Network
 
         #region Client-Server Packets (CS)
         
+        private void CS_RequestUpdateDateTime(Client client, PacketStream stream)
+        {
+            UpdateHandler.Instance.OnUserRequestUpdateDateTime(client);
+        }
+
+        private void CS_RequestSelfUpdate(Client client, PacketStream stream)
+        {
+            UpdateHandler.Instance.OnUserRequestSelfUpdate(client, stream.ReadString());
+        }
+
+        private void CS_RequestUpdater(Client client, PacketStream stream)
+        {
+            UpdateHandler.Instance.OnUserRequestUpdater(client, stream.ReadString());          
+        }
+
         /// <summary>
         /// Client wants the file list
         /// </summary>
@@ -56,7 +74,7 @@ namespace Server.Network
         /// <param name="stream">data</param>
         private void CS_RequestUpdateIndex(Client client, PacketStream stream)
         {
-            UpdateHandler.Instance.OnUserRequestUpdateIndex(client);
+            UpdateHandler.Instance.OnUserRequestUpdateIndex(client, stream.ReadInt32());
         }
 
         /// <summary>
@@ -90,6 +108,29 @@ namespace Server.Network
 
         #region Server-Client Packets (SC)
 
+        public void UpdateDateTime(Client client, string DateTime)
+        {
+            PacketStream stream = new PacketStream(0x000A);
+
+            stream.WriteString(DateTime, DateTime.Length + 1);
+
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        public void UpdateSelfUpdate(Client client, string tmpName)
+        {
+            PacketStream stream = new PacketStream(0x0014);
+            stream.WriteString(tmpName, tmpName.Length + 1);
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        internal void SendUpdater(Client client, string tmpName)
+        {
+            PacketStream stream = new PacketStream(0x001E);
+            stream.WriteString(tmpName, tmpName.Length + 1);
+            ClientManager.Instance.Send(client, stream);
+        }
+
         /// <summary>
         /// Sends UpdateIndex of a file
         /// </summary>
@@ -112,9 +153,10 @@ namespace Server.Network
         /// Informs the end of UpdateIndex sending
         /// </summary>
         /// <param name="client"></param>
-        public void UpdateIndexEnd(Client client)
+        public void UpdateIndexEnd(Client client, int type)
         {
             PacketStream stream = new PacketStream(0x0012);
+            stream.WriteInt32(type);
             ClientManager.Instance.Send(client, stream);
         }
 

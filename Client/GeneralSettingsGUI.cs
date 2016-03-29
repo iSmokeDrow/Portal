@@ -9,46 +9,48 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using Client.Structures;
+using Client.Functions;
 
 namespace Client
 {
     public partial class GeneralSettingsGUI : Form
     {
         public UserSettings userSettings;
+        public GUI guiInstance = GUI.Instance;
 
-        public GeneralSettingsGUI(UserSettings settings)
+        public GeneralSettingsGUI()
         {
             InitializeComponent();
 
-            userSettings = settings;
-            username.Text = userSettings.Username;
-            password.Text = userSettings.Password;
-            pin.Text = userSettings.Pin;
-            remember.Checked = userSettings.Remember;
-            fps.Checked = userSettings.ShowFPS;
-            onTop.Checked = userSettings.AlwaysOnTop;
-            codepageList.Text = userSettings.Codepage;
-            countryList.Text = userSettings.Country;
-            closeOnStart.Checked = userSettings.CloseOnStart;
-            logReports.Checked = userSettings.LogReports;
-            logErrors.Checked = userSettings.LogErrors;
-            clientDirectory.Text = userSettings.ClientDirectory;
+            username.Text = guiInstance.SettingsManager.GetStringValue("username");
+            password.Text = guiInstance.SettingsManager.GetStringValue("password");
+            pin.Text = guiInstance.SettingsManager.GetStringValue("pin");
+            remember.Checked = guiInstance.SettingsManager.GetBoolValue("remember");
+            fps.Checked = guiInstance.SettingsManager.GetBoolValue("showfps");
+            onTop.Checked = guiInstance.SettingsManager.GetBoolValue("ontop");
+            codepageList.Text = guiInstance.SettingsManager.GetStringValue("codepage");
+            countryList.Text = guiInstance.SettingsManager.GetStringValue("country");
+            closeOnStart.Checked = guiInstance.SettingsManager.GetBoolValue("closeonstart");
+            logReports.Checked = guiInstance.SettingsManager.GetBoolValue("logreports");
+            logErrors.Checked = guiInstance.SettingsManager.GetBoolValue("logerrors");
+            clientDirectory.Text = guiInstance.SettingsManager.GetStringValue("clientdirectory");
         }
 
         private void save_Click(object sender, EventArgs e)
         {
-            userSettings.Username = username.Text;
-            userSettings.Password = password.Text;
-            userSettings.Pin = pin.Text;
-            userSettings.Remember = remember.Checked;
-            userSettings.ShowFPS = fps.Checked;
-            userSettings.AlwaysOnTop = onTop.Checked;
-            userSettings.Codepage = codepageList.Text;
-            userSettings.Country = countryList.Text;
-            userSettings.CloseOnStart = closeOnStart.Checked;
-            userSettings.LogReports = logReports.Checked;
-            userSettings.LogErrors = logErrors.Checked;
-            userSettings.ClientDirectory = clientDirectory.Text;
+            guiInstance.SettingsManager.UpdateValue("username", username.Text);
+            guiInstance.SettingsManager.UpdateValue("password", password.Text);
+            guiInstance.SettingsManager.UpdateValue("pin", pin.Text);
+            guiInstance.SettingsManager.UpdateValue("remember", remember.Checked);
+            guiInstance.SettingsManager.UpdateValue("showfps", fps.Checked);
+            guiInstance.SettingsManager.UpdateValue("ontop", onTop.Checked);
+            guiInstance.SettingsManager.UpdateValue("codepage", codepageList.Text);
+            guiInstance.SettingsManager.UpdateValue("country", countryList.Text);
+            guiInstance.SettingsManager.UpdateValue("closeonstart", closeOnStart.Checked);
+            guiInstance.SettingsManager.UpdateValue("logreports", logReports.Checked);
+            guiInstance.SettingsManager.UpdateValue("logerrors", logErrors.Checked);
+            guiInstance.SettingsManager.UpdateValue("clientdirectory", clientDirectory.Text);
+            guiInstance.SettingsManager.writeOPT();
             this.Close();
         }
 
@@ -62,12 +64,10 @@ namespace Client
         {
             if (!remember.Checked)
             {
-                Properties.Settings.Default.username = string.Empty;
-                Properties.Settings.Default.password = string.Empty;
-                Properties.Settings.Default.pin = string.Empty;
-                Properties.Settings.Default.remember = false;
-                Properties.Settings.Default.Save();
-                Properties.Settings.Default.Reload();
+                guiInstance.SettingsManager.UpdateValue("username", "");
+                guiInstance.SettingsManager.UpdateValue("password", "");
+                guiInstance.SettingsManager.UpdateValue("pin", "");
+                guiInstance.SettingsManager.UpdateValue("remember", remember.Checked);
             }
         }
 

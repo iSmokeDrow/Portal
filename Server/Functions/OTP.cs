@@ -70,20 +70,25 @@ namespace Server.Functions
         public static string SetOTP(string username)
         {
             string outOTP = null;
+            string otpHash = null;
 
             // Get username account_id
             using (SqlConnection sqlCon = Database.CreateConnection)
             {
-                using (SqlCommand sqlCmd = new SqlCommand(string.Format("SELECT account_id FROM dbo.{0}", OPT.SettingsList["db.auth.table_alias"]), sqlCon))
+                using (SqlCommand sqlCmd = new SqlCommand(string.Format("SELECT account_id FROM dbo.{0} WHERE login_name = @username", OPT.SettingsList["db.auth.table_alias"]), sqlCon))
                 {
+                    sqlCmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = username;
+
                     int result = (int)Database.ExecuteStatement(sqlCmd, 1);
                     if (result > 0)
                     {
                         int account_id = result;
-                        outOTP = OTP.GenerateMD5OTP(OPT.SettingsList["md5.key"], OTP.GenerateRandomPassword(22));
+                        outOTP = OTP.GenerateRandomPassword(22);
+                        otpHash = OTP.GenerateMD5OTP(OPT.SettingsList["md5.key"], outOTP);
 
                         // Check if an OTP bearing this account_id exists
                         sqlCmd.CommandText = "SELECT COUNT(*) FROM dbo.otp WHERE account_id = @account_id";
+                        sqlCmd.Parameters.Clear();
                         sqlCmd.Parameters.Add("@account_id", SqlDbType.Int).Value = account_id;
 
                         result = (int)Database.ExecuteStatement(sqlCmd, 1);
@@ -92,7 +97,7 @@ namespace Server.Functions
                             // Update original entry
                             sqlCmd.CommandText = "UPDATE dbo.OTP SET otp = @otp, otp_end = @otp_end WHERE account_id = @account_id";
                             sqlCmd.Parameters.Clear();
-                            sqlCmd.Parameters.Add("@otp", SqlDbType.NVarChar).Value = outOTP;
+                            sqlCmd.Parameters.Add("@otp", SqlDbType.NVarChar).Value = otpHash;
                             sqlCmd.Parameters.Add("@account_id", SqlDbType.Int).Value = account_id;
                             sqlCmd.Parameters.Add("@otp_end", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(2.00);
 
@@ -104,7 +109,7 @@ namespace Server.Functions
                             sqlCmd.CommandText = "INSERT INTO dbo.otp (account_id, otp, otp_end) VALUES (@account_id, @otp, @otp_end)";
                             sqlCmd.Parameters.Clear();
                             sqlCmd.Parameters.Add("@account_id", SqlDbType.Int).Value = account_id;
-                            sqlCmd.Parameters.Add("@otp", SqlDbType.NVarChar).Value = outOTP;
+                            sqlCmd.Parameters.Add("@otp", SqlDbType.NVarChar).Value = otpHash;
                             sqlCmd.Parameters.Add("@otp_end", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(2.00);
 
                             Database.ExecuteStatement(sqlCmd, 0);

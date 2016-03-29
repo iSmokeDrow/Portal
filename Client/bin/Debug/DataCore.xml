@@ -101,7 +101,7 @@
             <param name="decodeNames">Determines if the file names should be decoded during load</param>
             <returns>A bool value indicating success or failure</returns>
         </member>
-        <member name="M:DataCore.Core.Save(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String)">
+        <member name="M:DataCore.Core.Save(System.Collections.Generic.List{DataCore.IndexEntry}@,System.String,System.Boolean)">
             <summary>
             Saves the provided indexList into a ready to use data.000 index
             </summary>
@@ -206,11 +206,12 @@
             <param name="id">DataID of file entry to be deleted</param>
             <param name="offset">Offset of file entry to be deleted</param>
         </member>
-        <member name="M:DataCore.Core.GetFileBytes(System.String,System.Int32,System.Int64,System.Int32)">
+        <member name="M:DataCore.Core.GetFileBytes(System.String,System.String,System.Int32,System.Int64,System.Int32)">
             <summary>
             Gets the collection of bytes that represents a physical file inside the data.xxx storage system
             </summary>
             <param name="dataDirectory">Location of the data.xxx files</param>
+            <param name="fileExt">Extension of the file</param>
             <param name="dataId">ID of the data.xxx file to be loaded</param>
             <param name="offset">Offset of the file being gathered</param>
             <param name="length">Length of the file being gathered</param>

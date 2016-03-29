@@ -57,7 +57,7 @@ namespace Client.Network
             }
             catch (Exception e)
             {
-                this.ErrorMessage = e.Message;
+                System.Windows.Forms.MessageBox.Show("Failed to connect to the Launcher Server!\nThe server may be down for a moment. Try again in a bit.", "Connection Exception", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 
                 socket.Close();
                 return false;

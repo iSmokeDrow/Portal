@@ -12,41 +12,34 @@ namespace Client
 {
     public partial class LoginGUI : Form
     {
-        public string Username;
-        public string Password;
-        public string Pin;
-        public bool RememberMe;
-        public bool LoginClicked = false;
-        public bool CancelClicked = false;
+        public GUI guiInstance = GUI.Instance;
+        public bool Cancelled = false;
 
         public LoginGUI()
         {
             InitializeComponent();
             this.FormClosing += (o, x) =>
             {
-                if (rememberCredentials.Checked)
-                {
-                    Properties.Settings.Default.username = username.Text;
-                    Properties.Settings.Default.password = password.Text;
-                    Properties.Settings.Default.pin = pin.Text;
-                    Properties.Settings.Default.remember = rememberCredentials.Checked;
-                    Properties.Settings.Default.Save();
-                    Properties.Settings.Default.Reload();
-                }
+                guiInstance.SettingsManager.UpdateValue("username", username.Text);
+                guiInstance.SettingsManager.UpdateValue("password", password.Text);
+                guiInstance.SettingsManager.UpdateValue("pin", pin.Text);
+                guiInstance.SettingsManager.UpdateValue("remember", true);
+
+                if (rememberCredentials.Checked) { guiInstance.SettingsManager.writeOPT(); }
             };
 
-            if (Properties.Settings.Default.remember)
+            if (guiInstance.SettingsManager.GetBoolValue("remember"))
             {
-                username.Text = Properties.Settings.Default.username;
-                password.Text = Properties.Settings.Default.password;
-                pin.Text = Properties.Settings.Default.pin;
-                rememberCredentials.Checked = Properties.Settings.Default.remember;
+                username.Text = guiInstance.SettingsManager.GetStringValue("username");
+                password.Text = guiInstance.SettingsManager.GetStringValue("password");
+                pin.Text = guiInstance.SettingsManager.GetStringValue("pin");
+                rememberCredentials.Checked = guiInstance.SettingsManager.GetBoolValue("remember");
             }
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
         {
-            CancelClicked = true;
+            Cancelled = true;
             this.Close();
         }
 
@@ -54,14 +47,11 @@ namespace Client
         {
             if (username.Text.Length > 0 && password.Text.Length > 0 && pin.Text.Length > 0)
             {
-                Username = username.Text;
-                Password = password.Text;
-                Pin = pin.Text;
-                RememberMe = rememberCredentials.Checked;
-                LoginClicked = true;
+                this.Hide();
+                GUI.Instance.Login(username.Text, password.Text, pin.Text);
+                this.Close();
             }
-
-            this.Close();
+            else { MessageBox.Show("You have not entered valid login information!\nPlease fill in all text boxes with proper infromation to continue!", "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void LoginGUI_DoubleClick(object sender, EventArgs e)

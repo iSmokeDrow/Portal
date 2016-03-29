@@ -1,24 +1,3 @@
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Client.exe.config
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Client.exe
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Client.pdb
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Core.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Core.xml
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\awesomium.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\icudt.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\avcodec-53.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\avformat-53.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\avutil-51.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\libEGL.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\libGLESv2.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\awesomium_process
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\inspector.pak
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\xinput9_1_0.dll
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\bin\Debug\pdf_js.pak
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Client.GUI.resources
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Client.Properties.Resources.resources
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Client.csproj.GenerateResource.Cache
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Client.exe
-f:\users\switch\documents\visual studio 2015\Projects\Portal\Client\obj\Debug\Client.pdb
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\bin\Debug\Client.exe.config
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.GUI.resources
@@ -43,14 +22,32 @@ C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\bin\Debug\xinput9_1_0.dll
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\bin\Debug\pdf_js.pak
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.exe
 C:\Users\guilh\Documents\Dev\Rappelz\Portal\Client\obj\Debug\Client.pdb
-F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.LoginGUI.resources
-F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\Client.exe.config
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\Client.exe
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\Client.pdb
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Core.dll
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Windows.Forms.dll
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\DataCore.dll
-F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\System.Collections.Immutable.dll
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\zlibnet.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Core.xml
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\Awesomium.Windows.Forms.xml
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\DataCore.xml
-F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\System.Collections.Immutable.xml
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\awesomium.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\icudt.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\avcodec-53.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\avformat-53.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\avutil-51.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\libEGL.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\libGLESv2.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\awesomium_process
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\inspector.pak
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\xinput9_1_0.dll
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\bin\Debug\pdf_js.pak
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.GeneralSettingsGUI.resources
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.GUI.resources
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.LoginGUI.resources
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.Properties.Resources.resources
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.RappelzSettingsGUI.resources
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.csproj.GenerateResource.Cache
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.exe
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\Debug\Client.pdb

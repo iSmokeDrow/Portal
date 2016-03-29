@@ -27,7 +27,6 @@ F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debu
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debug\Client.csproj.GenerateResource.Cache
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debug\Client.exe
 F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debug\Client.pdb
-F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debug\Client.csprojResolveAssemblyReference.cache
 C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Client.exe.config
 C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Client.exe
 C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\bin\x86\Debug\Client.pdb
@@ -57,3 +56,4 @@ C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.RappelzS
 C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.csproj.GenerateResource.Cache
 C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.exe
 C:\Users\guilh\Documents\Dev\Rappelz\portal\Client\obj\x86\Debug\Client.pdb
+F:\Users\Switch\Documents\Visual Studio 2015\Projects\Portal\Client\obj\x86\Debug\Client.csprojResolveAssemblyReference.cache
