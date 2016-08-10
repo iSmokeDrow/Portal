@@ -1,0 +1,4 @@
+io.ip:127.0.0.1
+io.port:13545
+#Leave blank if using local /updates/ folder
+update.dir:

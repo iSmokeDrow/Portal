@@ -27,7 +27,7 @@ namespace Server
                 //Console.WriteLine("Current DateTime of updates folder: {0}", dateTime.ToString());
                 ClientPackets.Instance.UpdateDateTime(client, dateTime.ToString(CultureInfo.InvariantCulture));
             }
-            else { Console.WriteLine("Cannot find: {0}", updatesDir); }
+            else { Console.WriteLine("Cannot find updates directory: {0}", updatesDir); }
         }
 
         public void OnUserRequestSelfUpdate(Client client, string remoteHash)

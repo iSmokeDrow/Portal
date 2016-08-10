@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.totalStatus = new System.Windows.Forms.Label();
             this.currentStatus = new System.Windows.Forms.Label();
             this.currentProgress = new System.Windows.Forms.ProgressBar();
@@ -36,7 +35,6 @@
             this.gameSettings_lb = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.close_lb = new System.Windows.Forms.Label();
-            this.browser = new Awesomium.Windows.Forms.WebControl(this.components);
             this.totalProgress = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
@@ -114,12 +112,6 @@
             this.close_lb.Text = "x";
             this.close_lb.Click += new System.EventHandler(this.close_Click);
             // 
-            // browser
-            // 
-            this.browser.Location = new System.Drawing.Point(2, 21);
-            this.browser.Size = new System.Drawing.Size(1008, 460);
-            this.browser.TabIndex = 20;
-            // 
             // totalProgress
             // 
             this.totalProgress.ForeColor = System.Drawing.Color.White;
@@ -135,7 +127,6 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
             this.ClientSize = new System.Drawing.Size(1013, 584);
             this.Controls.Add(this.totalProgress);
-            this.Controls.Add(this.browser);
             this.Controls.Add(this.close_lb);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.gameSettings_lb);
@@ -172,7 +163,6 @@
         private System.Windows.Forms.Label gameSettings_lb;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label close_lb;
-        private Awesomium.Windows.Forms.WebControl browser;
         public System.Windows.Forms.ProgressBar totalProgress;
     }
 }

@@ -61,11 +61,14 @@ namespace Server.Functions
                     {
                         currentLineIdx++;
 
-                        //Break the line 
-                        string[] lineBlocks = currentLineValue.Split(':');
-                        string settingName = lineBlocks[0];
-                        string settingValue = lineBlocks[1];
-                        SettingsList.Add(settingName, settingValue);
+                        if (!currentLineValue.StartsWith("#"))
+                        {
+                            //Break the line 
+                            string[] lineBlocks = currentLineValue.Split(':');
+                            string settingName = lineBlocks[0];
+                            string settingValue = lineBlocks[1];
+                            SettingsList.Add(settingName, settingValue);
+                        }
                     }
 
                     Console.WriteLine("[OK]");

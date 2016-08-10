@@ -12,10 +12,6 @@ namespace Client.Structures
 {
     public class UserSettings
     {
-        string _username;
-        string _password;
-        string _pin;
-        bool _remember;
         string _codepage;
         string _country;
         bool _showFPS;
@@ -26,30 +22,6 @@ namespace Client.Structures
         bool _detailedErrors;
         bool _logErrors;
         string _clientDirectory;
-
-        public string Username
-        {
-            get { return _username; }
-            set { _username = value; }
-        }
-
-        public string Password
-        {
-            get { return _password; }
-            set { _password = value; }
-        }
-
-        public string Pin
-        {
-            get { return _pin; }
-            set { _pin = value; }
-        }
-
-        public bool Remember
-        {
-            get { return _remember; }
-            set { _remember = value; }
-        }
 
         public string Codepage
         {
@@ -113,10 +85,6 @@ namespace Client.Structures
 
         public UserSettings()
         {
-            Username = Properties.Settings.Default.username;
-            Password = Properties.Settings.Default.password;
-            Pin = Properties.Settings.Default.pin;
-            Remember = Properties.Settings.Default.remember;
             Codepage = Properties.Settings.Default.codepage;
             Country = Properties.Settings.Default.country;
             ShowFPS = Properties.Settings.Default.showFPS;
@@ -129,10 +97,6 @@ namespace Client.Structures
 
         public void Save()
         {
-            Properties.Settings.Default.username = _username;
-            Properties.Settings.Default.password = _password;
-            Properties.Settings.Default.pin = _pin;
-            Properties.Settings.Default.remember = _remember;
             Properties.Settings.Default.codepage = _codepage;
             Properties.Settings.Default.country = _country;
             Properties.Settings.Default.showFPS = _showFPS;

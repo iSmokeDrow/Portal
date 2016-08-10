@@ -42,7 +42,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="zlibnet">
-      <HintPath>..\3rdParty\zlibnet.dll</HintPath>
+      <HintPath>D:\Rappelz\Tools\zlibnet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,8 @@ namespace Server.Network
     {
         public static readonly ClientManager Instance = new ClientManager();
 
+        private static List<Client> clientList = new List<Client>();
+
         /// <summary>
         /// Initializes the client listener
         /// </summary>
@@ -88,6 +90,8 @@ namespace Server.Network
             listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
 
             Client client = new Client(socket);
+
+            Console.WriteLine("Client [{0}] connected from: {1} [{2}]", client.Id, client.Ip, client.Port);
 
             socket.BeginReceive(
                 client.Buffer, 0, PacketStream.MaxBuffer, SocketFlags.None,
@@ -167,7 +171,7 @@ namespace Server.Network
                 }
                 else
                 {
-                    Console.WriteLine("Client disconected.");
+                    Console.WriteLine("Client [{0}] disconected.", client.Id);
                     UpdateHandler.Instance.OnUserDisconnect(client);
                     client.ClSocket.Close();
                     return;

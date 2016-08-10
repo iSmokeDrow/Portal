@@ -87,8 +87,8 @@ namespace Client.Functions
             try
             {
                 var p = new ProcessStartInfo();
-                p.FileName = string.Concat(GUI.Instance.SettingsManager.GetStringValue("clientdirectory"), @"\SFrame.exe");
-                p.WorkingDirectory = GUI.Instance.SettingsManager.GetStringValue("clientdirectory");
+                p.FileName = string.Concat(GUI.Instance.SettingsManager.GetString("clientdirectory"), @"\SFrame.exe");
+                p.WorkingDirectory = GUI.Instance.SettingsManager.GetString("clientdirectory");
                 p.Arguments = arguments;
                 p.EnvironmentVariables["SFrame.exe_PARENT"] = "Launcher.exe";
                 p.EnvironmentVariables["SFrame.exe_RUNNER"] = EventHandle;

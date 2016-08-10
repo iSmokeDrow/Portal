@@ -75,17 +75,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Awesomium.Core, Version=1.7.5.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\Awesomium.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Awesomium.Windows.Forms, Version=1.7.5.1, Culture=neutral, PublicKeyToken=9bd24830fbe304a0, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\Awesomium.Windows.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="DataCore, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\DataCore.dll</HintPath>
+    <Reference Include="DataCore">
+      <HintPath>..\..\DataCore\DataCore\bin\Release\DataCore.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -101,14 +92,12 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="zlibnet">
-      <HintPath>..\3rdParty\zlibnet.dll</HintPath>
+      <HintPath>D:\Rappelz\Tools\zlibnet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Functions\Fingerprint.cs" />
     <Compile Include="Functions\Hash.cs" />
     <Compile Include="Functions\OPT.cs" />
-    <Compile Include="Functions\PasswordCipher.cs" />
     <Compile Include="Functions\SFrameBypass.cs" />
     <Compile Include="Functions\StringExtension.cs" />
     <Compile Include="Functions\XDes.cs" />
@@ -118,12 +107,6 @@
     </Compile>
     <Compile Include="GeneralSettingsGUI.designer.cs">
       <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LoginGUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoginGUI.designer.cs">
-      <DependentUpon>LoginGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="RappelzSettingsGUI.cs">
       <SubType>Form</SubType>
@@ -149,15 +132,12 @@
     <Compile Include="Structures\LegacyEntry.cs" />
     <Compile Include="Structures\LoginCredentials.cs" />
     <Compile Include="Structures\Settings.cs" />
-    <Compile Include="UpdateHandler.cs" />
+    <Compile Include="Functions\UpdateHandler.cs" />
     <EmbeddedResource Include="GeneralSettingsGUI.resx">
       <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI.resx">
       <DependentUpon>GUI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LoginGUI.resx">
-      <DependentUpon>LoginGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

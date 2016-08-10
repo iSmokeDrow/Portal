@@ -33,6 +33,20 @@ namespace Server
             }
         }
         static internal Dictionary<int, Client> clientList;
+
+        static internal string updatePath
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(OPT.GetSetting("update.dir")))
+                {
+                    return OPT.GetSetting("update.dir");
+                }
+                else { return string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/updates/"); }
+            }
+        }
+
+        static internal string tmpPath = string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/tmp/");
         
         static void Main(string[] args)
         {
@@ -41,16 +55,31 @@ namespace Server
 
             clientList = new Dictionary<int, Client>();
 
+            Console.WriteLine("Checking for Updates directory...");
+            if (!Directory.Exists(updatePath))
+            {
+                Console.WriteLine("\t- Failed to locate: {0}\n!!!Folder has been generated!!!");
+                Directory.CreateDirectory(updatePath);
+            }
+            Console.WriteLine("\t- {0} files loaded from the update folder!", Directory.GetFiles(updatePath).Length);
+            
+
+            Console.Write("Checking for tmp directory...");
+            if (!Directory.Exists(tmpPath)) { Directory.CreateDirectory(tmpPath); }
+            Console.Write("[OK]\n\t- Cleaning up temp files...");
+
+            int cleanedCount = 0;
+
+            foreach (string filePath in Directory.GetFiles(@"/tmp/"))
+            {
+                File.Delete(filePath);
+                cleanedCount++;
+            }
+            Console.WriteLine("[OK] ({0} files cleared!)", cleanedCount);
+
             Console.Write("Initializing client listener... ");
             if (ClientManager.Instance.Start()) { Console.WriteLine("[OK]"); }
 
-            Console.Write("Cleaning up temp files...");
-            foreach (string filePath in Directory.GetFiles(string.Concat(Directory.GetCurrentDirectory(), @"\tmp\")))
-            {
-                File.Delete(filePath);
-            }
-            Console.WriteLine("[OK]");
-                
             Console.ReadLine();
         }
 

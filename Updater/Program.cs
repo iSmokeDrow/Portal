@@ -32,7 +32,7 @@ namespace Updater
 
             if (Process.GetProcessesByName(processName_2).Length > 0)
             {
-                foreach (var process in Process.GetProcessesByName(processName_1)) { process.Kill(); }
+                foreach (var process in Process.GetProcessesByName(processName_2)) { process.Kill(); }
             }
 
             Console.WriteLine("Downloading Launcher update from: {0}", args[0]);

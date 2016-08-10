@@ -18,9 +18,6 @@ namespace Client.Functions
         internal List<string> defaultSettings = new List<string>
         {
             "s|clientdirectory|",
-            "s|username|",
-            "s|password|",
-            "s|pin|",
             "b|remember|false",
             "s|codepage|ASCII",
             "s|country|US",
@@ -31,15 +28,21 @@ namespace Client.Functions
             "b|logerrors|false"
         };
 
-        public OPT()
+        internal static OPT instance;
+        public static OPT Instance
         {
-            des = new XDes(encKey);
-            optPath = Path.Combine(Directory.GetCurrentDirectory(), optName);
+            get
+            {
+                if (instance == null) { instance = new OPT(); }
+                return instance;
+            }
         }
 
         public void Start()
         {
-            // Check that the config.opt exists
+            des = new XDes(encKey);
+            optPath = Path.Combine(Directory.GetCurrentDirectory(), optName);
+
             if (!optExists) { preloadDefaults(); writeDefaultOPT(); }
             else { readOPT(); }
         }
@@ -49,19 +52,19 @@ namespace Client.Functions
             get { return File.Exists(optPath); }
         }
 
-        public string GetStringValue(string name)
+        public string GetString(string name)
         {
             LauncherSetting setting = settingsList.Find(s => s.Name == name);
-            return setting.Value.ToString();
+            return (setting != null) ? setting.Value.ToString() : null;
         }
 
-        public bool GetBoolValue(string name)
+        public bool GetBool(string name)
         {
             LauncherSetting setting = settingsList.Find(s => s.Name == name);
-            return Convert.ToBoolean(setting.Value);
+            return (setting != null) ? Convert.ToBoolean(setting.Value) : false;
         }
 
-        internal void UpdateValue(string name, object value)
+        internal void Update(string name, object value)
         {
             settingsList.Find(s => s.Name == name).Value = value;
         }

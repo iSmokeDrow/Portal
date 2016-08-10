@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,8 @@ namespace Server
         }
 
         public int Id { get; set; }
+        public string Ip { get; set; }
+        public int Port { get; set; }
         public Socket ClSocket { get; set; }
         public byte[] Buffer;
         public PacketStream Data { get; set; }
@@ -42,6 +45,8 @@ namespace Server
         public Client(Socket socket)
         {
             this.ClSocket = socket;
+            this.Ip = ((IPEndPoint)socket.RemoteEndPoint).Address.ToString();
+            this.Port = ((IPEndPoint)socket.RemoteEndPoint).Port;
             this.Buffer = new byte[PacketStream.MaxBuffer];
             this.Data = new PacketStream();
             this.InCipher = new XRC4Cipher(Program.RC4Key);
