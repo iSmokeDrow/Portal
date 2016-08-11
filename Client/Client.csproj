@@ -75,8 +75,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataCore">
+    <Reference Include="DataCore, Version=3.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DataCore\DataCore\bin\Release\DataCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -129,10 +134,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structures\BlankIndexEntry.cs" />
-    <Compile Include="Structures\LegacyEntry.cs" />
     <Compile Include="Structures\LoginCredentials.cs" />
     <Compile Include="Structures\Settings.cs" />
     <Compile Include="Functions\UpdateHandler.cs" />
+    <Compile Include="Structures\UpdateIndex.cs" />
     <EmbeddedResource Include="GeneralSettingsGUI.resx">
       <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,6 +158,7 @@
       <DependentUpon>RappelzSettingsGUI.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

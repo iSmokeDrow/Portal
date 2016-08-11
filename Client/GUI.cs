@@ -19,7 +19,6 @@ using Client.Structures;
 
 namespace Client
 {
-    // TODO: Make it so that if validation fails (while rememberMe) user has option to forget credentials
     public partial class GUI : Form
     {
         #region Drag Hack
@@ -177,7 +176,7 @@ namespace Client
         public void OnUpdateComplete()
         {
             Instance.Invoke(new MethodInvoker(delegate
-            {   
+            {
                 Instance.totalStatus.ResetText();
                 Instance.totalProgress.Maximum = 100;
                 Instance.totalProgress.Value = 0;

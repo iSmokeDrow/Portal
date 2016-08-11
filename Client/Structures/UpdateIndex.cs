@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Client.Structures
 {
-    public class LegacyIndexEntry
+    public class UpdateIndex
     {
-        public string Name { get; set; }
-        public long Size { get; set; }
+        public string FileName { get; set; }
+        public string FileHash { get; set; }
+        public bool IsLegacy { get; set; }
     }
 }

@@ -1,16 +1,13 @@
-﻿using Client.Functions;
-using Client.Network;
+﻿using Client.Network;
 using System.Diagnostics;
 using DataCore;
 using DataCore.Structures;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
+using Client.Structures;
 
 namespace Client.Functions
 {
@@ -46,21 +43,17 @@ namespace Client.Functions
 
         private GUI guiInstance = GUI.Instance;
 
-        private string GetFileExtension(string fileName) { return Path.GetExtension(fileName).Remove(0,1).ToLower(); }
+        private string GetFileExtension(string fileName) { return (core.IsEncoded(fileName)) ? Path.GetExtension(core.DecodeName(fileName)).Remove(0, 1).ToLower() : Path.GetExtension(fileName).Remove(0, 1).ToLower(); }
 
         public bool NetworkError = false;
 
-        // TODO: Remove isLegacy
-        public class UpdateIndex
-        {
-            public string FileName { get; set; }
-            public string FileHash { get; set; }
-            public bool IsLegacy { get; set; }
-        }
-
         public List<UpdateIndex> FileList { get; set; }
         
-        private int CurrentIndex { get; set; }
+        private int currentIndex { get; set; }
+
+        internal bool isLegacy = false;
+
+        internal List<UpdateIndex> filteredUpdates;
 
         public UpdateHandler()
         {
@@ -119,8 +112,10 @@ namespace Client.Functions
         }
 
         // TODO: Send trigger saying to check for legacy or neo updates?
+        // TODO: Set flags for the instance of UpdateHandler that determine if Neo/Legacy or Both updates should be processed for updateIndex
         public void OnUpdateDateTimeReceived(DateTime dateTime)
         {
+            // TODO: Clarify this text
             guiInstance.UpdateStatus(0, "Checking for updates...");
 
             DateTime indexDateTime = File.GetLastWriteTimeUtc(indexPath);
@@ -128,12 +123,15 @@ namespace Client.Functions
             bool updateRequired = false;
             int updateType = 0;
 
-            // TODO: Make updateType three to check for both
-            if (indexDateTime < dateTime) { updateRequired = true; updateType = 1; }
-            if (resourceDateTime < dateTime) { updateRequired = true; updateType = 2; }
+            // TODO: Request indexes seperately
+            if (indexDateTime < dateTime && resourceDateTime >= dateTime) { updateRequired = true; updateType = 1; } // Neo Only
+            else if (indexDateTime >= dateTime && resourceDateTime < dateTime) { updateRequired = true; updateType = 2; } // Legacy Only
+            else if (indexDateTime < dateTime && resourceDateTime < dateTime) { updateRequired = true; updateType = 3; }
 
-             if (updateRequired && updateType != 0) { ServerPackets.Instance.RequestUpdateIndex(updateType); }
-             else { guiInstance.OnUpdateComplete(); }
+            if (updateRequired && updateType > 0)
+                ServerPackets.Instance.RequestUpdateIndex(updateType);
+
+            else { guiInstance.OnUpdateComplete(); }
         }
 
         public void ExecuteSelfUpdate(string fileName)
@@ -160,6 +158,7 @@ namespace Client.Functions
             client.DownloadFileAsync(new Uri(url), Path.Combine(tempPath, string.Concat(fileName, ".zip")), client);
         }
 
+        // TODO: Remove isLegacy from this function chain
         public void OnUpdateIndexReceived(string fileName, string hash, bool isLegacy)
         {
             this.FileList.Add(new UpdateIndex() { FileName = fileName, FileHash = hash, IsLegacy = isLegacy });
@@ -167,9 +166,9 @@ namespace Client.Functions
 
         public void OnUpdateIndexEnd(int indexType)
         {
-            this.CurrentIndex = 0;
+            this.currentIndex = 0;
             guiInstance.UpdateProgressMaximum(0, this.FileList.Count);
-            guiInstance.UpdateStatus(0, "Updating Client...");
+            guiInstance.UpdateStatus(0, "Updating Client files...");
 
             switch (indexType)
             {
@@ -180,18 +179,26 @@ namespace Client.Functions
                 case 2: // Legacy
                     checkLegacyFiles();
                     break;
+                case 3: //
+                    checkFiles();
+                    checkLegacyFiles();
+                    break;
             }
         }
 
         internal void checkFiles()
         {
-            guiInstance.UpdateStatus(0, "Checking Indexed Files...");
+            // Split only the currently relevant files
+            filteredUpdates = new List<UpdateIndex>();
+            filteredUpdates = FileList.FindAll(i => i.IsLegacy == false);
 
-            for (; this.CurrentIndex < this.FileList.Count; ++this.CurrentIndex)
+            guiInstance.UpdateStatus(0, "Checking indexed data files...");
+
+            for (; this.currentIndex < this.filteredUpdates.Count; ++this.currentIndex)
             {
-                guiInstance.UpdateProgressValue(0, this.CurrentIndex);
+                guiInstance.UpdateProgressValue(0, this.currentIndex);
 
-                UpdateIndex file = this.FileList[this.CurrentIndex];
+                UpdateIndex file = this.filteredUpdates[this.currentIndex];
                 bool download = false;
 
                 guiInstance.UpdateStatus(1, string.Format("Checking file: {0}", file.FileName));
@@ -199,11 +206,11 @@ namespace Client.Functions
                 IndexEntry fileEntry = core.GetEntry(ref index, file.FileName);
                 if (fileEntry != null)
                 {
-                    string fileHash = core.GetFileSHA512(settings.GetString("clientDirectory"), core.GetID(fileEntry.Name), fileEntry.Offset, fileEntry.Length, GetFileExtension(fileEntry.Name));
+                    string fileHash = core.GetFileSHA512(settings.GetString("clientdirectory"), core.GetID(fileEntry.Name), fileEntry.Offset, fileEntry.Length, GetFileExtension(fileEntry.Name));
 
                     if (file.FileHash != fileHash)
                     {
-                        guiInstance.UpdateStatus(1, string.Format("File: {0} is out of date!", file.FileName));
+                        guiInstance.UpdateStatus(1, string.Format("File: {0} is depreciated!", file.FileName));
                         download = true;
                     }
                 }
@@ -211,7 +218,7 @@ namespace Client.Functions
                 if (download) { DoUpdate(); break; }
             }
 
-            if (this.CurrentIndex == this.FileList.Count)
+            if (this.currentIndex == this.FileList.Count)
             {
                 guiInstance.UpdateProgressMaximum(0, 100);
                 guiInstance.UpdateProgressValue(0, 0);
@@ -219,33 +226,33 @@ namespace Client.Functions
                 core.Save(ref index, settings.GetString("clientDirectory"), false, false);
                 guiInstance.OnUpdateComplete();
             }
+
+            filteredUpdates.Clear();
         }
 
         internal void checkLegacyFiles()
         {
             guiInstance.UpdateStatus(0, "Checking Resource Files...");
 
-            for (; this.CurrentIndex < this.FileList.Count; ++this.CurrentIndex)
+            for (; this.currentIndex < this.FileList.Count; ++this.currentIndex)
             {
-                guiInstance.UpdateProgressValue(0, this.CurrentIndex);
+                guiInstance.UpdateProgressValue(0, this.currentIndex);
 
-                UpdateIndex file = this.FileList[this.CurrentIndex];
+                UpdateIndex file = this.FileList[this.currentIndex];
                 bool download = false;
 
                 guiInstance.UpdateStatus(1, string.Format("Checking resource: {0}", file.FileName));
 
-                if (file.IsLegacy)
+                if (!File.Exists(resourceFolder + file.FileName) || (Hash.GetSHA512Hash(resourceFolder + file.FileName) != file.FileHash))
                 {
-                    if (!File.Exists(resourceFolder + file.FileName) || (Hash.GetSHA512Hash(resourceFolder + file.FileName) != file.FileHash))
-                    {
-                        download = true;
-                    }
+                    download = true;
+                    isLegacy = true;
                 }
 
                 if (download) { DoUpdate(); break; }
             }
 
-            if (this.CurrentIndex == this.FileList.Count)
+            if (this.currentIndex == this.FileList.Count)
             {
                 guiInstance.UpdateProgressMaximum(0, 100);
                 guiInstance.UpdateProgressValue(0, 0);
@@ -263,13 +270,13 @@ namespace Client.Functions
 
         private void DoUpdate()
         {
-            string name = this.FileList[this.CurrentIndex].FileName;
+            string name = this.FileList[this.currentIndex].FileName;
             ServerPackets.Instance.RequestFile(name, 0, "");
         }
 
         internal void OnUpdateFileNameReceived(string path)
         {
-            string name = String.Concat(this.FileList[this.CurrentIndex].FileName, ".zip");
+            string name = String.Concat(this.FileList[this.currentIndex].FileName, ".zip");
             string filePath = Path.Combine(tempPath, name);
 
             if (File.Exists(filePath))
@@ -297,7 +304,7 @@ namespace Client.Functions
         {
             WebClient client = (WebClient)e.UserState;
             client.Dispose();
-            UpdateIndex file = this.FileList[this.CurrentIndex];
+            UpdateIndex file = this.FileList[this.currentIndex];
             
             string zipPath = Path.Combine(tempPath, string.Concat(file.FileName, ".zip"));
             string resourcePath = Path.Combine(tempPath, file.FileName);
@@ -308,10 +315,11 @@ namespace Client.Functions
             // Unzip the file
             ZIP.Unpack(zipPath, tempPath);
 
-            if (file.IsLegacy)
+            if (isLegacy)
             {
                 if (File.Exists(resourceFolder + file.FileName)) { File.Delete(resourceFolder + file.FileName); }
                 File.Move(resourcePath, resourceFolder + file.FileName);
+                isLegacy = false;
             }
             else { core.UpdateFileEntry(ref index, guiInstance.SettingsManager.GetString("clientdirectory"), resourcePath, 0); }
             
@@ -320,7 +328,7 @@ namespace Client.Functions
             // Check that the file update actually took
             if (Hash.GetSHA512Hash(resourcePath) == file.FileHash)
             {
-                CurrentIndex++;
+                currentIndex++;
                 File.Delete(resourcePath);
                 File.Delete(zipPath);
                 disableMatchingResource();
@@ -339,7 +347,7 @@ namespace Client.Functions
             // Make sure /disabled/ exists, or create it
             if (!Directory.Exists(disabledFolder)) { Directory.CreateDirectory(disabledFolder); }
 
-            string fileName = this.FileList[this.CurrentIndex].FileName;
+            string fileName = this.FileList[this.currentIndex].FileName;
             string cfPath = Path.Combine(resourceFolder, fileName);
             string nfPath = Path.Combine(disabledFolder, fileName);
 

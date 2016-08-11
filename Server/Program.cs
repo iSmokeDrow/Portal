@@ -61,7 +61,7 @@ namespace Server
                 Console.WriteLine("\t- Failed to locate: {0}\n!!!Folder has been generated!!!");
                 Directory.CreateDirectory(updatePath);
             }
-            Console.WriteLine("\t- {0} files loaded from the update folder!", Directory.GetFiles(updatePath).Length);
+            Console.WriteLine("\t- {0} files loaded from the update folder!\n\t- {1} of which are legacy updates!", Directory.GetFiles(updatePath).Length, OPT.LegacyUpdateList.Count);
             
 
             Console.Write("Checking for tmp directory...");

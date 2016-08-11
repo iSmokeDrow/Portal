@@ -2,14 +2,10 @@
 using Server.Network;
 using System.Globalization;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZLibNet;
 
-namespace Server
+namespace Server.Functions
 {
     public class UpdateHandler
     {
@@ -24,7 +20,6 @@ namespace Server
             if (Directory.Exists(updatesDir))
             {
                 DateTime dateTime = Directory.GetLastWriteTimeUtc(updatesDir);
-                //Console.WriteLine("Current DateTime of updates folder: {0}", dateTime.ToString());
                 ClientPackets.Instance.UpdateDateTime(client, dateTime.ToString(CultureInfo.InvariantCulture));
             }
             else { Console.WriteLine("Cannot find updates directory: {0}", updatesDir); }
@@ -71,23 +66,11 @@ namespace Server
             foreach (string filePath in fileEntries)
             {
                 string fileName = Path.GetFileName(filePath);
-                bool isLegacy = false;
+                bool isLegacy = OPT.LegacyUpdateList.Contains(fileName);
 
-                if (OPT.LegacyUpdateList.Contains(fileName)) { isLegacy = true; }
-
-                switch (indexType)
-                {
-                    case 1: // New
-                        ClientPackets.Instance.UpdateIndex(client, fileName, Hash.GetSHA512Hash(filePath), isLegacy);
-                        break;
-
-                    case 2: // Legacy
-                        if (OPT.LegacyUpdateList.Contains(fileName)) { ClientPackets.Instance.UpdateIndex(client, fileName, Hash.GetSHA512Hash(filePath), isLegacy); }
-                        break;
-                }
+                ClientPackets.Instance.UpdateIndex(client, fileName, Hash.GetSHA512Hash(filePath), isLegacy);
             }
 
-            // TODO: Send bool saying this is a legacy only list
             ClientPackets.Instance.UpdateIndexEnd(client, indexType);
         }
 
@@ -101,25 +84,6 @@ namespace Server
             client.filesInUse.Add(zipPath);
             
             ClientPackets.Instance.File(client, zipPath);
-
-            //byte[] zipData = File.ReadAllBytes(string.Concat(zipPath, ".zip"));
-
-            /*if (partialHash != Hash.GetSHA512Hash(filePath))
-            {
-                // Hashes are different, start from the beggining
-                //ClientPackets.Instance.File(client, 0, zipData);
-                ClientPackets.Instance.File(client, 0, zipData);
-            }
-            else
-            {
-                // Hashes are the same, resume
-                ClientPackets.Instance.File(client, offset, zipData);
-            }*/
-
-            //zipData = null;
-
-            // TODO: Delete the zip file (zipPath)
-            //File.Delete(zipPath);
         }
 
         internal string compressFile(string filePath)

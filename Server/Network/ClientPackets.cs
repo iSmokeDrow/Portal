@@ -137,7 +137,6 @@ namespace Server.Network
         /// <param name="client">target client</param>
         /// <param name="fileName">file name (hashed)</param>
         /// <param name="fileHash">SHA512 hash of this file</param>
-        /// <param name="isLegacy"></param>
         public void UpdateIndex(Client client, string fileName, string fileHash, bool isLegacy)
         {
             PacketStream stream = new PacketStream(0x0011);
