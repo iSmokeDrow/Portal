@@ -81,6 +81,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Functions\UpdateHandler.cs" />
+    <Compile Include="Structures\IndexEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

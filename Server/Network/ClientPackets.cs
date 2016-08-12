@@ -27,7 +27,6 @@ namespace Server.Network
             PacketsDb.Add(0x0002, CS_RequestSelfUpdate);
             PacketsDb.Add(0x0003, CS_RequestUpdater);
             PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
-            PacketsDb.Add(0x0020, CS_RequestFile);
             PacketsDb.Add(0x0030, CS_RequestArguments);
             #endregion
         }
@@ -75,22 +74,6 @@ namespace Server.Network
         private void CS_RequestUpdateIndex(Client client, PacketStream stream)
         {
             UpdateHandler.Instance.OnUserRequestUpdateIndex(client, stream.ReadInt32());
-        }
-
-        /// <summary>
-        /// Request a file
-        /// </summary>
-        /// <param name="client">the client</param>
-        /// <param name="stream">data</param>
-        private void CS_RequestFile(Client client, PacketStream stream)
-        {
-            string name = stream.ReadString();
-            int offset = stream.ReadInt32();
-            string partialHash = "";
-            if (offset > 0)
-                partialHash = stream.ReadString();
-
-            UpdateHandler.Instance.OnUserRequestFile(client, name, offset, partialHash);
         }
 
         /// <summary>

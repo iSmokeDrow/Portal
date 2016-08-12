@@ -28,7 +28,7 @@ namespace Client
 
         void setValues()
         {
-            for (int i = 1; i < 84; i++)
+            for (int i = 1; i < 81; i++)
             {
                 string currentName = Settings[i].Name;
                 int currentValue = Convert.ToInt32(Settings[i].Value);
@@ -91,8 +91,8 @@ namespace Client
                 if (currentName == "PLAY_CRITICAL_CAMERA") { cameraCriticalShake.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_HELM") { helmets.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_AVATAR_DECO") { deco.Checked = Convert.ToBoolean(currentValue); }
-                if (currentName == "PLAY_TITLE_SHOW") { titles.Checked = Convert.ToBoolean(currentValue); }
-                if (currentName == "PLAY_SELECT_OUTLINE_SHOW") { targetOutline.Checked = Convert.ToBoolean(currentValue); }
+                //if (currentName == "PLAY_TITLE_SHOW") { titles.Checked = Convert.ToBoolean(currentValue); }
+                //if (currentName == "PLAY_SELECT_OUTLINE_SHOW") { targetOutline.Checked = Convert.ToBoolean(currentValue); }
             }
         }
 
@@ -146,11 +146,11 @@ namespace Client
                 updateSetting("GRAPHIC_EFFECT_CREATURE", 0);
                 updateSetting("GRAPHIC_EFFECT_PARTY", 0);
                 updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
+                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
                 updateSetting("PLAY_MANTLE", 0);
                 updateSetting("PLAY_HELM", 0);
                 updateSetting("PLAY_AVATAR_DECO", 0);
-                updateSetting("PLAY_TITLE_SHOW", 1);
+                //updateSetting("PLAY_TITLE_SHOW", 1);
                 updateSetting("PLAY_NAME", 1);
                 updateSetting("PLAY_PLAYERNAME", 1);
                 updateSetting("PLAY_CREATURENAME", 1);
@@ -202,11 +202,11 @@ namespace Client
                 updateSetting("GRAPHIC_EFFECT_CREATURE", 1);
                 updateSetting("GRAPHIC_EFFECT_PARTY", 0);
                 updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
+                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
                 updateSetting("PLAY_MANTLE", 0);
                 updateSetting("PLAY_HELM", 0);
                 updateSetting("PLAY_AVATAR_DECO", 0);
-                updateSetting("PLAY_TITLE_SHOW", 1);
+                //updateSetting("PLAY_TITLE_SHOW", 1);
                 updateSetting("PLAY_NAME", 1);
                 updateSetting("PLAY_PLAYERNAME", 1);
                 updateSetting("PLAY_CREATURENAME", 1);
@@ -258,11 +258,11 @@ namespace Client
                 updateSetting("GRAPHIC_EFFECT_CREATURE", 1);
                 updateSetting("GRAPHIC_EFFECT_PARTY", 1);
                 updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
+                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
                 updateSetting("PLAY_MANTLE", 1);
                 updateSetting("PLAY_HELM", 1);
                 updateSetting("PLAY_AVATAR_DECO", 1);
-                updateSetting("PLAY_TITLE_SHOW", 1);
+                //updateSetting("PLAY_TITLE_SHOW", 1);
                 updateSetting("PLAY_NAME", 1);
                 updateSetting("PLAY_PLAYERNAME", 1);
                 updateSetting("PLAY_CREATURENAME", 1);
@@ -314,11 +314,11 @@ namespace Client
                 updateSetting("GRAPHIC_EFFECT_CREATURE", 1);
                 updateSetting("GRAPHIC_EFFECT_PARTY", 1);
                 updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
+                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
                 updateSetting("PLAY_MANTLE", 1);
                 updateSetting("PLAY_HELM", 1);
                 updateSetting("PLAY_AVATAR_DECO", 1);
-                updateSetting("PLAY_TITLE_SHOW", 1);
+                //updateSetting("PLAY_TITLE_SHOW", 1);
                 updateSetting("PLAY_NAME", 1);
                 updateSetting("PLAY_PLAYERNAME", 1);
                 updateSetting("PLAY_CREATURENAME", 1);
@@ -370,11 +370,11 @@ namespace Client
                 updateSetting("GRAPHIC_EFFECT_CREATURE", 1);
                 updateSetting("GRAPHIC_EFFECT_PARTY", 1);
                 updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                updateSetting("PLAY_SELECT_OUTLINE_SHOW", 1);
+                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 1);
                 updateSetting("PLAY_MANTLE", 1);
                 updateSetting("PLAY_HELM", 1);
                 updateSetting("PLAY_AVATAR_DECO", 1);
-                updateSetting("PLAY_TITLE_SHOW", 1);
+                //updateSetting("PLAY_TITLE_SHOW", 1);
                 updateSetting("PLAY_NAME", 1);
                 updateSetting("PLAY_PLAYERNAME", 1);
                 updateSetting("PLAY_CREATURENAME", 1);
@@ -456,8 +456,8 @@ namespace Client
                 cameraCriticalShake.Enabled = false;
                 helmets.Enabled = false;
                 deco.Enabled = false;
-                titles.Enabled = false;
-                targetOutline.Enabled = false;
+                //titles.Enabled = false;
+                //targetOutline.Enabled = false;
 
             }
             else
@@ -513,8 +513,8 @@ namespace Client
                 cameraCriticalShake.Enabled = true;
                 helmets.Enabled = true;
                 deco.Enabled = true;
-                titles.Enabled = true;
-                targetOutline.Enabled = true;
+                //titles.Enabled = true;
+                //targetOutline.Enabled = true;
             }
         }
 

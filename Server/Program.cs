@@ -10,6 +10,8 @@ namespace Server
 {
     class Program
     {
+        // TODO: Make method to read updates from list in base directory
+
         /// <summary>
         /// Server and client must have the same RC4 key
         /// it's used to encrypt packet data
@@ -55,13 +57,10 @@ namespace Server
 
             clientList = new Dictionary<int, Client>();
 
-            Console.WriteLine("Checking for Updates directory...");
-            if (!Directory.Exists(updatePath))
-            {
-                Console.WriteLine("\t- Failed to locate: {0}\n!!!Folder has been generated!!!");
-                Directory.CreateDirectory(updatePath);
-            }
-            Console.WriteLine("\t- {0} files loaded from the update folder!\n\t- {1} of which are legacy updates!", Directory.GetFiles(updatePath).Length, OPT.LegacyUpdateList.Count);
+            Console.WriteLine("Checking for Updates...");
+            UpdateHandler.Instance.LoadUpdateList();
+
+            Console.WriteLine("\t- {0} files indexed from the update index!\n\t- {1} of which are legacy updates!", UpdateHandler.Instance.UpdateIndex.Count, OPT.LegacyUpdateList.Count);
             
 
             Console.Write("Checking for tmp directory...");
@@ -88,7 +87,7 @@ namespace Server
         internal static void OnUserRequestArguments(Client client, string username)
         {
             // TODO : Replace placeholder launch arguments here
-            ClientPackets.Instance.Arguments(client, string.Format("/auth_ip:176.31.181.127 /auth_port:13544 /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:{0} /password:?", username));
+            ClientPackets.Instance.Arguments(client, string.Format("/auth_ip:127.0.0.1 /auth_port:13544 /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:{0} /password:?", username));
         }
     }
 }

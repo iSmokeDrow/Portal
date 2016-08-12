@@ -159,7 +159,7 @@ namespace Client.Structures
 
         public static ClientSettings[] RappelzSettings;
 
-        internal static string optPath = Path.Combine(settings.clientDirectory, @"rappelz_v1.opt");
+        internal static string optPath = Path.Combine(GUI.Instance.SettingsManager.GetString("clientdirectory"), @"rappelz_v1.opt");
 
         public static void InitRappelzSettings()
         {
@@ -173,7 +173,9 @@ namespace Client.Structures
             {
                 using (StreamReader sr = new StreamReader(File.Open(optPath, FileMode.Open, FileAccess.Read)))
                 {
-                    if (sr.ReadLine() == "[RAPPELZ]")
+                    string header = sr.ReadLine();
+
+                    if (header == "[RAPPELZ]")
                     {
                         for (int i = 0; i < RappelzSettings.Length; i++)
                         {

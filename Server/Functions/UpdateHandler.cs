@@ -1,4 +1,5 @@
-﻿using Server.Functions;
+﻿using System.Collections.Generic;
+using Server.Structures;
 using Server.Network;
 using System.Globalization;
 using System;
@@ -10,19 +11,41 @@ namespace Server.Functions
     public class UpdateHandler
     {
         public static readonly UpdateHandler Instance = new UpdateHandler();
-        internal static string updatesDir = string.Concat(Directory.GetCurrentDirectory(), @"\updates\");
         internal static string selfUpdatesDir = string.Concat(Directory.GetCurrentDirectory(), @"\self_updates\");
         internal static string selfUpdatePath = Path.Combine(selfUpdatesDir, @"Launcher.exe");
         internal static string updaterPath = Path.Combine(selfUpdatesDir, @"Updater.exe");
+        internal static string indexPath = Path.Combine(Directory.GetCurrentDirectory(), @"index.opt");
+        public List<IndexEntry> UpdateIndex = new List<IndexEntry>();
+
+        public UpdateHandler()
+        {
+
+        }
+
+        public void LoadUpdateList()
+        {
+            using (StreamReader sr = new StreamReader(File.Open(string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), "index.opt"), FileMode.Open, FileAccess.Read)))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] optBlocks = line.Split('|');
+                    if (optBlocks.Length == 3)
+                    {
+                        UpdateIndex.Add(new IndexEntry { FileName = optBlocks[0], SHA512 = optBlocks[1], Legacy = Convert.ToBoolean(Convert.ToInt32(optBlocks[2])) });
+                    }
+                }
+            }
+        }
 
         public void OnUserRequestUpdateDateTime(Client client)
         {
-            if (Directory.Exists(updatesDir))
+            if (File.Exists(indexPath))
             {
-                DateTime dateTime = Directory.GetLastWriteTimeUtc(updatesDir);
+                DateTime dateTime = Directory.GetLastWriteTimeUtc(indexPath);
                 ClientPackets.Instance.UpdateDateTime(client, dateTime.ToString(CultureInfo.InvariantCulture));
             }
-            else { Console.WriteLine("Cannot find updates directory: {0}", updatesDir); }
+            else { Console.WriteLine("Cannot find updates file: {0}", indexPath); }
         }
 
         public void OnUserRequestSelfUpdate(Client client, string remoteHash)
@@ -61,29 +84,12 @@ namespace Server.Functions
 
         public void OnUserRequestUpdateIndex(Client client, int indexType)
         {
-            // Process the list of files found in the directory.
-            string[] fileEntries = Directory.GetFiles("updates/");
-            foreach (string filePath in fileEntries)
+            foreach (IndexEntry indexEntry in UpdateIndex)
             {
-                string fileName = Path.GetFileName(filePath);
-                bool isLegacy = OPT.LegacyUpdateList.Contains(fileName);
-
-                ClientPackets.Instance.UpdateIndex(client, fileName, Hash.GetSHA512Hash(filePath), isLegacy);
+                ClientPackets.Instance.UpdateIndex(client, indexEntry.FileName, indexEntry.SHA512, indexEntry.Legacy);
             }
 
             ClientPackets.Instance.UpdateIndexEnd(client, indexType);
-        }
-
-        internal void OnUserRequestFile(Client client, string name, int offset, string partialHash)
-        {
-            string filePath = Path.Combine(@"updates/", name);
-            Console.WriteLine(filePath);
-            if (!File.Exists(filePath)) { return; }
-            
-            string zipPath = compressFile(filePath);
-            client.filesInUse.Add(zipPath);
-            
-            ClientPackets.Instance.File(client, zipPath);
         }
 
         internal string compressFile(string filePath)

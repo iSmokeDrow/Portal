@@ -28,7 +28,6 @@ namespace Client.Network
             PacketsDb.Add(0x001E, SC_UpdateUpdater);
             PacketsDb.Add(0x0011, SC_UpdateIndex);
             PacketsDb.Add(0x0012, SC_UpdateIndexEnd);
-            PacketsDb.Add(0x0021, SC_File);
             PacketsDb.Add(0x0031, SC_Arguments);
             #endregion
         }
@@ -88,13 +87,6 @@ namespace Client.Network
             UpdateHandler.Instance.OnUpdateIndexEnd(stream.ReadInt32());
         }
 
-        private void SC_File(PacketStream stream)
-        {
-            string path = stream.ReadString();
-            UpdateHandler.Instance.OnUpdateFileNameReceived(path);
-            //UpdateHandler.Instance.OnFileDataReceived(offset, endOfFile, data);
-        }
-
         private void SC_Arguments(PacketStream stream)
         {
             int len = stream.ReadInt32();
@@ -143,17 +135,6 @@ namespace Client.Network
         {
             PacketStream stream = new PacketStream(0x0010);
             stream.WriteInt32(type);
-            ServerManager.Instance.Send(stream);
-        }
-
-        internal void RequestFile(string name, int offset, string partialHash)
-        {
-            PacketStream stream = new PacketStream(0x0020);
-
-            stream.WriteString(name, name.Length + 1);
-            stream.WriteInt32(offset);
-            stream.WriteString(partialHash, partialHash.Length + 1);
-
             ServerManager.Instance.Send(stream);
         }
 

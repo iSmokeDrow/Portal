@@ -1,21 +1,12 @@
 ﻿using System;
-using Client.Network;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using System.Net;
-using System.Web;
 using System.IO;
-using System.Security.Cryptography;
 using Client.Functions;
-using Client.Structures;
+using Client.Network;
 
 namespace Client
 {
@@ -55,7 +46,6 @@ namespace Client
         internal readonly string md5Key = "1337";
         XDes DesCipher;
         public static GUI Instance;
-        internal bool validated = false;
         internal bool canStart = false;
         internal string otp = null;
         internal readonly OPT SettingsManager;
@@ -162,17 +152,16 @@ namespace Client
         {
             if (checkForClient())
             {
-                // Show splash screen!
+                // TODO: Show splash screen!
                 UpdateHandler.Instance.Start();
                 if (UpdateHandler.Instance.NetworkError) { return; }
             }
             else
             {
-                this.Close();
+                this.Invoke(new MethodInvoker(delegate { this.Close(); }));
             }
         }
 
-        // TODO: Find out why I'm invoking controls!
         public void OnUpdateComplete()
         {
             Instance.Invoke(new MethodInvoker(delegate
@@ -231,7 +220,7 @@ namespace Client
 
         private void start_btn_Click(object sender, EventArgs e)
         {
-            if (validated && canStart)
+            if ( canStart)
             {
                 ServerPackets.Instance.RequestArguments(Instance.SettingsManager.GetString("username"));
             }
@@ -260,7 +249,7 @@ namespace Client
         private void launcherSettings_btn_Click(object sender, EventArgs e)
         {
             GeneralSettingsGUI settingsGUI = new GeneralSettingsGUI();
-            settingsGUI.ShowDialog(this);
+            this.Invoke(new MethodInvoker(delegate { settingsGUI.ShowDialog(this); }));
         }
 
         private void GUI_DoubleClick(object sender, EventArgs e)
@@ -270,15 +259,12 @@ namespace Client
 
         private void gameSettings_lb_Click(object sender, EventArgs e)
         {
-            if (validated)
+            if (MessageBox.Show("This menu is still under construction! Use at your own risk!", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand) == DialogResult.OK)
             {
-                if (MessageBox.Show("This menu is still under construction! Use at your own risk!", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand) == DialogResult.OK)
-                {
-                    Structures.SettingsManager.InitRappelzSettings();
-                    RappelzSettingsGUI settings = new RappelzSettingsGUI(Structures.SettingsManager.RappelzSettings);
-                    settings.FormClosing += (o, x) => { Structures.SettingsManager.SaveSettings(Structures.SettingsManager.RappelzSettings); };
-                    settings.ShowDialog(this);
-                }
+                Structures.SettingsManager.InitRappelzSettings();
+                RappelzSettingsGUI settings = new RappelzSettingsGUI(Structures.SettingsManager.RappelzSettings);
+                settings.FormClosing += (o, x) => { Structures.SettingsManager.SaveSettings(Structures.SettingsManager.RappelzSettings); };
+                settings.ShowDialog(this);
             }
         }
     }

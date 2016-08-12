@@ -69,5 +69,15 @@ namespace Client.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Portal_b80398deda00 {
+            get {
+                object obj = ResourceManager.GetObject("Portal_b80398deda00", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
