@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Client.Functions;
 
 namespace Client.Structures
 {
@@ -153,17 +154,26 @@ namespace Client.Structures
         }
     }
 
-    public class SettingsManager
+    public class RappelzSettings
     {
-        internal static Properties.Settings settings = Properties.Settings.Default;
+        public static ClientSettings[] Settings;
 
-        public static ClientSettings[] RappelzSettings;
+        internal static string optPath = Path.Combine(OPT.Instance.GetString("clientdirectory"), @"rappelz_v1.opt");
 
-        internal static string optPath = Path.Combine(GUI.Instance.SettingsManager.GetString("clientdirectory"), @"rappelz_v1.opt");
+        protected static RappelzSettings instance;
+        public static RappelzSettings Instance
+        {
+            get
+            {
+                if (instance == null) { instance = new RappelzSettings(); }
+
+                return instance;
+            }
+        }
 
         public static void InitRappelzSettings()
         {
-            RappelzSettings = new ClientSettings[File.ReadLines(optPath).Count() - 1];
+            Settings = new ClientSettings[File.ReadLines(optPath).Count() - 1];
             ReadOPT_v1();
         }
 
@@ -177,7 +187,7 @@ namespace Client.Structures
 
                     if (header == "[RAPPELZ]")
                     {
-                        for (int i = 0; i < RappelzSettings.Length; i++)
+                        for (int i = 0; i < Settings.Length; i++)
                         {
                             string currentLine = sr.ReadLine();
 
@@ -186,12 +196,12 @@ namespace Client.Structures
                                 string[] lineBlocks = currentLine.Split('=');
 
                                 ClientSettings currentSetting = new ClientSettings { Name = lineBlocks[0], Value = lineBlocks[1] };
-                                RappelzSettings[i] = currentSetting;
+                                Settings[i] = currentSetting;
                             }
                             else
                             {
                                 ClientSettings currentSetting = new ClientSettings { Name = currentLine, Value = null };
-                                RappelzSettings[i] = currentSetting;
+                                Settings[i] = currentSetting;
                             }
                         }
                     }

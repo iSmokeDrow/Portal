@@ -41,8 +41,9 @@
             // totalStatus
             // 
             this.totalStatus.AutoSize = true;
+            this.totalStatus.BackColor = System.Drawing.Color.Transparent;
             this.totalStatus.ForeColor = System.Drawing.Color.White;
-            this.totalStatus.Location = new System.Drawing.Point(12, 484);
+            this.totalStatus.Location = new System.Drawing.Point(13, 204);
             this.totalStatus.Name = "totalStatus";
             this.totalStatus.Size = new System.Drawing.Size(0, 13);
             this.totalStatus.TabIndex = 10;
@@ -50,8 +51,9 @@
             // currentStatus
             // 
             this.currentStatus.AutoSize = true;
+            this.currentStatus.BackColor = System.Drawing.Color.Transparent;
             this.currentStatus.ForeColor = System.Drawing.Color.White;
-            this.currentStatus.Location = new System.Drawing.Point(11, 514);
+            this.currentStatus.Location = new System.Drawing.Point(13, 236);
             this.currentStatus.Name = "currentStatus";
             this.currentStatus.Size = new System.Drawing.Size(0, 13);
             this.currentStatus.TabIndex = 12;
@@ -59,17 +61,18 @@
             // currentProgress
             // 
             this.currentProgress.ForeColor = System.Drawing.Color.White;
-            this.currentProgress.Location = new System.Drawing.Point(10, 532);
+            this.currentProgress.Location = new System.Drawing.Point(12, 252);
             this.currentProgress.Name = "currentProgress";
-            this.currentProgress.Size = new System.Drawing.Size(992, 13);
+            this.currentProgress.Size = new System.Drawing.Size(566, 13);
             this.currentProgress.TabIndex = 11;
             // 
             // start_lb
             // 
             this.start_lb.AutoSize = true;
+            this.start_lb.BackColor = System.Drawing.Color.Transparent;
             this.start_lb.Font = new System.Drawing.Font("Arial", 14F);
             this.start_lb.ForeColor = System.Drawing.Color.White;
-            this.start_lb.Location = new System.Drawing.Point(929, 554);
+            this.start_lb.Location = new System.Drawing.Point(505, 274);
             this.start_lb.Name = "start_lb";
             this.start_lb.Size = new System.Drawing.Size(73, 22);
             this.start_lb.TabIndex = 16;
@@ -79,9 +82,10 @@
             // gameSettings_lb
             // 
             this.gameSettings_lb.AutoSize = true;
+            this.gameSettings_lb.BackColor = System.Drawing.Color.Transparent;
             this.gameSettings_lb.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gameSettings_lb.ForeColor = System.Drawing.Color.White;
-            this.gameSettings_lb.Location = new System.Drawing.Point(151, 561);
+            this.gameSettings_lb.Location = new System.Drawing.Point(153, 281);
             this.gameSettings_lb.Name = "gameSettings_lb";
             this.gameSettings_lb.Size = new System.Drawing.Size(89, 14);
             this.gameSettings_lb.TabIndex = 17;
@@ -91,9 +95,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(11, 561);
+            this.label1.Location = new System.Drawing.Point(13, 281);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 14);
             this.label1.TabIndex = 18;
@@ -103,9 +108,10 @@
             // close_lb
             // 
             this.close_lb.AutoSize = true;
+            this.close_lb.BackColor = System.Drawing.Color.Transparent;
             this.close_lb.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.close_lb.ForeColor = System.Drawing.Color.White;
-            this.close_lb.Location = new System.Drawing.Point(997, 0);
+            this.close_lb.Location = new System.Drawing.Point(567, 9);
             this.close_lb.Name = "close_lb";
             this.close_lb.Size = new System.Drawing.Size(13, 14);
             this.close_lb.TabIndex = 19;
@@ -115,17 +121,18 @@
             // totalProgress
             // 
             this.totalProgress.ForeColor = System.Drawing.Color.White;
-            this.totalProgress.Location = new System.Drawing.Point(10, 500);
+            this.totalProgress.Location = new System.Drawing.Point(12, 220);
             this.totalProgress.Name = "totalProgress";
-            this.totalProgress.Size = new System.Drawing.Size(992, 13);
+            this.totalProgress.Size = new System.Drawing.Size(566, 13);
             this.totalProgress.TabIndex = 21;
             // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
-            this.ClientSize = new System.Drawing.Size(1013, 584);
+            this.BackColor = System.Drawing.Color.Black;
+            this.BackgroundImage = global::Client.Properties.Resources.rappelz_logo;
+            this.ClientSize = new System.Drawing.Size(590, 319);
             this.Controls.Add(this.totalProgress);
             this.Controls.Add(this.close_lb);
             this.Controls.Add(this.label1);
@@ -138,7 +145,7 @@
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1013, 584);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(1013, 584);
+            this.MinimumSize = new System.Drawing.Size(590, 317);
             this.Name = "GUI";
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;

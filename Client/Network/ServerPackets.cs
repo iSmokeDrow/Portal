@@ -1,15 +1,16 @@
-﻿using Client.Functions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Client.Functions;
+using System.Text;
 
 namespace Client.Network
 {
     public class ServerPackets
     {
+        protected static XDes des;
+
         public static readonly ServerPackets Instance = new ServerPackets();
 
         private delegate void PacketAction(PacketStream stream);
@@ -29,6 +30,7 @@ namespace Client.Network
             PacketsDb.Add(0x0011, SC_UpdateIndex);
             PacketsDb.Add(0x0012, SC_UpdateIndexEnd);
             PacketsDb.Add(0x0031, SC_Arguments);
+            PacketsDb.Add(0x9999, SC_DesKey);
             #endregion
         }
 
@@ -50,6 +52,8 @@ namespace Client.Network
         }
 
         #region Server-Client Packets (SC)
+
+        private void SC_DesKey(PacketStream stream) { GUI.Instance.OnDesKeyReceived(stream.ReadString()); }
 
         private void SC_UpdateDateTime(PacketStream stream)
         {
@@ -98,6 +102,26 @@ namespace Client.Network
         #endregion
 
         #region Client-Server Packets (CS)
+
+        internal void RequestDESKey()
+        {
+            PacketStream stream = new PacketStream(0x9999);
+            ServerManager.Instance.Send(stream);
+        }
+
+        internal void  RequestUserValidation(string desKey, string name, string password, string fingerprint)
+        {
+            des = new XDes(desKey);
+            PacketStream stream = new PacketStream(0x0100);
+            byte[] encName = des.Encrypt(name);
+            byte[] encPass = des.Encrypt(password);
+            stream.WriteInt32(encName.Length);
+            stream.WriteBytes(encName);
+            stream.WriteInt32(encPass.Length);
+            stream.WriteBytes(encPass);
+            stream.WriteString(fingerprint);
+            ServerManager.Instance.Send(stream);
+        }
 
         internal void RequestUpdateDateTime()
         {

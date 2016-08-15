@@ -22,27 +22,27 @@ namespace Client
         {
             InitializeComponent();
 
-            fps.Checked = guiInstance.SettingsManager.GetBool("showfps");
-            onTop.Checked = guiInstance.SettingsManager.GetBool("ontop");
-            codepageList.Text = guiInstance.SettingsManager.GetString("codepage");
-            countryList.Text = guiInstance.SettingsManager.GetString("country");
-            closeOnStart.Checked = guiInstance.SettingsManager.GetBool("closeonstart");
-            logReports.Checked = guiInstance.SettingsManager.GetBool("logreports");
-            logErrors.Checked = guiInstance.SettingsManager.GetBool("logerrors");
-            clientDirectory.Text = guiInstance.SettingsManager.GetString("clientdirectory");
+            fps.Checked = OPT.Instance.GetBool("showfps");
+            onTop.Checked = OPT.Instance.GetBool("ontop");
+            codepageList.Text = OPT.Instance.GetString("codepage");
+            countryList.Text = OPT.Instance.GetString("country");
+            closeOnStart.Checked = OPT.Instance.GetBool("closeonstart");
+            logReports.Checked = OPT.Instance.GetBool("logreports");
+            logErrors.Checked = OPT.Instance.GetBool("logerrors");
+            clientDirectory.Text = OPT.Instance.GetString("clientdirectory");
         }
 
         private void save_Click(object sender, EventArgs e)
         {
-            guiInstance.SettingsManager.Update("showfps", fps.Checked);
-            guiInstance.SettingsManager.Update("ontop", onTop.Checked);
-            guiInstance.SettingsManager.Update("codepage", codepageList.Text);
-            guiInstance.SettingsManager.Update("country", countryList.Text);
-            guiInstance.SettingsManager.Update("closeonstart", closeOnStart.Checked);
-            guiInstance.SettingsManager.Update("logreports", logReports.Checked);
-            guiInstance.SettingsManager.Update("logerrors", logErrors.Checked);
-            guiInstance.SettingsManager.Update("clientdirectory", clientDirectory.Text);
-            guiInstance.SettingsManager.writeOPT();
+            OPT.Instance.Update("showfps", fps.Checked);
+            OPT.Instance.Update("ontop", onTop.Checked);
+            OPT.Instance.Update("codepage", codepageList.Text);
+            OPT.Instance.Update("country", countryList.Text);
+            OPT.Instance.Update("closeonstart", closeOnStart.Checked);
+            OPT.Instance.Update("logreports", logReports.Checked);
+            OPT.Instance.Update("logerrors", logErrors.Checked);
+            OPT.Instance.Update("clientdirectory", clientDirectory.Text);
+            OPT.Instance.writeOPT();
             this.Close();
         }
 

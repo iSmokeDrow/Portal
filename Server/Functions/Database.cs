@@ -13,9 +13,9 @@ namespace Server.Functions
         {
             get
             {
-                string conString = string.Format("Server={0};Database={1};", OPT.SettingsList["db.auth.ip"], OPT.SettingsList["db.auth.name"]);
-                if (OPT.SettingsList["db.auth.trusted"] == "1") { conString += "Trusted_Connection=True;"; }
-                else { conString += string.Format("uid={0};pwd={1};", OPT.SettingsList["db.auth.user"], OPT.SettingsList["db.auth.password"]); }
+                string conString = string.Format("Server={0};Database={1};", OPT.GetString("db.auth.ip"), OPT.GetString("db.auth.name"));
+                if (OPT.GetString("db.auth.trusted") == "1") { conString += "Trusted_Connection=True;"; }
+                else { conString += string.Format("uid={0};pwd={1};", OPT.GetString("db.auth.user"), OPT.GetString("db.auth.password")); }
 
                 return conString;
             }

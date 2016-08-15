@@ -18,16 +18,12 @@ namespace Client.Functions
         private string disabledFolder;
         private string tmpDirectory;
 
-        private const string patcherUrl = "http://176.31.181.127:13546/";
-
         public readonly Core Core;
 
-        private List<IndexEntry> index;
+        private List<DataCore.Structures.IndexEntry> index;
 
         internal OPT settings = OPT.Instance;
-
         protected static UpdateHandler instance;
-
         public static UpdateHandler Instance
         {
             get
@@ -40,20 +36,19 @@ namespace Client.Functions
                 return instance;
             }
         }
-
         private GUI guiInstance = GUI.Instance;
 
         private string GetFileExtension(string fileName) { return (Core.IsEncoded(fileName)) ? Path.GetExtension(Core.DecodeName(fileName)).Remove(0, 1).ToLower() : Path.GetExtension(fileName).Remove(0, 1).ToLower(); }
 
         public bool NetworkError = false;
 
-        public List<UpdateIndex> FileList { get; set; }
+        public List<Structures.IndexEntry> FileList { get; set; }
         
         private int currentIndex { get; set; }
 
         internal bool isLegacy = false;
 
-        internal List<UpdateIndex> filteredUpdates;
+        internal List<Structures.IndexEntry> filteredUpdates;
 
         internal Drive gDrive;
 
@@ -98,20 +93,20 @@ namespace Client.Functions
             };
             Core.WarningOccured += (o, x) => { MessageBox.Show(x.Warning, "DataCore Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); };
             Core.ErrorOccured += (o, x) => { MessageBox.Show(x.Error, "DataCore Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); };
-            resourceFolder = string.Concat(guiInstance.SettingsManager.GetString("clientdirectory"), @"/Resource/");
-            disabledFolder = string.Concat(guiInstance.SettingsManager.GetString("clientdirectory"), @"/Disabled/");
+            resourceFolder = string.Concat(OPT.Instance.GetString("clientdirectory"), @"/Resource/");
+            disabledFolder = string.Concat(OPT.Instance.GetString("clientdirectory"), @"/Disabled/");
             tmpDirectory = string.Concat(Directory.GetCurrentDirectory(), @"/tmp/");
-            FileList = new List<UpdateIndex>();
+            FileList = new List<Structures.IndexEntry>();
             gDrive = new Drive();
         }
 
         public void Start()
         {
-            guiInstance.UpdateStatus(0, "Loading Client index...");
-            indexPath = Path.Combine(guiInstance.SettingsManager.GetString("clientdirectory"), "data.000");
+            indexPath = Path.Combine(OPT.Instance.GetString("clientdirectory"), "data.000");
             index = Core.Load(indexPath, false, 64000);
 
-            if (Directory.Exists(disabledFolder)) { Directory.CreateDirectory(disabledFolder); }
+            if (!Directory.Exists(disabledFolder)) { Directory.CreateDirectory(disabledFolder); }
+            if (!Directory.Exists(tmpDirectory)) { Directory.CreateDirectory(tmpDirectory); }
 
             ServerPackets.Instance.RequestUpdateDateTime();
         }
@@ -127,7 +122,7 @@ namespace Client.Functions
 
             if (indexDateTime < dateTime && resourceDateTime == dateTime) { updateRequired = true; updateType = 1; } // Neo Only
             else if (indexDateTime == dateTime && resourceDateTime < dateTime) { updateRequired = true; updateType = 2; } // Legacy Only
-            else if (indexDateTime < dateTime && resourceDateTime < dateTime) { updateRequired = true; updateType = 3; }
+            else if (indexDateTime < dateTime && resourceDateTime < dateTime) { updateRequired = true; updateType = 3; } // Both
 
             if (updateRequired && updateType > 0)
                 ServerPackets.Instance.RequestUpdateIndex(updateType);
@@ -135,33 +130,36 @@ namespace Client.Functions
             else { guiInstance.OnUpdateComplete(); }
         }
 
+        // TODO: Update me to use google drive for file fetching
         public void ExecuteSelfUpdate(string fileName)
         {
             DownloadSelfUpdate(fileName);
         }
 
+        // TODO: Upgrade to use Drive.cs
+        // Review me!
         internal void ExecuteUpdaterUpdate(string fileName)
         {
-            guiInstance.UpdateStatus(0, "Downloading Updater...");
+            //guiInstance.UpdateStatus(0, "Downloading Updater...");
 
-            string zipPath = Path.Combine(tmpDirectory, string.Concat(fileName, ".zip"));
-            WebClient client = new WebClient();
-            client.DownloadFileCompleted += (o, x) => 
-            {
-                if (File.Exists(zipPath))
-                {
-                    File.Delete("Updater.exe");
-                    ZIP.Unpack(zipPath, Directory.GetCurrentDirectory());
-                    File.Delete(zipPath);
-                }
-            };
-            string url = String.Concat(patcherUrl, fileName, ".zip");
-            client.DownloadFileAsync(new Uri(url), Path.Combine(tmpDirectory, string.Concat(fileName, ".zip")), client);
+            //string zipPath = Path.Combine(tmpDirectory, string.Concat(fileName, ".zip"));
+            //WebClient client = new WebClient();
+            //client.DownloadFileCompleted += (o, x) => 
+            //{
+            //    if (File.Exists(zipPath))
+            //    {
+            //        File.Delete("Updater.exe");
+            //        ZIP.Unpack(zipPath, Directory.GetCurrentDirectory());
+            //        File.Delete(zipPath);
+            //    }
+            //};
+            //string url = String.Concat(patcherUrl, fileName, ".zip");
+            //client.DownloadFileAsync(new Uri(url), Path.Combine(tmpDirectory, string.Concat(fileName, ".zip")), client);
         }
 
         public void OnUpdateIndexReceived(string fileName, string hash, bool isLegacy)
         {
-            this.FileList.Add(new UpdateIndex() { FileName = fileName, FileHash = hash, IsLegacy = isLegacy });
+            this.FileList.Add(new Structures.IndexEntry() { FileName = fileName, FileHash = hash, IsLegacy = isLegacy });
         }
 
         public void OnUpdateIndexEnd(int indexType)
@@ -188,26 +186,31 @@ namespace Client.Functions
 
         internal void checkFiles()
         {
-            // Split only the currently relevant files
-            filteredUpdates = new List<UpdateIndex>();
+            // Filter  only the currently relevant files
+            filteredUpdates = new List<Structures.IndexEntry>();
             filteredUpdates = FileList.FindAll(i => i.IsLegacy == false);
 
             guiInstance.UpdateStatus(0, "Checking indexed data files...");
 
+            // Loop through the filteredUpdates
             for (; this.currentIndex < this.filteredUpdates.Count; ++this.currentIndex)
             {
                 guiInstance.UpdateProgressValue(0, this.currentIndex);
-
-                UpdateIndex file = this.filteredUpdates[this.currentIndex];
+                
+                // Collect the current index entries information
+                Structures.IndexEntry file = this.filteredUpdates[this.currentIndex];
                 bool download = false;
 
                 guiInstance.UpdateStatus(1, string.Format("Checking file: {0}", file.FileName));
 
-                IndexEntry fileEntry = Core.GetEntry(ref index, file.FileName);
+                // Collect relevant data from the loaded data.000 index (if existing)
+                DataCore.Structures.IndexEntry fileEntry = Core.GetEntry(ref index, file.FileName);
                 if (fileEntry != null)
                 {
+                    // Compute file SHA512 hash (of file stored in data.xxx file system)
                     string fileHash = Core.GetFileSHA512(settings.GetString("clientdirectory"), Core.GetID(fileEntry.Name), fileEntry.Offset, fileEntry.Length, GetFileExtension(fileEntry.Name));
-
+                    
+                    // If the local/remote file hashes don't match, flag this file for remote download
                     if (file.FileHash != fileHash)
                     {
                         guiInstance.UpdateStatus(1, string.Format("File: {0} is depreciated!", file.FileName));
@@ -215,6 +218,7 @@ namespace Client.Functions
                     }
                 }
 
+                // If the file has been flagged, ex
                 if (download) { DoUpdate(false); break; }
             }
 
@@ -231,7 +235,7 @@ namespace Client.Functions
 
         internal void checkLegacyFiles()
         {
-            filteredUpdates = new List<UpdateIndex>();
+            filteredUpdates = new List<Structures.IndexEntry>();
             filteredUpdates = FileList.FindAll(i => i.IsLegacy == true);
 
             guiInstance.UpdateStatus(0, "Checking Resource Files...");
@@ -240,7 +244,7 @@ namespace Client.Functions
             {
                 guiInstance.UpdateProgressValue(0, this.currentIndex);
 
-                UpdateIndex file = this.FileList[this.currentIndex];
+                Structures.IndexEntry file = this.FileList[this.currentIndex];
                 bool download = false;
 
                 guiInstance.UpdateStatus(1, string.Format("Checking resource: {0}", file.FileName));
@@ -266,7 +270,7 @@ namespace Client.Functions
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"Updater.exe";
-            startInfo.Arguments = String.Concat(patcherUrl, fileName, ".zip") + " " + fileName;
+            //startInfo.Arguments = String.Concat(patcherUrl, fileName, ".zip") + " " + fileName;
             Process.Start(startInfo);
         }
 
@@ -280,8 +284,6 @@ namespace Client.Functions
             string filePath = gDrive.GetFile(name);
 
             guiInstance.UpdateStatus(1, string.Format("Unpacking {0}...", name));
-
-            if (!Directory.Exists(tmpDirectory)) { Directory.CreateDirectory(tmpDirectory); }
 
             if (isLegacy)
             {
@@ -303,22 +305,6 @@ namespace Client.Functions
                 Core.UpdateFileEntry(ref index, settings.GetString("clientdirectory"), string.Format(@"{0}\{1}", tmpDirectory, name), 0);
                 File.Delete(filePath);
                 Core.Save(ref index, settings.GetString("clientdirectory"), false, false);
-            }
-        }
-
-        internal void disableMatchingResource()
-        {
-            // Make sure /disabled/ exists, or create it
-            if (!Directory.Exists(disabledFolder)) { Directory.CreateDirectory(disabledFolder); }
-
-            string fileName = this.FileList[this.currentIndex].FileName;
-            string cfPath = Path.Combine(resourceFolder, fileName);
-            string nfPath = Path.Combine(disabledFolder, fileName);
-
-            if (File.Exists(cfPath))
-            {
-                File.Move(cfPath, nfPath);
-                MessageBox.Show(string.Format("A conflicting resource with the name: {0} was detected!\nThis file has been disabled and can be found in the /disabled/ folder of your client.", fileName), "Update Notice", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

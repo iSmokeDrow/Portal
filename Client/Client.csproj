@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Functions\Drive.cs" />
+    <Compile Include="Functions\FingerPrint.cs" />
     <Compile Include="Functions\Hash.cs" />
     <Compile Include="Functions\OPT.cs" />
     <Compile Include="Functions\SFrameBypass.cs" />
@@ -154,6 +155,12 @@
     </Compile>
     <Compile Include="GeneralSettingsGUI.designer.cs">
       <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginGUI.Designer.cs">
+      <DependentUpon>LoginGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="RappelzSettingsGUI.cs">
       <SubType>Form</SubType>
@@ -179,12 +186,15 @@
     <Compile Include="Structures\LoginCredentials.cs" />
     <Compile Include="Structures\Settings.cs" />
     <Compile Include="Functions\UpdateHandler.cs" />
-    <Compile Include="Structures\UpdateIndex.cs" />
+    <Compile Include="Structures\IndexEntry.cs" />
     <EmbeddedResource Include="GeneralSettingsGUI.resx">
       <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI.resx">
       <DependentUpon>GUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginGUI.resx">
+      <DependentUpon>LoginGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -231,6 +241,7 @@
     <None Include="Resources\eye.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\rappelz-logo.jpg" />
     <Content Include="zlib32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

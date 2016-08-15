@@ -18,6 +18,9 @@ namespace Client.Functions
         internal List<string> defaultSettings = new List<string>
         {
             "s|clientdirectory|",
+            "s|username|",
+            "s|password|",
+            "s|fingerprint|",
             "b|remember|false",
             "s|codepage|ASCII",
             "s|country|US",
@@ -28,7 +31,7 @@ namespace Client.Functions
             "b|logerrors|false"
         };
 
-        internal static OPT instance;
+        protected static OPT instance;
         public static OPT Instance
         {
             get

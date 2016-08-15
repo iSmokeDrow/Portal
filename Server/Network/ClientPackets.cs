@@ -15,7 +15,7 @@ namespace Server.Network
         private delegate void PacketAction(Client client, PacketStream stream);
 
         private Dictionary<ushort, PacketAction> PacketsDb;
-        private XDes DesCipher = new XDes(Program.DesKey);
+        private XDes DesCipher = new XDes(OPT.GetString("des.key"));
 
         public ClientPackets()
         {
@@ -28,6 +28,8 @@ namespace Server.Network
             PacketsDb.Add(0x0003, CS_RequestUpdater);
             PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
             PacketsDb.Add(0x0030, CS_RequestArguments);
+            PacketsDb.Add(0x0100, CS_RequestValidation);
+            PacketsDb.Add(0x9999, CS_RequestDesKey);
             #endregion
         }
 
@@ -50,7 +52,34 @@ namespace Server.Network
         }
 
         #region Client-Server Packets (CS)
-        
+
+        private void CS_RequestDesKey(Client client, PacketStream stream)
+        {
+            if (OPT.GetBool("debug"))
+            {
+                Console.Write("Client [{0}] requested des.key...", client.Id);
+            }
+
+            UserHandler.Instance.OnUserRequestDesKey(client);
+        }
+
+        private void CS_RequestValidation(Client client, PacketStream stream)
+        {
+            int userLength = stream.ReadInt32();
+            string username = DesCipher.Decrypt(stream.ReadBytes(userLength));
+            int passLength = stream.ReadInt32();
+            string password = DesCipher.Decrypt(stream.ReadBytes(passLength));
+            string fingerprint = stream.ReadString();
+
+            if (OPT.GetBool("debug"))
+            {
+                Console.WriteLine("Client [{0}] requested login validation with the following credentials:", client.Id);
+                Console.WriteLine("Username: {0}\nPassword: {1}\nFingerprint: {2}", username, password, fingerprint);
+            }
+
+            UserHandler.Instance.OnValidateUser(client, username, password, fingerprint);
+        }
+
         private void CS_RequestUpdateDateTime(Client client, PacketStream stream)
         {
             UpdateHandler.Instance.OnUserRequestUpdateDateTime(client);

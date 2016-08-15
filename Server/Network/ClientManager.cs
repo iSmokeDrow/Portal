@@ -6,12 +6,13 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Server.Functions;
 
 namespace Server.Network
 {
     public class ClientManager
     {
+        // TODO: Add a graceful disconnect method
+
         public static readonly ClientManager Instance = new ClientManager();
 
         private static List<Client> clientList = new List<Client>();
@@ -27,12 +28,12 @@ namespace Server.Network
             try
             {
                 IPAddress ip;
-                if (!IPAddress.TryParse(OPT.SettingsList["io.ip"], out ip))
+                if (!IPAddress.TryParse(OPT.GetString("io.ip"), out ip))
                 {
-                    Console.WriteLine("Failed to parse Server IP ({0})", OPT.SettingsList["io.ip"]);
+                    Console.WriteLine("Failed to parse Server IP ({0})", OPT.GetString("io.ip"));
                     return false;
                 }
-                listener.Bind(new IPEndPoint(ip, int.Parse(OPT.SettingsList["io.port"])));
+                listener.Bind(new IPEndPoint(ip, int.Parse(OPT.GetString("io.port"))));
                 listener.Listen(100);
                 listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
             }
@@ -92,7 +93,10 @@ namespace Server.Network
 
             Client client = new Client(socket);
 
-            Console.WriteLine("Client [{0}] connected from: {1} [{2}]", client.Id, client.Ip, client.Port);
+            if (OPT.GetBool("debug"))
+            {
+                Console.WriteLine("Client [{0}] connected from: {1} [{2}]", client.Id, client.Ip, client.Port);
+            }
 
             socket.BeginReceive(
                 client.Buffer, 0, PacketStream.MaxBuffer, SocketFlags.None,

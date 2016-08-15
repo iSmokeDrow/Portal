@@ -69,6 +69,7 @@
     <Compile Include="Functions\Hash.cs" />
     <Compile Include="Functions\OTP.cs" />
     <Compile Include="Functions\PasswordCipher.cs" />
+    <Compile Include="Functions\UserHandler.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Functions\Database.cs" />
     <Compile Include="Functions\OPT.cs" />

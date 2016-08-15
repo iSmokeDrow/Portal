@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Forms;
 using Google.Apis.Drive.v2;
 using Google.Apis.Drive.v2.Data;
 using Google.Apis.Auth.OAuth2;
-using Google.Apis.Drive;
 using Google.Apis.Services;
 using System.Security.Cryptography.X509Certificates;
 
@@ -71,6 +67,7 @@ namespace Client.Functions
                     return filePath;
                 }
             }
+            else { MessageBox.Show(string.Format("[Google Drive] failed to locate: {0} on the drive!", decodedName), "Exception Occured", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
             return null;
         }

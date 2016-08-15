@@ -17,11 +17,6 @@ namespace Server.Functions
         internal static string indexPath = Path.Combine(Directory.GetCurrentDirectory(), @"index.opt");
         public List<IndexEntry> UpdateIndex = new List<IndexEntry>();
 
-        public UpdateHandler()
-        {
-
-        }
-
         public void LoadUpdateList()
         {
             using (StreamReader sr = new StreamReader(File.Open(string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), "index.opt"), FileMode.Open, FileAccess.Read)))
@@ -57,7 +52,6 @@ namespace Server.Functions
                     string hash = Hash.GetSHA512Hash(selfUpdatePath);
                     if (hash != remoteHash)
                     {
-                        //Pack the zip into the /tmp/ folder
                         string zipName = compressFile(selfUpdatePath);
                         
                         ClientPackets.Instance.UpdateSelfUpdate(client, zipName);

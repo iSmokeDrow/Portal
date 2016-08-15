@@ -75,7 +75,7 @@ namespace Server.Functions
             // Get username account_id
             using (SqlConnection sqlCon = Database.CreateConnection)
             {
-                using (SqlCommand sqlCmd = new SqlCommand(string.Format("SELECT account_id FROM dbo.{0} WHERE login_name = @username", OPT.SettingsList["db.auth.table_alias"]), sqlCon))
+                using (SqlCommand sqlCmd = new SqlCommand(string.Format("SELECT account_id FROM dbo.{0} WHERE login_name = @username", OPT.GetString("db.auth.table_alias")), sqlCon))
                 {
                     sqlCmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = username;
 
@@ -84,7 +84,7 @@ namespace Server.Functions
                     {
                         int account_id = result;
                         outOTP = OTP.GenerateRandomPassword(22);
-                        otpHash = OTP.GenerateMD5OTP(OPT.SettingsList["md5.key"], outOTP);
+                        otpHash = OTP.GenerateMD5OTP(OPT.GetString("md5.key"), outOTP);
 
                         // Check if an OTP bearing this account_id exists
                         sqlCmd.CommandText = "SELECT COUNT(*) FROM dbo.otp WHERE account_id = @account_id";

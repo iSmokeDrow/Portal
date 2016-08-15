@@ -12,19 +12,31 @@ namespace Server.Functions
     /// </summary>
     public class OPT
     {
+        // TODO: Replace legacy_delete.opt with Delete bool in UpdateIndex
+
         /// <summary>
         /// Dictionary holding all the settings loaded from portal.opt
         /// </summary>
-        public static Dictionary<string, string> SettingsList = new Dictionary<string, string>();
+        protected static Dictionary<string, string> SettingsList = new Dictionary<string, string>();
 
         public static bool SettingExists(string key)
         {
             return (SettingsList[key] != null) ? true : false;
         }
 
-        public static string GetSetting(string key)
+        public static string GetString(string key)
         {
-            return SettingsList[key];
+            return (SettingExists(key)) ? SettingsList[key] : null;
+        }
+
+        public static bool GetBool(string key)
+        {
+            return (SettingExists(key)) ? Convert.ToBoolean(Convert.ToInt32(SettingsList[key])) : false;
+        }
+
+        public static int GetInt(string key)
+        {
+            return (SettingExists(key)) ? Convert.ToInt32(SettingsList[key]) : 0;
         }
 
         public static bool UpdateSetting(string key, string value)
@@ -33,16 +45,6 @@ namespace Server.Functions
 
             return false;
         }
-
-        /// <summary>
-        /// List containing the names of updates to be issued as Legacy
-        /// </summary>
-        public static List<string> LegacyUpdateList = new List<string>();
-
-        /// <summary>
-        /// List containing the names of legacy files to be deleted if existing @ remote end
-        /// </summary>
-        public static List<string> LegacyDeleteList = new List<string>();
 
         /// <summary>
         /// Parses: portal.opt, legacy.opt, legacy_delete.opt into their appropriate Dictionary and List variables
@@ -77,40 +79,6 @@ namespace Server.Functions
             else
             {
                 Console.WriteLine("[Fail]\n\t** The portal.opt does not exist, create it.");
-            }
-
-            Console.Write("Loading file names in: legacy.opt...");
-
-            if (File.Exists("legacy.opt"))
-            {
-                using (StreamReader sr = new StreamReader("legacy.opt"))
-                {
-                    string currentLine = null;
-                    while ((currentLine = sr.ReadLine()) != null) { LegacyUpdateList.Add(currentLine); }
-
-                    Console.WriteLine("[OK]");
-                }
-            }
-            else
-            {
-                Console.WriteLine("[Fail]\n\t** The legacy.opt does not exist, create it.");
-            }
-
-            Console.Write("Loading file names in: legacy_delete.opt...");
-
-            if (File.Exists("legacy_delete.opt"))
-            {
-                using (StreamReader sr = new StreamReader("legacy_delete.opt"))
-                {
-                    string currentLine = null;
-                    while ((currentLine = sr.ReadLine()) != null) { LegacyDeleteList.Add(currentLine); }
-
-                    Console.WriteLine("[OK]");
-                }
-            }
-            else
-            {
-                Console.WriteLine("[Fail]\n\t** The legacy_delete.opt does not exist, create it.");
             }
         }
 
@@ -185,48 +153,6 @@ namespace Server.Functions
                 else
                 {
                     //MainWindow.Instance.MessageConsole.AppendText("[Fail]\n\t** The portal.opt does not exist, create it.\n");
-                }
-            }
-            if (type == 1 || all)
-            {
-                LegacyUpdateList.Clear();
-
-                //MainWindow.Instance.MessageConsole.AppendText("Reloading file names in: legacy.opt...");
-
-                if (File.Exists("legacy.opt"))
-                {
-                    using (StreamReader sr = new StreamReader("legacy.opt"))
-                    {
-                        string currentLine = null;
-                        while ((currentLine = sr.ReadLine()) != null) { LegacyUpdateList.Add(currentLine); }
-
-                        //MainWindow.Instance.MessageConsole.AppendText("[Success]\n");
-                    }
-                }
-                else
-                {
-                    //MainWindow.Instance.MessageConsole.AppendText("[Fail]\n\t** The legacy.opt does not exist, create it.\n");
-                }
-            }
-            if (type == 2 || all)
-            {
-                LegacyDeleteList.Clear();
-
-                //MainWindow.Instance.MessageConsole.AppendText("Reloading file names in: legacy_delete.opt...");
-
-                if (File.Exists("legacy_delete.opt"))
-                {
-                    using (StreamReader sr = new StreamReader("legacy_delete.opt"))
-                    {
-                        string currentLine = null;
-                        while ((currentLine = sr.ReadLine()) != null) { LegacyDeleteList.Add(currentLine); }
-
-                        //MainWindow.Instance.MessageConsole.AppendText("[Success]\n");
-                    }
-                }
-                else
-                {
-                    //MainWindow.Instance.MessageConsole.AppendText("[Fail]\n\t** The legacy_delete.opt does not exist, create it.\n");
                 }
             }
         }

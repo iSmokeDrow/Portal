@@ -1,4 +1,18 @@
+## DO NOT LEAVE BLANK LINES IN THIS FILE!
+## In/Out network address and port
 io.ip:127.0.0.1
 io.port:13545
 #Leave blank if using local /updates/ folder
 update.dir:
+## Encryption keys
+des.key:ddzSD3412
+md5.key:1337
+## Database
+db.auth.ip:
+db.auth.name:
+db.auth.user:
+db.auth.password:
+# Name of your dbo.Accounts table (e.g. Account or Accounts)
+db.auth.table_alias:
+## 
+debug:1

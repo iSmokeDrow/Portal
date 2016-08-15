@@ -7,6 +7,7 @@ using System.Windows.Forms.VisualStyles;
 using System.IO;
 using Client.Functions;
 using Client.Network;
+using Client.Structures;
 
 namespace Client
 {
@@ -41,23 +42,17 @@ namespace Client
         }
         #endregion
 
+        // TODO: Add ip/port to General Settings menu
         internal readonly string ip = "127.0.0.1";
         internal readonly short port = 13545;
-        internal readonly string md5Key = "1337";
-        XDes DesCipher;
         public static GUI Instance;
         internal bool canStart = false;
-        internal string otp = null;
-        internal readonly OPT SettingsManager;
-        internal int loginFails = 0;
 
         public GUI()
         {
             InitializeComponent();
             Application.VisualStyleState = VisualStyleState.NoneEnabled;
-            DesCipher = new XDes(Program.DesKey);
             Instance = this;
-            SettingsManager = OPT.Instance;
         }
 
         private void GUI_Load(object sender, EventArgs e)
@@ -74,20 +69,15 @@ namespace Client
         private async void GUI_Shown(object sender, EventArgs e)
         {
             Instance.UpdateStatus(0, "Loading settings...");
-            await Task.Run(() => { SettingsManager.Start(); });
+            await Task.Run(() => { OPT.Instance.Start(); });
             Instance.UpdateStatus(0, "Checking for SFrame...");
             await Task.Run(() => { checkForSFrame(); });
             Instance.UpdateStatus(0, "Connecting to Update Server...");
             connectToServer();
-            Instance.UpdateStatus(0, "Checking for Updater Update...");
-            await Task.Run(() => { checkForUpdater(); });
-            Instance.UpdateStatus(0, "Checking for Launcher Update...");
-            await Task.Run(() => { checkForSelfUpdate(); });
-            Instance.UpdateStatus(0, "Checking for Client Updates...");
-            await Task.Run(() => { updateClient(); });
+            Instance.UpdateStatus(0, "Waiting for User Credentials...");
+            Login();
             Instance.UpdateStatus(0, "");
         }
-
 
         internal void connectToServer()
         {
@@ -98,11 +88,16 @@ namespace Client
             }
         }
 
+        private void Login()
+        {
+            ServerPackets.Instance.RequestDESKey();
+        }
+
         internal void checkForSFrame()
         {
-            if (string.IsNullOrEmpty(SettingsManager.GetString("clientdirectory")))
+            if (string.IsNullOrEmpty(OPT.Instance.GetString("clientdirectory")))
             {
-                if (File.Exists("SFrame.exe")) { Instance.SettingsManager.Update("clientdirectory", "SFrame.exe"); }
+                if (File.Exists("SFrame.exe")) { OPT.Instance.Update("clientdirectory", "SFrame.exe"); }
             }
         }
 
@@ -123,7 +118,7 @@ namespace Client
         protected bool checkForClient()
         {
             // Check that the provided client directory exists
-            if (!Directory.Exists(SettingsManager.GetString("clientdirectory")))
+            if (!Directory.Exists(OPT.Instance.GetString("clientdirectory")))
             {
                 while (true)
                 {
@@ -131,7 +126,7 @@ namespace Client
                     {
                         launcherSettings_btn_Click(null, EventArgs.Empty);
 
-                        if (Directory.Exists(SettingsManager.GetString("clientdirectory")) && File.Exists(Path.Combine(SettingsManager.GetString("clientdirectory"), "sframe.exe")))
+                        if (Directory.Exists(OPT.Instance.GetString("clientdirectory")) && File.Exists(Path.Combine(OPT.Instance.GetString("clientdirectory"), "sframe.exe")))
                         {
                             return true;
                         }
@@ -148,11 +143,41 @@ namespace Client
             return false;
         }
 
+        public void OnDesKeyReceived(string desKey)
+        {
+            using (LoginGUI login = new LoginGUI())
+            {
+                this.Invoke(new MethodInvoker(delegate 
+                {
+                    login.ShowDialog(this);
+
+                    if (!login.Cancelled)
+                    {
+                        UpdateStatus(0, "Validating your credentials...");
+                        ServerPackets.Instance.RequestUserValidation(desKey, login.Username, login.Password, FingerPrint.Value);
+                    }
+                }));
+            }
+        }
+
+        public async void OnValidationResultReceived(bool validated)
+        {
+            if (validated)
+            {                
+                canStart = true;
+                Instance.UpdateStatus(0, "Checking for Updater Update...");
+                await Task.Run(() => { checkForUpdater(); });
+                Instance.UpdateStatus(0, "Checking for Launcher Update...");
+                await Task.Run(() => { checkForSelfUpdate(); });
+                Instance.UpdateStatus(0, "Checking for Client Updates...");
+                await Task.Run(() => { updateClient(); });
+            }
+        }
+
         internal void updateClient()
         {
             if (checkForClient())
             {
-                // TODO: Show splash screen!
                 UpdateHandler.Instance.Start();
                 if (UpdateHandler.Instance.NetworkError) { return; }
             }
@@ -220,22 +245,22 @@ namespace Client
 
         private void start_btn_Click(object sender, EventArgs e)
         {
-            if ( canStart)
+            if (canStart)
             {
-                ServerPackets.Instance.RequestArguments(Instance.SettingsManager.GetString("username"));
+                ServerPackets.Instance.RequestArguments(OPT.Instance.GetString("username"));
             }
         }
 
+        // TODO: Server needs to decide the opt and send it with the arguments
         public static void OnArgumentsReceived(string arguments)
         {
             if (!string.IsNullOrEmpty(arguments))
             {
                 string launchArgs = arguments.TrimEnd('\0');
-                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", Instance.SettingsManager.GetString("codepage"));
-                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", Instance.SettingsManager.GetString("country"));
-                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", Instance.otp);
+                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("codepage"));
+                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("country"));
 
-                if (SFrameBypass.Start(10, launchArgs)) { if (Instance.SettingsManager.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.Close(); })); } }
+                if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.Close(); })); } }
                 else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.Close(); }
             }
         }
@@ -261,10 +286,8 @@ namespace Client
         {
             if (MessageBox.Show("This menu is still under construction! Use at your own risk!", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand) == DialogResult.OK)
             {
-                Structures.SettingsManager.InitRappelzSettings();
-                RappelzSettingsGUI settings = new RappelzSettingsGUI(Structures.SettingsManager.RappelzSettings);
-                settings.FormClosing += (o, x) => { Structures.SettingsManager.SaveSettings(Structures.SettingsManager.RappelzSettings); };
-                settings.ShowDialog(this);
+                RappelzSettings.InitRappelzSettings();
+                // TODO: Rebuild how the client settings are read/saved
             }
         }
     }

@@ -10,19 +10,11 @@ namespace Server
 {
     class Program
     {
-        // TODO: Make method to read updates from list in base directory
-
         /// <summary>
         /// Server and client must have the same RC4 key
         /// it's used to encrypt packet data
         /// </summary>
         public static string RC4Key = "password1";
-
-        /// <summary>
-        /// Server and client must have the same DES Key
-        /// It's used to encrypt arguments
-        /// </summary>
-        public static string DesKey = "password2";
 
         static XDes DesCipher;
 
@@ -40,9 +32,9 @@ namespace Server
         {
             get
             {
-                if (!string.IsNullOrEmpty(OPT.GetSetting("update.dir")))
+                if (!string.IsNullOrEmpty(OPT.GetString("update.dir")))
                 {
-                    return OPT.GetSetting("update.dir");
+                    return OPT.GetString("update.dir");
                 }
                 else { return string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/updates/"); }
             }
@@ -53,14 +45,14 @@ namespace Server
         static void Main(string[] args)
         {
             OPT.LoadSettings();
-            DesCipher = new XDes(DesKey);
+            DesCipher = new XDes(OPT.GetString("des.key"));
 
             clientList = new Dictionary<int, Client>();
 
-            Console.WriteLine("Checking for Updates...");
+            Console.WriteLine("Indexing update files...");
             UpdateHandler.Instance.LoadUpdateList();
 
-            Console.WriteLine("\t- {0} files indexed from the update index!\n\t- {1} of which are legacy updates!", UpdateHandler.Instance.UpdateIndex.Count, OPT.LegacyUpdateList.Count);
+            Console.WriteLine("\t- {0} files indexed from the update index!\n\t- {1} of which are legacy updates!", UpdateHandler.Instance.UpdateIndex.Count, UpdateHandler.Instance.UpdateIndex.FindAll(i => i.Legacy == true).Count);
             
 
             Console.Write("Checking for tmp directory...");
@@ -86,7 +78,6 @@ namespace Server
 
         internal static void OnUserRequestArguments(Client client, string username)
         {
-            // TODO : Replace placeholder launch arguments here
             ClientPackets.Instance.Arguments(client, string.Format("/auth_ip:127.0.0.1 /auth_port:13544 /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:{0} /password:?", username));
         }
     }
