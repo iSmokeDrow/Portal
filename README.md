@@ -15,3 +15,13 @@ DataCore this launcher can make quick work of updating your client in more ways 
 - User authentication 
   - FingerPrint generated based on users computer hardware (used in banning)
 - BlankIndex (data.blk) tracking (used to recover space from orphaned files)
+- (CLIENT) Reimplemented rappelz_v1.opt editor (for editing client functions)
+- (CLIENT) Unique settings such as (always on-top, toggle fps (on sframe titlebar [windowed mode]) and close-on-start)
+- (CLIENT) Unique ability to be run outside of the Rappelz Client folder
+
+# Features (Future)
+- (CLIENT) Defragment data.xxx files (essentially shrinking them by rebuilding them)
+- (CLIENT) Ability to go into manual update mode (must install updates from .zip packages)
+- (CLIENT) Ability to toggle on backups (All files will be compressed and moved to /backups/ and a restore point created in restore.opt
+- (CLIENT) Loading remote ip/port from config.opt
+- (CLIENT) Ability to re-skin GUI
