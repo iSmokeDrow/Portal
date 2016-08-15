@@ -14,6 +14,7 @@ DataCore this launcher can make quick work of updating your client in more ways 
   - No sensitive information stored directly inside of Client (Decompiling will be useless)
 - User authentication 
   - FingerPrint generated based on users computer hardware (used in banning)
+- Client auth-login (using OTP)
 - BlankIndex (data.blk) tracking (used to recover space from orphaned files)
 - (CLIENT) Reimplemented rappelz_v1.opt editor (for editing client functions)
 - (CLIENT) Unique settings such as (always on-top, toggle fps (on sframe titlebar [windowed mode]) and close-on-start)
@@ -25,3 +26,4 @@ DataCore this launcher can make quick work of updating your client in more ways 
 - (CLIENT) Ability to toggle on backups (All files will be compressed and moved to /backups/ and a restore point created in restore.opt
 - (CLIENT) Loading remote ip/port from config.opt
 - (CLIENT) Ability to re-skin GUI
+- (CLIENT/SERVER) Ability to toggle off user authentication
