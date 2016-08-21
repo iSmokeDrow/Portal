@@ -43,10 +43,11 @@ namespace Client
         #endregion
 
         // TODO: Add ip/port to General Settings menu
-        internal readonly string ip = "127.0.0.1";
-        internal readonly short port = 13545;
+        protected readonly string ip = "127.0.0.1";
+        protected readonly short port = 13545;
         public static GUI Instance;
-        internal bool canStart = false;
+        protected bool canStart = false;
+        protected string otp = string.Empty;
 
         public GUI()
         {
@@ -160,10 +161,31 @@ namespace Client
             }
         }
 
-        public async void OnValidationResultReceived(bool validated)
+        internal void OnUserBannedReceived(int banType)
         {
-            if (validated)
-            {                
+            MessageBox.Show(string.Format("Your {0} has been banned!", (banType == 0) ? "account" : "FingerPrint"), "Login Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            GUI.Instance.UpdateStatus(0, "Disconnected!");
+            ServerManager.Instance.Close();
+        }
+
+        internal void OnUserAccountNullReceived()
+        {
+            if (MessageBox.Show("The username or password you entered is incorrect, would you like to try again?", "Login Exception", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Login();
+            }
+            else
+            {
+                GUI.Instance.UpdateStatus(0, "Disconnected!");
+                ServerManager.Instance.Close();
+            }          
+        }
+
+        public async void OnValidationResultReceived(string otp)
+        {
+            if (otp != null)
+            {
+                this.otp = otp;            
                 canStart = true;
                 Instance.UpdateStatus(0, "Checking for Updater Update...");
                 await Task.Run(() => { checkForUpdater(); });
@@ -252,7 +274,7 @@ namespace Client
         }
 
         // TODO: Server needs to decide the opt and send it with the arguments
-        public static void OnArgumentsReceived(string arguments)
+        public void OnArgumentsReceived(string arguments)
         {
             if (!string.IsNullOrEmpty(arguments))
             {

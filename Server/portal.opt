@@ -6,13 +6,14 @@ io.port:13545
 update.dir:
 ## Encryption keys
 des.key:ddzSD3412
-md5.key:1337
+md5.key:5487
 ## Database
 db.auth.ip:
-db.auth.name:
+db.auth.trusted:1
+db.auth.name:auth
 db.auth.user:
 db.auth.password:
 # Name of your dbo.Accounts table (e.g. Account or Accounts)
-db.auth.table_alias:
+db.auth.table.alias:Accounts
 ## 
 debug:1

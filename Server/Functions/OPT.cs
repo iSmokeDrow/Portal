@@ -13,6 +13,7 @@ namespace Server.Functions
     public class OPT
     {
         // TODO: Replace legacy_delete.opt with Delete bool in UpdateIndex
+        // TODO: Add Error catching to SettingExists - UpdateSetting
 
         /// <summary>
         /// Dictionary holding all the settings loaded from portal.opt

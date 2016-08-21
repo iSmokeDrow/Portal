@@ -1,10 +1,7 @@
-﻿using Server.Functions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Server.Functions;
 
 namespace Server.Network
 {
@@ -17,8 +14,12 @@ namespace Server.Network
         private Dictionary<ushort, PacketAction> PacketsDb;
         private XDes DesCipher = new XDes(OPT.GetString("des.key"));
 
+        protected bool debug = false;
+
         public ClientPackets()
         {
+            debug = OPT.GetBool("debug");
+
             // Loads PacketsDb
             PacketsDb = new Dictionary<ushort, PacketAction>();
 
@@ -55,7 +56,7 @@ namespace Server.Network
 
         private void CS_RequestDesKey(Client client, PacketStream stream)
         {
-            if (OPT.GetBool("debug"))
+            if (debug)
             {
                 Console.Write("Client [{0}] requested des.key...", client.Id);
             }
@@ -70,12 +71,6 @@ namespace Server.Network
             int passLength = stream.ReadInt32();
             string password = DesCipher.Decrypt(stream.ReadBytes(passLength));
             string fingerprint = stream.ReadString();
-
-            if (OPT.GetBool("debug"))
-            {
-                Console.WriteLine("Client [{0}] requested login validation with the following credentials:", client.Id);
-                Console.WriteLine("Username: {0}\nPassword: {1}\nFingerprint: {2}", username, password, fingerprint);
-            }
 
             UserHandler.Instance.OnValidateUser(client, username, password, fingerprint);
         }
@@ -131,7 +126,7 @@ namespace Server.Network
 
         public void UpdateSelfUpdate(Client client, string tmpName)
         {
-            PacketStream stream = new PacketStream(0x0014);
+            PacketStream stream = new PacketStream(0x000B);
             stream.WriteString(tmpName, tmpName.Length + 1);
             ClientManager.Instance.Send(client, stream);
         }
@@ -182,6 +177,27 @@ namespace Server.Network
             s.WriteString(path, path.Length + 1);
             ClientManager.Instance.Send(client, s);
         }
+
+        public void OTP(Client client, string otp)
+        {
+            PacketStream stream = new PacketStream(0x0013);
+
+            byte[] encOTP = DesCipher.Encrypt(otp);
+            stream.WriteInt32(encOTP.Length);
+            stream.WriteBytes(encOTP);
+
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        public void SendBanStatus(Client client, int banType)
+        {
+            PacketStream stream = new PacketStream(0x0014);
+            stream.WriteInt32(banType);
+
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        public void SendAccountNull(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0015)); }
 
         /// <summary>
         /// Informs the client of required start arguments

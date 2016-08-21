@@ -24,9 +24,10 @@ namespace Server.Functions
         /// <summary>
         /// Creates a new SqlConnection for future uses
         /// </summary>
-        /// <param name="connectionString">Connection settings for this connection</param>
         /// <returns>Prepared SqlConnection</returns>
-        public static SqlConnection CreateConnection { get { return new SqlConnection(connectionString); } }
+        public static SqlConnection Connection { get { return new SqlConnection(connectionString); } }
+
+        // TODO: Handle sending back a null because it causes an error
 
         /// <summary>
         /// Executes a prepared Sql Statement on a prepared and opened Sql Connection
@@ -63,11 +64,18 @@ namespace Server.Functions
                 }
 
                 inSqlCommand.Connection.Close();
+
+                // Catch the null object (for executeType 0 & 1
+                if (returnObj == null && executeType <= 1)
+                {
+                    returnObj = 0;
+                }
+
                 return returnObj;
             }
             catch (SqlException sqlEx)
             {
-                Console.WriteLine("SQL Error:\n{0}", sqlEx.Message);
+                Console.WriteLine("\n\tWARNING SQL Error:\n{0}", sqlEx.Message);
                 return null;
             }
         }

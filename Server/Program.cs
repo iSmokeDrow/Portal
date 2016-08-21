@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Server
 {
+    //TODO: Reset OTP based on timer
     class Program
     {
         /// <summary>
@@ -61,7 +62,7 @@ namespace Server
 
             int cleanedCount = 0;
 
-            foreach (string filePath in Directory.GetFiles(@"/tmp/"))
+            foreach (string filePath in Directory.GetFiles(tmpPath))
             {
                 File.Delete(filePath);
                 cleanedCount++;

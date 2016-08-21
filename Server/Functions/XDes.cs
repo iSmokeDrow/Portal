@@ -61,7 +61,6 @@ namespace Server.Functions
                     byte[] data = Encoding.Default.GetBytes(decryptedString);
                     cs.Write(data, 0, data.Length);
                     cs.FlushFinalBlock();
-                    Console.WriteLine(BitConverter.ToString(stream.ToArray()));
                     return stream.ToArray();
                 }
             }

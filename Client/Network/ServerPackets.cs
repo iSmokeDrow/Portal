@@ -25,10 +25,13 @@ namespace Client.Network
 
             #region Packets
             PacketsDb.Add(0x000A, SC_UpdateDateTime);
-            PacketsDb.Add(0x0014, SC_UpdateSelfUpdate);
+            PacketsDb.Add(0x000B, SC_UpdateSelfUpdate);
             PacketsDb.Add(0x001E, SC_UpdateUpdater);
             PacketsDb.Add(0x0011, SC_UpdateIndex);
             PacketsDb.Add(0x0012, SC_UpdateIndexEnd);
+            PacketsDb.Add(0x0013, SC_UserValidated);
+            PacketsDb.Add(0x0014, SC_UserBanned);
+            PacketsDb.Add(0x0015, SC_AccountNull);
             PacketsDb.Add(0x0031, SC_Arguments);
             PacketsDb.Add(0x9999, SC_DesKey);
             #endregion
@@ -91,12 +94,30 @@ namespace Client.Network
             UpdateHandler.Instance.OnUpdateIndexEnd(stream.ReadInt32());
         }
 
+        private void SC_UserBanned(PacketStream stream)
+        {
+            GUI.Instance.OnUserBannedReceived(stream.ReadInt32());
+        }
+
+        private void SC_AccountNull(PacketStream stream)
+        {
+            GUI.Instance.OnUserAccountNullReceived();
+        }
+
+        private void SC_UserValidated(PacketStream stream)
+        {
+            int otpLength = stream.ReadInt32();
+            string otpHash = DesCipher.Decrypt(stream.ReadBytes(otpLength));
+
+            GUI.Instance.OnValidationResultReceived(otpHash);
+        }
+
         private void SC_Arguments(PacketStream stream)
         {
             int len = stream.ReadInt32();
             byte[] arguments = stream.ReadBytes(len);
 
-            GUI.OnArgumentsReceived(DesCipher.Decrypt(arguments));
+            GUI.Instance.OnArgumentsReceived(DesCipher.Decrypt(arguments));
         }
 
         #endregion

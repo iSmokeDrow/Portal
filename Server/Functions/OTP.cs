@@ -73,7 +73,7 @@ namespace Server.Functions
             string otpHash = null;
 
             // Get username account_id
-            using (SqlConnection sqlCon = Database.CreateConnection)
+            using (SqlConnection sqlCon = Database.Connection)
             {
                 using (SqlCommand sqlCmd = new SqlCommand(string.Format("SELECT account_id FROM dbo.{0} WHERE login_name = @username", OPT.GetString("db.auth.table_alias")), sqlCon))
                 {
@@ -125,7 +125,7 @@ namespace Server.Functions
         {
             Task.Run(() =>
             {
-                using (SqlConnection sqlCon = Database.CreateConnection)
+                using (SqlConnection sqlCon = Database.Connection)
                 {
                     using (SqlCommand sqlCmd = new SqlCommand("SELECT account_id, otp, otp_end FROM dbo.otp WHERE otp_end != '1999-01-01 12:00:00'", sqlCon))
                     {
