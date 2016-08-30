@@ -22,6 +22,8 @@ namespace Client
         {
             InitializeComponent();
 
+            ip.Text = OPT.Instance.GetString("ip");
+            port.Text = OPT.Instance.GetString("port");
             fps.Checked = OPT.Instance.GetBool("showfps");
             onTop.Checked = OPT.Instance.GetBool("ontop");
             codepageList.Text = OPT.Instance.GetString("codepage");
@@ -34,6 +36,8 @@ namespace Client
 
         private void save_Click(object sender, EventArgs e)
         {
+            OPT.Instance.Update("ip", ip.Text);
+            OPT.Instance.Update("port", port.Text);
             OPT.Instance.Update("showfps", fps.Checked);
             OPT.Instance.Update("ontop", onTop.Checked);
             OPT.Instance.Update("codepage", codepageList.Text);

@@ -11,8 +11,6 @@ namespace Server.Network
 {
     public class ClientManager
     {
-        // TODO: Add a graceful disconnect method
-
         public static readonly ClientManager Instance = new ClientManager();
 
         private static List<Client> clientList = new List<Client>();
@@ -98,6 +96,8 @@ namespace Server.Network
                 Console.WriteLine("Client [{0}] connected from: {1} [{2}]", client.Id, client.Ip, client.Port);
             }
 
+            clientList.Add(client);
+
             socket.BeginReceive(
                 client.Buffer, 0, PacketStream.MaxBuffer, SocketFlags.None,
                 new AsyncCallback(ReadCallback), client
@@ -112,80 +112,83 @@ namespace Server.Network
         {
             Client client = (Client)ar.AsyncState;
 
-            try
+            if (client.ClSocket.Connected)
             {
-                int bytesRead = client.ClSocket.EndReceive(ar);
-                if (bytesRead > 0)
+                try
                 {
-                    int curOffset = 0;
-                    int bytesToRead = 0;
-                    byte[] decode = client.InCipher.DoCipher(ref client.Buffer, bytesRead);
-
-                    do
+                    int bytesRead = client.ClSocket.EndReceive(ar);
+                    if (bytesRead > 0)
                     {
+                        int curOffset = 0;
+                        int bytesToRead = 0;
+                        byte[] decode = client.InCipher.DoCipher(ref client.Buffer, bytesRead);
 
-                        if (client.PacketSize == 0)
+                        do
                         {
-                            if (client.Offset + bytesRead > 3)
+
+                            if (client.PacketSize == 0)
                             {
-                                bytesToRead = (4 - client.Offset);
-                                client.Data.Write(decode, curOffset, bytesToRead);
-                                curOffset += bytesToRead;
-                                client.Offset = bytesToRead;
-                                client.PacketSize = BitConverter.ToInt32(client.Data.ReadBytes(4, 0, true), 0);
+                                if (client.Offset + bytesRead > 3)
+                                {
+                                    bytesToRead = (4 - client.Offset);
+                                    client.Data.Write(decode, curOffset, bytesToRead);
+                                    curOffset += bytesToRead;
+                                    client.Offset = bytesToRead;
+                                    client.PacketSize = BitConverter.ToInt32(client.Data.ReadBytes(4, 0, true), 0);
+                                }
+                                else
+                                {
+                                    client.Data.Write(decode, 0, bytesRead);
+                                    client.Offset += bytesRead;
+                                    curOffset += bytesRead;
+                                }
                             }
                             else
                             {
-                                client.Data.Write(decode, 0, bytesRead);
-                                client.Offset += bytesRead;
-                                curOffset += bytesRead;
-                            }
-                        }
-                        else
-                        {
-                            int needBytes = client.PacketSize - client.Offset;
+                                int needBytes = client.PacketSize - client.Offset;
 
-                            // If there's enough bytes to complete this packet
-                            if (needBytes <= (bytesRead - curOffset))
-                            {
-                                client.Data.Write(decode, curOffset, needBytes);
-                                curOffset += needBytes;
-                                // Packet is done, send to server to be parsed
-                                // and continue.
-                                PacketReceived(client, client.Data);
-                                // Do needed clean up to start a new packet
-                                client.Data = new PacketStream();
-                                client.PacketSize = 0;
-                                client.Offset = 0;
+                                // If there's enough bytes to complete this packet
+                                if (needBytes <= (bytesRead - curOffset))
+                                {
+                                    client.Data.Write(decode, curOffset, needBytes);
+                                    curOffset += needBytes;
+                                    // Packet is done, send to server to be parsed
+                                    // and continue.
+                                    PacketReceived(client, client.Data);
+                                    // Do needed clean up to start a new packet
+                                    client.Data = new PacketStream();
+                                    client.PacketSize = 0;
+                                    client.Offset = 0;
+                                }
+                                else
+                                {
+                                    bytesToRead = (bytesRead - curOffset);
+                                    client.Data.Write(decode, curOffset, bytesToRead);
+                                    client.Offset += bytesToRead;
+                                    curOffset += bytesToRead;
+                                }
                             }
-                            else
-                            {
-                                bytesToRead = (bytesRead - curOffset);
-                                client.Data.Write(decode, curOffset, bytesToRead);
-                                client.Offset += bytesToRead;
-                                curOffset += bytesToRead;
-                            }
-                        }
-                    } while (bytesRead - 1 > curOffset);
+                        } while (bytesRead - 1 > curOffset);
 
-                    client.ClSocket.BeginReceive(
-                        client.Buffer, 0, PacketStream.MaxBuffer, SocketFlags.None,
-                        new AsyncCallback(ReadCallback), client
-                    );
+                        client.ClSocket.BeginReceive(
+                            client.Buffer, 0, PacketStream.MaxBuffer, SocketFlags.None,
+                            new AsyncCallback(ReadCallback), client
+                        );
 
+                    }
+                    else
+                    {
+                        UserHandler.Instance.OnUserRequestDisconnect(client);
+                        client.ClSocket.Close();
+                        return;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    Console.WriteLine("Client [{0}] disconected.", client.Id);
-                    UpdateHandler.Instance.OnUserDisconnect(client);
+                    UserHandler.Instance.OnUserRequestDisconnect(client);
                     client.ClSocket.Close();
-                    return;
+                    Console.WriteLine("Client [{0}] disconected! (with errors)\n\t-Errors!\n\t-{1}.", client.Id, e.Message);
                 }
-            }
-            catch (Exception e)
-            {
-                UpdateHandler.Instance.OnUserDisconnect(client);
-                client.ClSocket.Close();
             }
         }
 

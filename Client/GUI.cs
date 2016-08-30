@@ -11,6 +11,9 @@ using Client.Structures;
 
 namespace Client
 {
+    // TODO: Request epic from server
+    // TODO: Add Volume Menu
+    // TODO: Add Shader menu
     public partial class GUI : Form
     {
         #region Drag Hack
@@ -42,9 +45,8 @@ namespace Client
         }
         #endregion
 
-        // TODO: Add ip/port to General Settings menu
-        protected readonly string ip = "127.0.0.1";
-        protected readonly short port = 13545;
+        protected string ip = "127.0.0.1";
+        protected int port = 13545;
         public static GUI Instance;
         protected bool canStart = false;
         protected string otp = string.Empty;
@@ -56,6 +58,7 @@ namespace Client
             Instance = this;
         }
 
+        // TODO: Use a better name for Updater.exe
         private void GUI_Load(object sender, EventArgs e)
         {
             Task.Run(() => 
@@ -69,8 +72,9 @@ namespace Client
 
         private async void GUI_Shown(object sender, EventArgs e)
         {
-            Instance.UpdateStatus(0, "Loading settings...");
+            Instance.UpdateStatus(0, "Initializing settings...");
             await Task.Run(() => { OPT.Instance.Start(); });
+            await Task.Run(() => { assignIP(); });
             Instance.UpdateStatus(0, "Checking for SFrame...");
             await Task.Run(() => { checkForSFrame(); });
             Instance.UpdateStatus(0, "Connecting to Update Server...");
@@ -80,11 +84,16 @@ namespace Client
             Instance.UpdateStatus(0, "");
         }
 
+        private void assignIP()
+        {
+            ip = OPT.Instance.GetString("ip");
+            port = OPT.Instance.GetInt("port");
+        }
+
         internal void connectToServer()
         {
             if (!ServerManager.Instance.Start(ip, port))
             {
-                MessageBox.Show(ServerManager.Instance.ErrorMessage, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
         }
@@ -123,7 +132,7 @@ namespace Client
             {
                 while (true)
                 {
-                    if (MessageBox.Show("The Client Path you provided is invalid!\nIf you want to continue please provide a valid path!", "Update Exception", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop) == DialogResult.OK)
+                    if (MessageBox.Show("The Client Path you provided is invalid!\nIf you want to continue please provide a valid path!", "Update Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
                         launcherSettings_btn_Click(null, EventArgs.Empty);
 
@@ -156,6 +165,12 @@ namespace Client
                     {
                         UpdateStatus(0, "Validating your credentials...");
                         ServerPackets.Instance.RequestUserValidation(desKey, login.Username, login.Password, FingerPrint.Value);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cannot continue without proper login credentials! Shutting down!", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ServerManager.Instance.Close();
+                        this.Close();
                     }
                 }));
             }
@@ -201,6 +216,7 @@ namespace Client
             if (checkForClient())
             {
                 UpdateHandler.Instance.Start();
+
                 if (UpdateHandler.Instance.NetworkError) { return; }
             }
             else
@@ -273,7 +289,6 @@ namespace Client
             }
         }
 
-        // TODO: Server needs to decide the opt and send it with the arguments
         public void OnArgumentsReceived(string arguments)
         {
             if (!string.IsNullOrEmpty(arguments))
@@ -281,6 +296,7 @@ namespace Client
                 string launchArgs = arguments.TrimEnd('\0');
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("codepage"));
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("country"));
+                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", otp);
 
                 if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.Close(); })); } }
                 else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.Close(); }
@@ -289,8 +305,8 @@ namespace Client
 
         private void close_Click(object sender, EventArgs e)
         {
-            ServerManager.Instance.Close();
-            this.Dispose();
+            Instance.UpdateStatus(0, "Requesting graceful disconnection...");
+            ServerPackets.Instance.RequestDisconnect();
         }
 
         private void launcherSettings_btn_Click(object sender, EventArgs e)
@@ -309,7 +325,11 @@ namespace Client
             if (MessageBox.Show("This menu is still under construction! Use at your own risk!", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand) == DialogResult.OK)
             {
                 RappelzSettings.InitRappelzSettings();
-                // TODO: Rebuild how the client settings are read/saved
+
+                using (RappelzSettingsGUI settingsGUI = new RappelzSettingsGUI(RappelzSettings.Settings))
+                {
+                    settingsGUI.ShowDialog();
+                }
             }
         }
     }

@@ -14,6 +14,8 @@ namespace Server.Functions
     {
         public static bool HasErrors = false;
 
+        protected static bool debug = OPT.GetBool("debug");
+
         /// <summary>
         /// Possible characters combined to create random password
         /// </summary>
@@ -67,67 +69,15 @@ namespace Server.Functions
             return sb.ToString();
         }
 
-        public static string SetOTP(string username)
-        {
-            string outOTP = null;
-            string otpHash = null;
-
-            // Get username account_id
-            using (SqlConnection sqlCon = Database.Connection)
-            {
-                using (SqlCommand sqlCmd = new SqlCommand(string.Format("SELECT account_id FROM dbo.{0} WHERE login_name = @username", OPT.GetString("db.auth.table_alias")), sqlCon))
-                {
-                    sqlCmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = username;
-
-                    int result = (int)Database.ExecuteStatement(sqlCmd, 1);
-                    if (result > 0)
-                    {
-                        int account_id = result;
-                        outOTP = OTP.GenerateRandomPassword(22);
-                        otpHash = OTP.GenerateMD5OTP(OPT.GetString("md5.key"), outOTP);
-
-                        // Check if an OTP bearing this account_id exists
-                        sqlCmd.CommandText = "SELECT COUNT(*) FROM dbo.otp WHERE account_id = @account_id";
-                        sqlCmd.Parameters.Clear();
-                        sqlCmd.Parameters.Add("@account_id", SqlDbType.Int).Value = account_id;
-
-                        result = (int)Database.ExecuteStatement(sqlCmd, 1);
-                        if (result > 0)
-                        {
-                            // Update original entry
-                            sqlCmd.CommandText = "UPDATE dbo.OTP SET otp = @otp, otp_end = @otp_end WHERE account_id = @account_id";
-                            sqlCmd.Parameters.Clear();
-                            sqlCmd.Parameters.Add("@otp", SqlDbType.NVarChar).Value = otpHash;
-                            sqlCmd.Parameters.Add("@account_id", SqlDbType.Int).Value = account_id;
-                            sqlCmd.Parameters.Add("@otp_end", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(2.00);
-
-                            Database.ExecuteStatement(sqlCmd, 0);
-                        }
-                        else
-                        {
-                            // Create new entry
-                            sqlCmd.CommandText = "INSERT INTO dbo.otp (account_id, otp, otp_end) VALUES (@account_id, @otp, @otp_end)";
-                            sqlCmd.Parameters.Clear();
-                            sqlCmd.Parameters.Add("@account_id", SqlDbType.Int).Value = account_id;
-                            sqlCmd.Parameters.Add("@otp", SqlDbType.NVarChar).Value = otpHash;
-                            sqlCmd.Parameters.Add("@otp_end", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(2.00);
-
-                            Database.ExecuteStatement(sqlCmd, 0);
-                        }
-                    }
-                }
-            }
-
-            return outOTP;
-        }
-
         public static void HandleOTP()
         {
+            int expiredOTP = 0;
+
             Task.Run(() =>
             {
                 using (SqlConnection sqlCon = Database.Connection)
                 {
-                    using (SqlCommand sqlCmd = new SqlCommand("SELECT account_id, otp, otp_end FROM dbo.otp WHERE otp_end != '1999-01-01 12:00:00'", sqlCon))
+                    using (SqlCommand sqlCmd = new SqlCommand("SELECT account_id, otp, expiration FROM dbo.otp WHERE expiration != '1999-01-01 12:00:00'", sqlCon))
                     {
                         DataTable otpTable = (DataTable)Database.ExecuteStatement(sqlCmd, 2);
                         if (otpTable.Rows.Count > 0)
@@ -135,12 +85,14 @@ namespace Server.Functions
                             foreach (DataRow row in otpTable.Rows)
                             {
                                 DateTime currentDateTime = DateTime.Now;
-                                DateTime otpDateTime = DateTime.Parse(row["otp_end"].ToString());
+                                DateTime otpDateTime = DateTime.Parse(row["expiration"].ToString());
 
                                 if (currentDateTime > otpDateTime)
                                 {
+                                    expiredOTP++;
+
                                     //update the otp and default the otp_end
-                                    sqlCmd.CommandText = "UPDATE dbo.otp SET otp = '0', otp_end = '1999-01-01 12:00:00' WHERE account_id = @account_id AND otp != '0'";
+                                    sqlCmd.CommandText = "UPDATE dbo.otp SET otp = '0', expiration = '1999-01-01 12:00:00' WHERE account_id = @account_id AND otp != '0'";
                                     sqlCmd.Parameters.Add("@account_id", SqlDbType.Int).Value = (int)row["account_id"];
 
                                     Database.ExecuteStatement(sqlCmd, 0);

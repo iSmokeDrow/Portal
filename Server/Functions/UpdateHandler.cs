@@ -100,14 +100,5 @@ namespace Server.Functions
             return name;
         }
 
-        internal void OnUserDisconnect(Client client)
-        {
-            foreach (string fileName in client.filesInUse)
-            {
-                string fName = Path.Combine(@"tmp/", fileName);
-                if (File.Exists(fName))
-                    File.Delete(fName);
-            }
-        }
     }
 }

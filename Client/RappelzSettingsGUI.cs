@@ -11,13 +11,16 @@ using Client.Structures;
 
 namespace Client
 {
+    //TODO: Check for missing settings (in rappelz_v1.opt) like: titles, outline
     public partial class RappelzSettingsGUI : Form
     {
         public bool Save = false;
 
-        public ClientSettings[] Settings;
+        protected bool settingDefaults = false;
 
-        public RappelzSettingsGUI(ClientSettings[] inSettings)
+        public List<ClientSettings> Settings;
+
+        public RappelzSettingsGUI(List<ClientSettings> inSettings)
         {
             InitializeComponent();
 
@@ -28,10 +31,12 @@ namespace Client
 
         void setValues()
         {
-            for (int i = 1; i < 81; i++)
+            settingDefaults = true;
+
+            foreach (ClientSettings setting in Settings)
             {
-                string currentName = Settings[i].Name;
-                int currentValue = Convert.ToInt32(Settings[i].Value);
+                string currentName = setting.Name;
+                int currentValue = Convert.ToInt32(setting.Value);
 
                 if (currentName == "GRAPHIC_RESOLUTION_WIDTH") { resolutionWidth.Value = currentValue; }
                 if (currentName == "GRAPHIC_RESOLUTION_HEIGHT") { resolutionHeight.Value = currentValue; }
@@ -72,6 +77,7 @@ namespace Client
                 if (currentName == "GRAPHIC_EFFECT_PARTY") { effect_p.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "GRAPHIC_EFFECT_ENEMY") { effect_o.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "GRAPHIC_EFFECT_ENEMY") { effect_o.Checked = Convert.ToBoolean(currentValue); }
+                //if (currentName == "GRAPHIC_FACE_ANI", );
                 if (currentName == "GRAPHIC_RENDER_OTHERPLAYER") { showOthers.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_CHATBALLOON") { chatBalloons.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_MANTLE") { cloaks.Checked = Convert.ToBoolean(currentValue); }
@@ -88,17 +94,20 @@ namespace Client
                 if (currentName == "PLAY_PLAYERDM") { playerDamage.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_CREATUREDM") { creatureDamage.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_WEATHER_QUALITY") { weatherQuality.Value = currentValue; }
+                if (currentName == "PLAY_CAMERA_COLLISION") { cameraCollisions.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_CRITICAL_CAMERA") { cameraCriticalShake.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_HELM") { helmets.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_AVATAR_DECO") { deco.Checked = Convert.ToBoolean(currentValue); }
                 //if (currentName == "PLAY_TITLE_SHOW") { titles.Checked = Convert.ToBoolean(currentValue); }
                 //if (currentName == "PLAY_SELECT_OUTLINE_SHOW") { targetOutline.Checked = Convert.ToBoolean(currentValue); }
             }
+
+            settingDefaults = false;
         }
 
         void updateSetting(string name, object value)
         {
-            ClientSettings setting = Settings.First(s => s.Name == name);
+            ClientSettings setting = Settings.Find(s => s.Name == name);
             if (setting != null) { setting.Value = value; Save = true; }
             else { MessageBox.Show("Setting is null", "Settings Exception #1", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
@@ -112,6 +121,8 @@ namespace Client
 
         void gfxPreset_ValueChanged(object sender, EventArgs e)
         {
+            if (settingDefaults) { return; }
+
             if (gfxPreset.Value == 0)
             {
                 updateSetting("GRAPHIC_PRESETOPTION", 0);
@@ -521,12 +532,235 @@ namespace Client
         void useDesktopBrightness_CheckedChanged(object sender, EventArgs e)
         {
             if (useDesktopBrightness.Checked) { brightness.Enabled = false; }
-            else { brightness.Enabled = false; }
+            else { brightness.Enabled = true; }
+            RappelzSettings.Update("GRAPHIC_WINBRIGHT", Convert.ToInt32(useDesktopBrightness.Checked).ToString());
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
+            RappelzSettings.SaveSettings(Settings);
             this.Close();
+        }
+
+        private void resolutionWidth_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_RESOLUTION_WIDTH", resolutionWidth.Value.ToString());
+        }
+
+        private void resolutionHeight_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_RESOLUTION_HEIGHT", resolutionHeight.Value.ToString());
+        }
+
+        private void refreshRate_TextChanged(object sender, EventArgs e)
+        {
+            // TODO: Actually implement me
+            RappelzSettings.Update("GRAPHIC_REFRESHRATE", "0");
+        }
+
+        private void windowed_CheckStateChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_WINMODE", Convert.ToInt32(windowed.Checked).ToString());
+        }
+
+        private void brightness_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_BRIGHT", brightness.Value.ToString());
+        }
+
+        private void cameraCollisions_CheckStateChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_CAMERA_COLLISION", Convert.ToInt32(cameraCollisions.Checked).ToString());
+        }
+
+        private void cameraCriticalShake_CheckStateChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_CRITICAL_CAMERA", Convert.ToInt32(cameraCriticalShake.Checked).ToString());
+        }
+
+        private void enviromentDistance_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_BACKGROUNDDIS", enviromentDistance.Value.ToString());
+        }
+
+        private void terrainDistance_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_TERRAINDIS", terrainDistance.Value.ToString());
+        }
+
+        private void propDistance_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_PROPDIS", propDistance.Value.ToString());
+        }
+
+        private void speedDistance_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_SPEEDDIS", speedDistance.Value.ToString());
+        }
+
+        private void grassDistance_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_GRASSDIS", grassDistance.Value.ToString());
+        }
+
+        private void characterDistance_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_AVATARDIS", characterDistance.Value.ToString());
+        }
+
+        private void shadowDistance_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_SHADOWDIS", shadowDistance.Value.ToString());
+        }
+
+        private void lowQualityShadows_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_LOWSHADOW", Convert.ToInt32(lowQualityShadows.Checked).ToString());
+            RappelzSettings.Update("GRAPHIC_SHADOW", "0");
+
+            if (lowQualityShadows.Checked)
+            {
+                shadows.Checked = false;
+                shadows.Enabled = false;
+            }
+            else
+            {
+                shadows.Enabled = true;
+            }
+        }
+
+        private void speedQuality_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_SPEEDQUAL", speedQuality.Value.ToString());
+        }
+
+        private void textureQuality_ValueChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_MIPBIAS", textureQuality.Value.ToString());
+        }
+
+        private void bloom_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_GLOWQUAL", Convert.ToInt32(bloom.CheckState).ToString());
+        }
+
+        private void windowed_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_WINMODE", Convert.ToInt32(windowed.CheckState).ToString());
+            RappelzSettings.Update("GRAPHIC_WINBRIGHT", Convert.ToInt32(useDesktopBrightness.CheckState).ToString());
+
+            if (windowed.Checked)
+            {
+                useDesktopBrightness.Checked = true;
+                useDesktopBrightness.Enabled = false;
+            }
+            else
+            {
+                useDesktopBrightness.Enabled = true;
+            }
+        }
+
+        private void waterReflections_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_WATERQUAL", Convert.ToInt32(waterReflections.CheckState).ToString());
+        }
+
+        private void trees_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_RENDERTREE", Convert.ToInt32(trees.CheckState).ToString());
+        }
+
+        private void betterTrees_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_TREEALPHA", Convert.ToInt32(betterTrees.CheckState).ToString());
+        }
+
+        private void enchantmentEffects_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_ENHANCE", Convert.ToInt32(enchantmentEffects.CheckState).ToString());
+        }
+
+        private void grass_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_RENDERGRASS", Convert.ToInt32(grass.CheckState).ToString());
+        }
+
+        private void lightMap_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_LIGHTMAP", Convert.ToInt32(lightMap.CheckState).ToString());
+        }
+
+        private void shadows_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_SHADOW", Convert.ToInt32(shadows.CheckState).ToString());
+
+            if (shadows.Checked)
+            {
+                RappelzSettings.Update("GRAPHIC_LOWSHADOW", "0");
+                lowQualityShadows.Checked = false;
+                lowQualityShadows.Enabled = false;
+            }
+            else { lowQualityShadows.Enabled = true; }
+        }
+
+        private void lastingEffects_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_STATE_EFFECT", Convert.ToInt32(lastingEffects.CheckState).ToString());
+        }
+
+        private void lastingEffects_cs_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_STATE_EFFECT_CREATURE", Convert.ToInt32(lastingEffects_cs.CheckState).ToString());
+        }
+
+        private void lastingEffects_p_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", Convert.ToInt32(lastingEffects_p.CheckState).ToString());
+        }
+
+        private void lastingEffects_o_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", Convert.ToInt32(lastingEffects_o.CheckState).ToString());
+        }
+
+        private void effect_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_EFFECT", Convert.ToInt32(effect.CheckState).ToString());
+        }
+
+        private void effect_cs_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", Convert.ToInt32(effect_cs.CheckState).ToString());
+        }
+
+        private void effect_p_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", Convert.ToInt32(effect_p.CheckState).ToString());
+        }
+
+        private void effect_o_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", Convert.ToInt32(effect_o.CheckState).ToString());
+        }
+
+        private void cloaks_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_MANTLE", Convert.ToInt32(helmets.CheckState).ToString());
+        }
+
+        private void cameraCollisions_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_CAMERA_COLLISION", Convert.ToInt32(cameraCollisions.CheckState).ToString());
+        }
+
+        private void shadowSelfQuality_Scroll(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_SELFSHADOWQUAL", shadowSelfQuality.Value.ToString());
+        }
+
+        private void weatherQuality_Scroll(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_WEATHER_QUALITY", weatherQuality.Value.ToString());
         }
     }
 }

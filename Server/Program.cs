@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    //TODO: Reset OTP based on timer
+    //TODO: Implement HTTP/FTP download engines
     class Program
     {
         /// <summary>
@@ -42,6 +42,8 @@ namespace Server
         }
 
         static internal string tmpPath = string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/tmp/");
+
+        internal static Timer otpTimer;
         
         static void Main(string[] args)
         {
@@ -72,14 +74,13 @@ namespace Server
             Console.Write("Initializing client listener... ");
             if (ClientManager.Instance.Start()) { Console.WriteLine("[OK]"); }
 
+            Console.Write("Starting OTP Reset Service...");
+            otpTimer = new Timer(otpTick, null, 0, 300000);
+            Console.WriteLine("[OK]");
+
             Console.ReadLine();
         }
 
         internal static void otpTick(Object state) { OTP.HandleOTP(); }
-
-        internal static void OnUserRequestArguments(Client client, string username)
-        {
-            ClientPackets.Instance.Arguments(client, string.Format("/auth_ip:127.0.0.1 /auth_port:13544 /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:{0} /password:?", username));
-        }
     }
 }

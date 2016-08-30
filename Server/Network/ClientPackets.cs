@@ -30,6 +30,7 @@ namespace Server.Network
             PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
             PacketsDb.Add(0x0030, CS_RequestArguments);
             PacketsDb.Add(0x0100, CS_RequestValidation);
+            PacketsDb.Add(0x00DC, CS_RequestDisconnect);
             PacketsDb.Add(0x9999, CS_RequestDesKey);
             #endregion
         }
@@ -108,7 +109,15 @@ namespace Server.Network
         private void CS_RequestArguments(Client client, PacketStream stream)
         {
             string name = stream.ReadString();
-            Program.OnUserRequestArguments(client, name);
+            UserHandler.Instance.OnUserRequestArguments(client, name);
+        }
+
+        private void CS_RequestDisconnect(Client client, PacketStream stream)
+        {
+            UserHandler.ClientList.Remove(client);
+            OkDisconnect(client);
+            client.ClSocket.Close();
+            if (debug) { Console.WriteLine("Client [{0}] disconnected!", client.Id); }
         }
 
         #endregion
@@ -213,6 +222,8 @@ namespace Server.Network
 
             ClientManager.Instance.Send(client, stream);
         }
+
+        public void OkDisconnect(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0099)); }
 
         #endregion
     }

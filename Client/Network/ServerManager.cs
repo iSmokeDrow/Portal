@@ -30,7 +30,7 @@ namespace Client.Network
         /// <param name="ip"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public bool Start(string ip, short port)
+        public bool Start(string ip, int port)
         {
             Socket socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
 

@@ -17,6 +17,8 @@ namespace Client.Functions
         internal List<LauncherSetting> settingsList = new List<LauncherSetting>();
         internal List<string> defaultSettings = new List<string>
         {
+            "s|ip|127.0.0.1",
+            "n|port|13545",
             "s|clientdirectory|",
             "s|username|",
             "s|password|",
@@ -53,6 +55,12 @@ namespace Client.Functions
         internal bool optExists
         {
             get { return File.Exists(optPath); }
+        }
+
+        public int GetInt(string name)
+        {
+            LauncherSetting setting = settingsList.Find(s => s.Name == name);
+            return (setting != null) ? Convert.ToInt32(setting.Value) : 0;
         }
 
         public string GetString(string name)
@@ -145,6 +153,10 @@ namespace Client.Functions
 
                                 case "b": // bool
                                     value = Convert.ToBoolean(optBlocks[2]);
+                                    break;
+
+                                case "n":
+                                    value = Convert.ToInt32(optBlocks[2]);
                                     break;
                             }
 

@@ -145,6 +145,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.resolutionWidth);
             this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(12, 13);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(587, 145);
@@ -161,6 +162,7 @@
             this.cameraCriticalShake.TabIndex = 14;
             this.cameraCriticalShake.Text = "Camera Shake (Critical)";
             this.cameraCriticalShake.UseVisualStyleBackColor = true;
+            this.cameraCriticalShake.CheckStateChanged += new System.EventHandler(this.cameraCriticalShake_CheckStateChanged);
             // 
             // cameraCollisions
             // 
@@ -171,6 +173,8 @@
             this.cameraCollisions.TabIndex = 13;
             this.cameraCollisions.Text = "Camera Collisions";
             this.cameraCollisions.UseVisualStyleBackColor = true;
+            this.cameraCollisions.CheckedChanged += new System.EventHandler(this.cameraCollisions_CheckedChanged);
+            this.cameraCollisions.CheckStateChanged += new System.EventHandler(this.cameraCollisions_CheckStateChanged);
             // 
             // useDesktopBrightness
             // 
@@ -189,7 +193,7 @@
             this.gfxPreset.Location = new System.Drawing.Point(301, 67);
             this.gfxPreset.Maximum = 5;
             this.gfxPreset.Name = "gfxPreset";
-            this.gfxPreset.Size = new System.Drawing.Size(132, 42);
+            this.gfxPreset.Size = new System.Drawing.Size(132, 45);
             this.gfxPreset.TabIndex = 11;
             this.gfxPreset.Value = 1;
             this.gfxPreset.ValueChanged += new System.EventHandler(this.gfxPreset_ValueChanged);
@@ -209,8 +213,9 @@
             this.brightness.Location = new System.Drawing.Point(84, 67);
             this.brightness.Maximum = 5;
             this.brightness.Name = "brightness";
-            this.brightness.Size = new System.Drawing.Size(132, 42);
+            this.brightness.Size = new System.Drawing.Size(132, 45);
             this.brightness.TabIndex = 9;
+            this.brightness.ValueChanged += new System.EventHandler(this.brightness_ValueChanged);
             // 
             // label4
             // 
@@ -230,6 +235,8 @@
             this.windowed.TabIndex = 6;
             this.windowed.Text = "Windowed";
             this.windowed.UseVisualStyleBackColor = true;
+            this.windowed.CheckedChanged += new System.EventHandler(this.windowed_CheckedChanged);
+            this.windowed.CheckStateChanged += new System.EventHandler(this.windowed_CheckStateChanged);
             // 
             // refreshRate
             // 
@@ -242,6 +249,7 @@
             this.refreshRate.Name = "refreshRate";
             this.refreshRate.Size = new System.Drawing.Size(119, 22);
             this.refreshRate.TabIndex = 5;
+            this.refreshRate.TextChanged += new System.EventHandler(this.refreshRate_TextChanged);
             // 
             // label3
             // 
@@ -274,6 +282,7 @@
             0,
             0,
             0});
+            this.resolutionHeight.ValueChanged += new System.EventHandler(this.resolutionHeight_ValueChanged);
             // 
             // label2
             // 
@@ -306,6 +315,7 @@
             0,
             0,
             0});
+            this.resolutionWidth.ValueChanged += new System.EventHandler(this.resolutionWidth_ValueChanged);
             // 
             // label1
             // 
@@ -332,6 +342,7 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.enviromentDistance);
             this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(12, 165);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(587, 104);
@@ -356,6 +367,7 @@
             0,
             0,
             0});
+            this.shadowDistance.ValueChanged += new System.EventHandler(this.shadowDistance_ValueChanged);
             // 
             // label12
             // 
@@ -383,6 +395,7 @@
             0,
             0,
             0});
+            this.characterDistance.ValueChanged += new System.EventHandler(this.characterDistance_ValueChanged);
             // 
             // label11
             // 
@@ -410,6 +423,7 @@
             0,
             0,
             0});
+            this.grassDistance.ValueChanged += new System.EventHandler(this.grassDistance_ValueChanged);
             // 
             // label10
             // 
@@ -437,6 +451,7 @@
             0,
             0,
             0});
+            this.speedDistance.ValueChanged += new System.EventHandler(this.speedDistance_ValueChanged);
             // 
             // label9
             // 
@@ -464,6 +479,7 @@
             0,
             0,
             0});
+            this.propDistance.ValueChanged += new System.EventHandler(this.propDistance_ValueChanged);
             // 
             // label8
             // 
@@ -491,6 +507,7 @@
             0,
             0,
             0});
+            this.terrainDistance.ValueChanged += new System.EventHandler(this.terrainDistance_ValueChanged);
             // 
             // label7
             // 
@@ -518,6 +535,7 @@
             0,
             0,
             0});
+            this.enviromentDistance.ValueChanged += new System.EventHandler(this.enviromentDistance_ValueChanged);
             // 
             // label6
             // 
@@ -568,6 +586,7 @@
             this.groupBox3.Controls.Add(this.betterTrees);
             this.groupBox3.Controls.Add(this.waterReflections);
             this.groupBox3.Controls.Add(this.bloom);
+            this.groupBox3.ForeColor = System.Drawing.Color.White;
             this.groupBox3.Location = new System.Drawing.Point(12, 276);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(587, 295);
@@ -718,6 +737,7 @@
             // targetOutline
             // 
             this.targetOutline.AutoSize = true;
+            this.targetOutline.Enabled = false;
             this.targetOutline.Location = new System.Drawing.Point(21, 157);
             this.targetOutline.Name = "targetOutline";
             this.targetOutline.Size = new System.Drawing.Size(92, 18);
@@ -734,6 +754,7 @@
             this.lowQualityShadows.TabIndex = 21;
             this.lowQualityShadows.Text = "Low Quality Shadows";
             this.lowQualityShadows.UseVisualStyleBackColor = true;
+            this.lowQualityShadows.CheckedChanged += new System.EventHandler(this.lowQualityShadows_CheckedChanged);
             // 
             // shadows
             // 
@@ -744,10 +765,12 @@
             this.shadows.TabIndex = 7;
             this.shadows.Text = "Shadows";
             this.shadows.UseVisualStyleBackColor = true;
+            this.shadows.CheckedChanged += new System.EventHandler(this.shadows_CheckedChanged);
             // 
             // titles
             // 
             this.titles.AutoSize = true;
+            this.titles.Enabled = false;
             this.titles.Location = new System.Drawing.Point(355, 132);
             this.titles.Name = "titles";
             this.titles.Size = new System.Drawing.Size(51, 18);
@@ -784,6 +807,7 @@
             this.cloaks.TabIndex = 22;
             this.cloaks.Text = "Cloaks";
             this.cloaks.UseVisualStyleBackColor = true;
+            this.cloaks.CheckedChanged += new System.EventHandler(this.cloaks_CheckedChanged);
             // 
             // effect_o
             // 
@@ -794,6 +818,7 @@
             this.effect_o.TabIndex = 19;
             this.effect_o.Text = "Effect (Monsters)";
             this.effect_o.UseVisualStyleBackColor = true;
+            this.effect_o.CheckedChanged += new System.EventHandler(this.effect_o_CheckedChanged);
             // 
             // effect_p
             // 
@@ -804,6 +829,7 @@
             this.effect_p.TabIndex = 18;
             this.effect_p.Text = "Effect (Party)";
             this.effect_p.UseVisualStyleBackColor = true;
+            this.effect_p.CheckedChanged += new System.EventHandler(this.effect_p_CheckedChanged);
             // 
             // effect_cs
             // 
@@ -814,6 +840,7 @@
             this.effect_cs.TabIndex = 17;
             this.effect_cs.Text = "Effect (Self)";
             this.effect_cs.UseVisualStyleBackColor = true;
+            this.effect_cs.CheckedChanged += new System.EventHandler(this.effect_cs_CheckedChanged);
             // 
             // effect
             // 
@@ -824,6 +851,7 @@
             this.effect.TabIndex = 16;
             this.effect.Text = "Effect";
             this.effect.UseVisualStyleBackColor = true;
+            this.effect.CheckedChanged += new System.EventHandler(this.effect_CheckedChanged);
             // 
             // showOthers
             // 
@@ -854,6 +882,7 @@
             this.lastingEffects_o.TabIndex = 13;
             this.lastingEffects_o.Text = "Lasting FX (Monsters)";
             this.lastingEffects_o.UseVisualStyleBackColor = true;
+            this.lastingEffects_o.CheckedChanged += new System.EventHandler(this.lastingEffects_o_CheckedChanged);
             // 
             // lastingEffects_p
             // 
@@ -864,6 +893,7 @@
             this.lastingEffects_p.TabIndex = 12;
             this.lastingEffects_p.Text = "Lastting FX (Party)";
             this.lastingEffects_p.UseVisualStyleBackColor = true;
+            this.lastingEffects_p.CheckedChanged += new System.EventHandler(this.lastingEffects_p_CheckedChanged);
             // 
             // lastingEffects_cs
             // 
@@ -874,6 +904,7 @@
             this.lastingEffects_cs.TabIndex = 11;
             this.lastingEffects_cs.Text = "Lasting FX (Self)";
             this.lastingEffects_cs.UseVisualStyleBackColor = true;
+            this.lastingEffects_cs.CheckedChanged += new System.EventHandler(this.lastingEffects_cs_CheckedChanged);
             // 
             // lastingEffects
             // 
@@ -884,6 +915,7 @@
             this.lastingEffects.TabIndex = 10;
             this.lastingEffects.Text = "Lasting FX";
             this.lastingEffects.UseVisualStyleBackColor = true;
+            this.lastingEffects.CheckedChanged += new System.EventHandler(this.lastingEffects_CheckedChanged);
             // 
             // lightMap
             // 
@@ -894,6 +926,7 @@
             this.lightMap.TabIndex = 6;
             this.lightMap.Text = "Light Map";
             this.lightMap.UseVisualStyleBackColor = true;
+            this.lightMap.CheckedChanged += new System.EventHandler(this.lightMap_CheckedChanged);
             // 
             // grass
             // 
@@ -904,6 +937,7 @@
             this.grass.TabIndex = 5;
             this.grass.Text = "Grass";
             this.grass.UseVisualStyleBackColor = true;
+            this.grass.CheckedChanged += new System.EventHandler(this.grass_CheckedChanged);
             // 
             // trees
             // 
@@ -914,6 +948,7 @@
             this.trees.TabIndex = 4;
             this.trees.Text = "Trees";
             this.trees.UseVisualStyleBackColor = true;
+            this.trees.CheckedChanged += new System.EventHandler(this.trees_CheckedChanged);
             // 
             // enchantmentEffects
             // 
@@ -924,6 +959,7 @@
             this.enchantmentEffects.TabIndex = 3;
             this.enchantmentEffects.Text = "Enchantment FX";
             this.enchantmentEffects.UseVisualStyleBackColor = true;
+            this.enchantmentEffects.CheckedChanged += new System.EventHandler(this.enchantmentEffects_CheckedChanged);
             // 
             // betterTrees
             // 
@@ -934,6 +970,7 @@
             this.betterTrees.TabIndex = 2;
             this.betterTrees.Text = "Better Trees";
             this.betterTrees.UseVisualStyleBackColor = true;
+            this.betterTrees.CheckedChanged += new System.EventHandler(this.betterTrees_CheckedChanged);
             // 
             // waterReflections
             // 
@@ -944,6 +981,7 @@
             this.waterReflections.TabIndex = 1;
             this.waterReflections.Text = "Water Reflections";
             this.waterReflections.UseVisualStyleBackColor = true;
+            this.waterReflections.CheckedChanged += new System.EventHandler(this.waterReflections_CheckedChanged);
             // 
             // bloom
             // 
@@ -954,6 +992,7 @@
             this.bloom.TabIndex = 0;
             this.bloom.Text = "Bloom";
             this.bloom.UseVisualStyleBackColor = true;
+            this.bloom.CheckedChanged += new System.EventHandler(this.bloom_CheckedChanged);
             // 
             // groupBox4
             // 
@@ -965,6 +1004,7 @@
             this.groupBox4.Controls.Add(this.label14);
             this.groupBox4.Controls.Add(this.shadowSelfQuality);
             this.groupBox4.Controls.Add(this.label13);
+            this.groupBox4.ForeColor = System.Drawing.Color.White;
             this.groupBox4.Location = new System.Drawing.Point(15, 577);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(584, 137);
@@ -976,10 +1016,11 @@
             // 
             this.weatherQuality.LargeChange = 2;
             this.weatherQuality.Location = new System.Drawing.Point(312, 90);
-            this.weatherQuality.Maximum = 3;
+            this.weatherQuality.Maximum = 4;
             this.weatherQuality.Name = "weatherQuality";
-            this.weatherQuality.Size = new System.Drawing.Size(104, 42);
+            this.weatherQuality.Size = new System.Drawing.Size(104, 45);
             this.weatherQuality.TabIndex = 29;
+            this.weatherQuality.Scroll += new System.EventHandler(this.weatherQuality_Scroll);
             // 
             // label16
             // 
@@ -994,10 +1035,11 @@
             // 
             this.speedQuality.LargeChange = 2;
             this.speedQuality.Location = new System.Drawing.Point(312, 36);
-            this.speedQuality.Maximum = 3;
+            this.speedQuality.Maximum = 4;
             this.speedQuality.Name = "speedQuality";
-            this.speedQuality.Size = new System.Drawing.Size(104, 42);
+            this.speedQuality.Size = new System.Drawing.Size(104, 45);
             this.speedQuality.TabIndex = 27;
+            this.speedQuality.ValueChanged += new System.EventHandler(this.speedQuality_ValueChanged);
             // 
             // label15
             // 
@@ -1012,10 +1054,11 @@
             // 
             this.textureQuality.LargeChange = 2;
             this.textureQuality.Location = new System.Drawing.Point(95, 36);
-            this.textureQuality.Maximum = 3;
+            this.textureQuality.Maximum = 4;
             this.textureQuality.Name = "textureQuality";
-            this.textureQuality.Size = new System.Drawing.Size(104, 42);
+            this.textureQuality.Size = new System.Drawing.Size(104, 45);
             this.textureQuality.TabIndex = 25;
+            this.textureQuality.ValueChanged += new System.EventHandler(this.textureQuality_ValueChanged);
             // 
             // label14
             // 
@@ -1030,10 +1073,11 @@
             // 
             this.shadowSelfQuality.LargeChange = 2;
             this.shadowSelfQuality.Location = new System.Drawing.Point(95, 90);
-            this.shadowSelfQuality.Maximum = 3;
+            this.shadowSelfQuality.Maximum = 4;
             this.shadowSelfQuality.Name = "shadowSelfQuality";
-            this.shadowSelfQuality.Size = new System.Drawing.Size(104, 42);
+            this.shadowSelfQuality.Size = new System.Drawing.Size(104, 45);
             this.shadowSelfQuality.TabIndex = 23;
+            this.shadowSelfQuality.Scroll += new System.EventHandler(this.shadowSelfQuality_Scroll);
             // 
             // label13
             // 

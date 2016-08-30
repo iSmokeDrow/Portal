@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Server.Network;
 
 namespace Server.Functions
 {
-    // TODO: Implement database user validation
     public class UserHandler
     {
         protected bool debug = false;
@@ -20,6 +20,8 @@ namespace Server.Functions
                 return instance;
             }
         }
+
+        public static List<Client> ClientList = new List<Client>();
 
         public UserHandler() { debug = OPT.GetBool("debug"); }
 
@@ -36,7 +38,7 @@ namespace Server.Functions
 
                 ClientManager.Instance.Send(client, stream);
             }
-            else { /*TODO: Report Error*/ }
+            else { Console.WriteLine("Failed to find des.key in settings!"); }
         }
 
         public void OnValidateUser(Client client, string username, string password, string fingerprint)
@@ -67,7 +69,7 @@ namespace Server.Functions
                 {
                     int account_id = (int)result;
 
-                    if (debug) { Console.Write("Checking Account ban status..."); }
+                    if (debug) { Console.Write("\t-Checking Account ban status..."); }
 
                     // Check if account is banned
                     sqlCmd.CommandText = string.Format("SELECT ban FROM dbo.{0} WHERE login_name = @name AND password = @password", OPT.GetString("db.auth.table.alias"));
@@ -152,6 +154,17 @@ namespace Server.Functions
             }
         }
 
+        internal void OnUserRequestArguments(Client client, string username)
+        {
+            ClientPackets.Instance.Arguments(client, string.Format("/auth_ip:127.0.0.1 /auth_port:13544 /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:{0} /password:?", username));
+        }
+
+        internal void OnUserRequestDisconnect(Client client)
+        {
+            if (debug) { Console.WriteLine("Removed Client [{0}] from ClientList", client.Id); }
+            ClientList.Remove(client);
+        }
+
         protected void setOTP(ref Client client, ref SqlCommand sqlCmd, int account_id)
         {
             // Formulate an OTP
@@ -168,8 +181,9 @@ namespace Server.Functions
             {
                 if (debug) { Console.Write("\t-Updating OTP..."); }
 
-                sqlCmd.CommandText = "UPDATE dbo.OTP SET otp = @OTP WHERE account_id = @account_id";
+                sqlCmd.CommandText = "UPDATE dbo.OTP SET otp = @OTP, expiration = @expiration WHERE account_id = @account_id";
                 sqlCmd.Parameters.Add("@OTP", SqlDbType.NVarChar).Value = otpHash;
+                sqlCmd.Parameters.Add("@expiration", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(5);
 
                 result = Database.ExecuteStatement(sqlCmd, 0);
 
@@ -179,10 +193,11 @@ namespace Server.Functions
             {
                 if (debug) { Console.Write("\t-Inserting OTP..."); }
 
-                sqlCmd.CommandText = "INSERT INTO dbo.OTP (account_id, otp) VALUES (@account_id, @OTP)";
+                sqlCmd.CommandText = "INSERT INTO dbo.OTP (account_id, otp, expiration) VALUES (@account_id, @OTP, @expiration)";
                 sqlCmd.Parameters.Clear();
                 sqlCmd.Parameters.Add("@account_id", SqlDbType.Int).Value = account_id;
                 sqlCmd.Parameters.Add("@OTP", SqlDbType.NVarChar).Value = otpHash;
+                sqlCmd.Parameters.Add("@expiration", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(5);
 
                 result = Database.ExecuteStatement(sqlCmd, 0);
 

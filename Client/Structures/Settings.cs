@@ -156,7 +156,7 @@ namespace Client.Structures
 
     public class RappelzSettings
     {
-        public static ClientSettings[] Settings;
+        public static List<ClientSettings> Settings;
 
         internal static string optPath = Path.Combine(OPT.Instance.GetString("clientdirectory"), @"rappelz_v1.opt");
 
@@ -173,7 +173,7 @@ namespace Client.Structures
 
         public static void InitRappelzSettings()
         {
-            Settings = new ClientSettings[File.ReadLines(optPath).Count() - 1];
+            Settings = new List<ClientSettings>();
             ReadOPT_v1();
         }
 
@@ -187,7 +187,7 @@ namespace Client.Structures
 
                     if (header == "[RAPPELZ]")
                     {
-                        for (int i = 0; i < Settings.Length; i++)
+                        for (int i = 0; i < 81; i++)
                         {
                             string currentLine = sr.ReadLine();
 
@@ -195,13 +195,11 @@ namespace Client.Structures
                             {
                                 string[] lineBlocks = currentLine.Split('=');
 
-                                ClientSettings currentSetting = new ClientSettings { Name = lineBlocks[0], Value = lineBlocks[1] };
-                                Settings[i] = currentSetting;
+                                Settings.Add(new ClientSettings { Name = lineBlocks[0], Value = lineBlocks[1] });
                             }
                             else
                             {
-                                ClientSettings currentSetting = new ClientSettings { Name = currentLine, Value = null };
-                                Settings[i] = currentSetting;
+                                Settings.Add(new ClientSettings { Name = currentLine, Value = null });
                             }
                         }
                     }
@@ -214,13 +212,20 @@ namespace Client.Structures
             catch (Exception Ex) { MessageBox.Show(Ex.ToString(), "OPT Exception #1", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
-        public static bool SaveSettings(ClientSettings[] settings)
+        public static void Update(string name, string value)
+        {
+            ClientSettings setting = Settings.Find(s => s.Name == name);
+            if (setting != null)
+                setting.Value = value;
+        }
+
+        public static bool SaveSettings(List<ClientSettings> settings)
         {
             using (StreamWriter sw = new StreamWriter(File.Open(optPath, FileMode.Open, FileAccess.Write), Encoding.Default))
             {
                 sw.Write("[RAPPELZ]\n");
 
-                for (int i = 0; i < settings.Length; i++)
+                for (int i = 0; i < settings.Count; i++)
                 {
                     ClientSettings currentSetting = settings[i];
                     string output = String.Empty;

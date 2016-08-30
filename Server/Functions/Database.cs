@@ -27,8 +27,6 @@ namespace Server.Functions
         /// <returns>Prepared SqlConnection</returns>
         public static SqlConnection Connection { get { return new SqlConnection(connectionString); } }
 
-        // TODO: Handle sending back a null because it causes an error
-
         /// <summary>
         /// Executes a prepared Sql Statement on a prepared and opened Sql Connection
         /// </summary>

@@ -33,6 +33,7 @@ namespace Client.Network
             PacketsDb.Add(0x0014, SC_UserBanned);
             PacketsDb.Add(0x0015, SC_AccountNull);
             PacketsDb.Add(0x0031, SC_Arguments);
+            PacketsDb.Add(0x0099, SC_Disconnect);
             PacketsDb.Add(0x9999, SC_DesKey);
             #endregion
         }
@@ -120,6 +121,12 @@ namespace Client.Network
             GUI.Instance.OnArgumentsReceived(DesCipher.Decrypt(arguments));
         }
 
+        private void SC_Disconnect(PacketStream stream)
+        {
+            GUI.Instance.UpdateStatus(0, "Disconnection complete!");
+            GUI.Instance.Invoke(new System.Windows.Forms.MethodInvoker(delegate { GUI.Instance.Close(); }));
+        }
+
         #endregion
 
         #region Client-Server Packets (CS)
@@ -187,6 +194,12 @@ namespace Client.Network
         {
             PacketStream stream = new PacketStream(0x0030);
             stream.WriteString(username, username.Length + 1);
+            ServerManager.Instance.Send(stream);
+        }
+
+        internal void RequestDisconnect()
+        {
+            PacketStream stream = new PacketStream(0x00DC);
             ServerManager.Instance.Send(stream);
         }
 
