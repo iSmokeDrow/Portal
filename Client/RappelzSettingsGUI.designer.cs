@@ -108,6 +108,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.volumeMixerlb = new System.Windows.Forms.Label();
             this.save_lb = new System.Windows.Forms.Label();
+            this.enterToChat = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gfxPreset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightness)).BeginInit();
@@ -548,6 +549,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.enterToChat);
             this.groupBox3.Controls.Add(this.creatureDamage);
             this.groupBox3.Controls.Add(this.playerDamage);
             this.groupBox3.Controls.Add(this.damage);
@@ -603,6 +605,7 @@
             this.creatureDamage.TabIndex = 41;
             this.creatureDamage.Text = "Creature Damage";
             this.creatureDamage.UseVisualStyleBackColor = true;
+            this.creatureDamage.CheckedChanged += new System.EventHandler(this.creatureDamage_CheckedChanged);
             // 
             // playerDamage
             // 
@@ -613,6 +616,7 @@
             this.playerDamage.TabIndex = 40;
             this.playerDamage.Text = "Player Damage";
             this.playerDamage.UseVisualStyleBackColor = true;
+            this.playerDamage.CheckedChanged += new System.EventHandler(this.playerDamage_CheckedChanged);
             // 
             // damage
             // 
@@ -623,20 +627,23 @@
             this.damage.TabIndex = 39;
             this.damage.Text = "Damage";
             this.damage.UseVisualStyleBackColor = true;
+            this.damage.CheckedChanged += new System.EventHandler(this.damage_CheckedChanged);
             // 
             // monsterAvatar
             // 
             this.monsterAvatar.AutoSize = true;
-            this.monsterAvatar.Location = new System.Drawing.Point(237, 157);
+            this.monsterAvatar.Location = new System.Drawing.Point(120, 157);
             this.monsterAvatar.Name = "monsterAvatar";
             this.monsterAvatar.Size = new System.Drawing.Size(100, 18);
             this.monsterAvatar.TabIndex = 38;
             this.monsterAvatar.Text = "Monster Avatar";
             this.monsterAvatar.UseVisualStyleBackColor = true;
+            this.monsterAvatar.CheckedChanged += new System.EventHandler(this.monsterAvatar_CheckedChanged);
             // 
             // targetHPGauge
             // 
             this.targetHPGauge.AutoSize = true;
+            this.targetHPGauge.Enabled = false;
             this.targetHPGauge.Location = new System.Drawing.Point(355, 207);
             this.targetHPGauge.Name = "targetHPGauge";
             this.targetHPGauge.Size = new System.Drawing.Size(107, 18);
@@ -647,6 +654,7 @@
             // mobHPGauge
             // 
             this.mobHPGauge.AutoSize = true;
+            this.mobHPGauge.Enabled = false;
             this.mobHPGauge.Location = new System.Drawing.Point(237, 207);
             this.mobHPGauge.Name = "mobHPGauge";
             this.mobHPGauge.Size = new System.Drawing.Size(116, 18);
@@ -657,6 +665,7 @@
             // playerHPGauge
             // 
             this.playerHPGauge.AutoSize = true;
+            this.playerHPGauge.Enabled = false;
             this.playerHPGauge.Location = new System.Drawing.Point(120, 207);
             this.playerHPGauge.Name = "playerHPGauge";
             this.playerHPGauge.Size = new System.Drawing.Size(107, 18);
@@ -667,12 +676,14 @@
             // hpGauges
             // 
             this.hpGauges.AutoSize = true;
+            this.hpGauges.Enabled = false;
             this.hpGauges.Location = new System.Drawing.Point(21, 207);
             this.hpGauges.Name = "hpGauges";
             this.hpGauges.Size = new System.Drawing.Size(80, 18);
             this.hpGauges.TabIndex = 34;
             this.hpGauges.Text = "HP Gauges";
             this.hpGauges.UseVisualStyleBackColor = true;
+            this.hpGauges.CheckedChanged += new System.EventHandler(this.hpGauges_CheckedChanged);
             // 
             // npcNames
             // 
@@ -683,6 +694,7 @@
             this.npcNames.TabIndex = 33;
             this.npcNames.Text = "NPC Names";
             this.npcNames.UseVisualStyleBackColor = true;
+            this.npcNames.CheckedChanged += new System.EventHandler(this.npcNames_CheckedChanged);
             // 
             // monsterNames
             // 
@@ -693,6 +705,7 @@
             this.monsterNames.TabIndex = 32;
             this.monsterNames.Text = "Monster Names";
             this.monsterNames.UseVisualStyleBackColor = true;
+            this.monsterNames.CheckedChanged += new System.EventHandler(this.monsterNames_CheckedChanged);
             // 
             // creatureNames
             // 
@@ -703,6 +716,7 @@
             this.creatureNames.TabIndex = 31;
             this.creatureNames.Text = "Creature Names";
             this.creatureNames.UseVisualStyleBackColor = true;
+            this.creatureNames.CheckedChanged += new System.EventHandler(this.creatureNames_CheckedChanged);
             // 
             // playerNames
             // 
@@ -713,6 +727,7 @@
             this.playerNames.TabIndex = 30;
             this.playerNames.Text = "Player Names";
             this.playerNames.UseVisualStyleBackColor = true;
+            this.playerNames.CheckedChanged += new System.EventHandler(this.playerNames_CheckedChanged);
             // 
             // names
             // 
@@ -723,16 +738,18 @@
             this.names.TabIndex = 29;
             this.names.Text = "Names";
             this.names.UseVisualStyleBackColor = true;
+            this.names.CheckedChanged += new System.EventHandler(this.names_CheckedChanged);
             // 
             // chatBalloons
             // 
             this.chatBalloons.AutoSize = true;
-            this.chatBalloons.Location = new System.Drawing.Point(120, 157);
+            this.chatBalloons.Location = new System.Drawing.Point(237, 157);
             this.chatBalloons.Name = "chatBalloons";
             this.chatBalloons.Size = new System.Drawing.Size(86, 18);
             this.chatBalloons.TabIndex = 28;
             this.chatBalloons.Text = "Chat Balloon";
             this.chatBalloons.UseVisualStyleBackColor = true;
+            this.chatBalloons.CheckedChanged += new System.EventHandler(this.chatBalloons_CheckedChanged);
             // 
             // targetOutline
             // 
@@ -787,6 +804,7 @@
             this.deco.TabIndex = 24;
             this.deco.Text = "Deco";
             this.deco.UseVisualStyleBackColor = true;
+            this.deco.CheckedChanged += new System.EventHandler(this.deco_CheckedChanged);
             // 
             // helmets
             // 
@@ -797,6 +815,7 @@
             this.helmets.TabIndex = 23;
             this.helmets.Text = "Helmets";
             this.helmets.UseVisualStyleBackColor = true;
+            this.helmets.CheckedChanged += new System.EventHandler(this.helmets_CheckedChanged);
             // 
             // cloaks
             // 
@@ -862,6 +881,7 @@
             this.showOthers.TabIndex = 15;
             this.showOthers.Text = "Show Others (In Town)";
             this.showOthers.UseVisualStyleBackColor = true;
+            this.showOthers.CheckedChanged += new System.EventHandler(this.showOthers_CheckedChanged);
             // 
             // minStructures
             // 
@@ -872,6 +892,7 @@
             this.minStructures.TabIndex = 14;
             this.minStructures.Text = "Minimum Structures (In Town)";
             this.minStructures.UseVisualStyleBackColor = true;
+            this.minStructures.CheckedChanged += new System.EventHandler(this.minStructures_CheckedChanged);
             // 
             // lastingEffects_o
             // 
@@ -1110,6 +1131,17 @@
             this.save_lb.Text = "Save";
             this.save_lb.Click += new System.EventHandler(this.saveBtn_Click);
             // 
+            // enterToChat
+            // 
+            this.enterToChat.AutoSize = true;
+            this.enterToChat.Location = new System.Drawing.Point(355, 157);
+            this.enterToChat.Name = "enterToChat";
+            this.enterToChat.Size = new System.Drawing.Size(88, 18);
+            this.enterToChat.TabIndex = 42;
+            this.enterToChat.Text = "Enter to Chat";
+            this.enterToChat.UseVisualStyleBackColor = true;
+            this.enterToChat.CheckedChanged += new System.EventHandler(this.enterToChat_CheckedChanged);
+            // 
             // RappelzSettingsGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
@@ -1238,5 +1270,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label volumeMixerlb;
         private System.Windows.Forms.Label save_lb;
+        private System.Windows.Forms.CheckBox enterToChat;
     }
 }

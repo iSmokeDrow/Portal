@@ -80,6 +80,7 @@ namespace Client
                 //if (currentName == "GRAPHIC_FACE_ANI", );
                 if (currentName == "GRAPHIC_RENDER_OTHERPLAYER") { showOthers.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_CHATBALLOON") { chatBalloons.Checked = Convert.ToBoolean(currentValue); }
+                if (currentName == "PLAY_ENTERCHAT") { enterToChat.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_MANTLE") { cloaks.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_HPGAGE") { hpGauges.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_PLAYERGAGE") { playerHPGauge.Checked = Convert.ToBoolean(currentValue); }
@@ -105,18 +106,12 @@ namespace Client
             settingDefaults = false;
         }
 
-        void updateSetting(string name, object value)
-        {
-            ClientSettings setting = Settings.Find(s => s.Name == name);
-            if (setting != null) { setting.Value = value; Save = true; }
-            else { MessageBox.Show("Setting is null", "Settings Exception #1", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-        }
-
         void volumeMixerlb_Click(object sender, EventArgs e)
         {
-            //VolumeGUI volumeMixer = new VolumeGUI(ref settings);
-            //volumeMixer.StartPosition = FormStartPosition.CenterScreen;
-            //volumeMixer.ShowDialog();
+            using (RappelzVolumeGUI volumeMixer = new RappelzVolumeGUI(RappelzSettings.Settings))
+            {
+                volumeMixer.ShowDialog(this);
+            }
         }
 
         void gfxPreset_ValueChanged(object sender, EventArgs e)
@@ -125,286 +120,286 @@ namespace Client
 
             if (gfxPreset.Value == 0)
             {
-                updateSetting("GRAPHIC_PRESETOPTION", 0);
+                RappelzSettings.Update("GRAPHIC_PRESETOPTION", "0");
                 setValues();
             }
 
             if (gfxPreset.Value == 1) // Minimum
             {
-                updateSetting("GRAPHIC_PRESETOPTION", 1);
-                updateSetting("GRAPHIC_REFRESHRATE", 0);
-                updateSetting("GRAPHIC_BACKGROUNDDIS", 0);
-                updateSetting("GRAPHIC_TERRAINDIS", 0);
-                updateSetting("GRAPHIC_PROPDIS", 0);
-                updateSetting("GRAPHIC_SPEEDDIS", 0);
-                updateSetting("GRAPHIC_GRASSDIS", 0);
-                updateSetting("GRAPHIC_AVATARDIS", 0);
-                updateSetting("GRAPHIC_SHADOWDIS", 0);
-                updateSetting("GRAPHIC_GLOWQUAL", 0);
-                updateSetting("GRAPHIC_WATERQUAL", 0);
-                updateSetting("GRAPHIC_RENDERTREE", 0);
-                updateSetting("GRAPHIC_TREEALPHA", 0);
-                updateSetting("GRAPHIC_ENHANCE", 0);
-                updateSetting("GRAPHIC_RENDERGRASS", 0);
-                updateSetting("GRAPHIC_LIGHT", 0);
-                updateSetting("GRAPHIC_SHADOW", 0);
-                updateSetting("GRAPHIC_LOWSHADOW", 0);
-                updateSetting("GRAPHIC_STATE_EFFECT", 0);
-                updateSetting("GRAPHIC_STATE_EFFECT_CREATURE", 0);
-                updateSetting("GRAPHIC_STATE_EFFECT_PARTY", 0);
-                updateSetting("GRAPHIC_STATE_EFFECT_ENEMY", 0);
-                updateSetting("GRAPHIC_EFFECT", 0);
-                updateSetting("GRAPHIC_EFFECT_CREATURE", 0);
-                updateSetting("GRAPHIC_EFFECT_PARTY", 0);
-                updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
-                updateSetting("PLAY_MANTLE", 0);
-                updateSetting("PLAY_HELM", 0);
-                updateSetting("PLAY_AVATAR_DECO", 0);
-                //updateSetting("PLAY_TITLE_SHOW", 1);
-                updateSetting("PLAY_NAME", 1);
-                updateSetting("PLAY_PLAYERNAME", 1);
-                updateSetting("PLAY_CREATURENAME", 1);
-                updateSetting("PLAY_MOBNAME", 1);
-                updateSetting("PLAY_NPCNAME", 1);
-                updateSetting("PLAY_HPGAGE", 1);
-                updateSetting("PLAY_PLAYERGAGE", 1);
-                updateSetting("PLAY_MOBGAGE", 1);
-                updateSetting("PLAY_TARGETGAGE", 1);
-                updateSetting("PLAY_DAMAGE", 1);
-                updateSetting("PLAY_PLAYERDM", 1);
-                updateSetting("PLAY_CREATUREDM", 1);
-                updateSetting("GRAPHIC_TOWNLIMIT", 1);
-                updateSetting("GRAPHIC_RENDER_OTHERPLAYER", 0);
-                updateSetting("GRAPHIC_MIPBIAS", 0);
-                updateSetting("GRAPHIC_SPEEDQUAL", 0);
-                updateSetting("GRAPHIC_SELFSHADOWQUAL", 0);
-                updateSetting("GRAPHIC_WATERQUAL", 0);
-                updateSetting("PLAY_WEATHER_QUALITY", 0);
+                RappelzSettings.Update("GRAPHIC_PRESETOPTION", "1");
+                RappelzSettings.Update("GRAPHIC_REFRESHRATE", "0");
+                RappelzSettings.Update("GRAPHIC_BACKGROUNDDIS", "0");
+                RappelzSettings.Update("GRAPHIC_TERRAINDIS", "0");
+                RappelzSettings.Update("GRAPHIC_PROPDIS", "0");
+                RappelzSettings.Update("GRAPHIC_SPEEDDIS", "0");
+                RappelzSettings.Update("GRAPHIC_GRASSDIS", "0");
+                RappelzSettings.Update("GRAPHIC_AVATARDIS", "0");
+                RappelzSettings.Update("GRAPHIC_SHADOWDIS", "0");
+                RappelzSettings.Update("GRAPHIC_GLOWQUAL", "0");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "0");
+                RappelzSettings.Update("GRAPHIC_RENDERTREE", "0");
+                RappelzSettings.Update("GRAPHIC_TREEALPHA", "0");
+                RappelzSettings.Update("GRAPHIC_ENHANCE", "0");
+                RappelzSettings.Update("GRAPHIC_RENDERGRASS", "0");
+                RappelzSettings.Update("GRAPHIC_LIGHT", "0");
+                RappelzSettings.Update("GRAPHIC_SHADOW", "0");
+                RappelzSettings.Update("GRAPHIC_LOWSHADOW", "0");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT", "0");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_CREATURE", "0");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", "0");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_ENEMY", "0");
+                RappelzSettings.Update("GRAPHIC_EFFECT", "0");
+                RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "0");
+                RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "0");
+                RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "0");
+                RappelzSettings.Update("PLAY_MANTLE", "0");
+                RappelzSettings.Update("PLAY_HELM", "0");
+                RappelzSettings.Update("PLAY_AVATAR_DECO", "0");
+                //RappelzSettings.Update("PLAY_TITLE_SHOW", "1");
+                RappelzSettings.Update("PLAY_NAME", "1");
+                RappelzSettings.Update("PLAY_PLAYERNAME", "1");
+                RappelzSettings.Update("PLAY_CREATURENAME", "1");
+                RappelzSettings.Update("PLAY_MOBNAME", "1");
+                RappelzSettings.Update("PLAY_NPCNAME", "1");
+                RappelzSettings.Update("PLAY_HPGAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERGAGE", "1");
+                RappelzSettings.Update("PLAY_MOBGAGE", "1");
+                RappelzSettings.Update("PLAY_TARGETGAGE", "1");
+                RappelzSettings.Update("PLAY_DAMAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERDM", "1");
+                RappelzSettings.Update("PLAY_CREATUREDM", "1");
+                RappelzSettings.Update("GRAPHIC_TOWNLIMIT", "1");
+                RappelzSettings.Update("GRAPHIC_RENDER_OTHERPLAYER", "0");
+                RappelzSettings.Update("GRAPHIC_MIPBIAS", "0");
+                RappelzSettings.Update("GRAPHIC_SPEEDQUAL", "0");
+                RappelzSettings.Update("GRAPHIC_SELFSHADOWQUAL", "0");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "0");
+                RappelzSettings.Update("PLAY_WEATHER_QUALITY", "0");
 
                 setValues();
             }
 
             if (gfxPreset.Value == 2) // Low
             {
-                updateSetting("GRAPHIC_PRESETOPTION", 2);
-                updateSetting("GRAPHIC_REFRESHRATE", 0);
-                updateSetting("GRAPHIC_BACKGROUNDDIS", 1);
-                updateSetting("GRAPHIC_TERRAINDIS", 1);
-                updateSetting("GRAPHIC_PROPDIS", 1);
-                updateSetting("GRAPHIC_SPEEDDIS", 1);
-                updateSetting("GRAPHIC_GRASSDIS", 1);
-                updateSetting("GRAPHIC_AVATARDIS", 1);
-                updateSetting("GRAPHIC_SHADOWDIS", 1);
-                updateSetting("GRAPHIC_GLOWQUAL", 0);
-                updateSetting("GRAPHIC_WATERQUAL", 0);
-                updateSetting("GRAPHIC_RENDERTREE", 1);
-                updateSetting("GRAPHIC_TREEALPHA", 0);
-                updateSetting("GRAPHIC_ENHANCE", 1);
-                updateSetting("GRAPHIC_RENDERGRASS", 1);
-                updateSetting("GRAPHIC_LIGHT", 0);
-                updateSetting("GRAPHIC_SHADOW", 0);
-                updateSetting("GRAPHIC_LOWSHADOW", 0);
-                updateSetting("GRAPHIC_STATE_EFFECT", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_CREATURE", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_PARTY", 0);
-                updateSetting("GRAPHIC_STATE_EFFECT_ENEMY", 0);
-                updateSetting("GRAPHIC_EFFECT", 1);
-                updateSetting("GRAPHIC_EFFECT_CREATURE", 1);
-                updateSetting("GRAPHIC_EFFECT_PARTY", 0);
-                updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
-                updateSetting("PLAY_MANTLE", 0);
-                updateSetting("PLAY_HELM", 0);
-                updateSetting("PLAY_AVATAR_DECO", 0);
-                //updateSetting("PLAY_TITLE_SHOW", 1);
-                updateSetting("PLAY_NAME", 1);
-                updateSetting("PLAY_PLAYERNAME", 1);
-                updateSetting("PLAY_CREATURENAME", 1);
-                updateSetting("PLAY_MOBNAME", 1);
-                updateSetting("PLAY_NPCNAME", 1);
-                updateSetting("PLAY_HPGAGE", 1);
-                updateSetting("PLAY_PLAYERGAGE", 1);
-                updateSetting("PLAY_MOBGAGE", 1);
-                updateSetting("PLAY_TARGETGAGE", 1);
-                updateSetting("PLAY_DAMAGE", 1);
-                updateSetting("PLAY_PLAYERDM", 1);
-                updateSetting("PLAY_CREATUREDM", 1);
-                updateSetting("GRAPHIC_TOWNLIMIT", 1);
-                updateSetting("GRAPHIC_RENDER_OTHERPLAYER", 0);
-                updateSetting("GRAPHIC_MIPBIAS", 1);
-                updateSetting("GRAPHIC_SPEEDQUAL", 1);
-                updateSetting("GRAPHIC_SELFSHADOWQUAL", 1);
-                updateSetting("GRAPHIC_WATERQUAL", 1);
-                updateSetting("PLAY_WEATHER_QUALITY", 1);
+                RappelzSettings.Update("GRAPHIC_PRESETOPTION", "2");
+                RappelzSettings.Update("GRAPHIC_REFRESHRATE", "0");
+                RappelzSettings.Update("GRAPHIC_BACKGROUNDDIS", "1");
+                RappelzSettings.Update("GRAPHIC_TERRAINDIS", "1");
+                RappelzSettings.Update("GRAPHIC_PROPDIS", "1");
+                RappelzSettings.Update("GRAPHIC_SPEEDDIS", "1");
+                RappelzSettings.Update("GRAPHIC_GRASSDIS", "1");
+                RappelzSettings.Update("GRAPHIC_AVATARDIS", "1");
+                RappelzSettings.Update("GRAPHIC_SHADOWDIS", "1");
+                RappelzSettings.Update("GRAPHIC_GLOWQUAL", "0");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "0");
+                RappelzSettings.Update("GRAPHIC_RENDERTREE", "1");
+                RappelzSettings.Update("GRAPHIC_TREEALPHA", "0");
+                RappelzSettings.Update("GRAPHIC_ENHANCE", "1");
+                RappelzSettings.Update("GRAPHIC_RENDERGRASS", "1");
+                RappelzSettings.Update("GRAPHIC_LIGHT", "0");
+                RappelzSettings.Update("GRAPHIC_SHADOW", "0");
+                RappelzSettings.Update("GRAPHIC_LOWSHADOW", "0");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_CREATURE", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", "0");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_ENEMY", "0");
+                RappelzSettings.Update("GRAPHIC_EFFECT", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "0");
+                RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "0");
+                RappelzSettings.Update("PLAY_MANTLE", "0");
+                RappelzSettings.Update("PLAY_HELM", "0");
+                RappelzSettings.Update("PLAY_AVATAR_DECO", "0");
+                //RappelzSettings.Update("PLAY_TITLE_SHOW", "1");
+                RappelzSettings.Update("PLAY_NAME", "1");
+                RappelzSettings.Update("PLAY_PLAYERNAME", "1");
+                RappelzSettings.Update("PLAY_CREATURENAME", "1");
+                RappelzSettings.Update("PLAY_MOBNAME", "1");
+                RappelzSettings.Update("PLAY_NPCNAME", "1");
+                RappelzSettings.Update("PLAY_HPGAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERGAGE", "1");
+                RappelzSettings.Update("PLAY_MOBGAGE", "1");
+                RappelzSettings.Update("PLAY_TARGETGAGE", "1");
+                RappelzSettings.Update("PLAY_DAMAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERDM", "1");
+                RappelzSettings.Update("PLAY_CREATUREDM", "1");
+                RappelzSettings.Update("GRAPHIC_TOWNLIMIT", "1");
+                RappelzSettings.Update("GRAPHIC_RENDER_OTHERPLAYER", "0");
+                RappelzSettings.Update("GRAPHIC_MIPBIAS", "1");
+                RappelzSettings.Update("GRAPHIC_SPEEDQUAL", "1");
+                RappelzSettings.Update("GRAPHIC_SELFSHADOWQUAL", "1");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "1");
+                RappelzSettings.Update("PLAY_WEATHER_QUALITY", "1");
 
                 setValues();
             }
 
             if (gfxPreset.Value == 3) //Medium
             {
-                updateSetting("GRAPHIC_PRESETOPTION", 3);
-                updateSetting("GRAPHIC_REFRESHRATE", 0);
-                updateSetting("GRAPHIC_BACKGROUNDDIS", 2);
-                updateSetting("GRAPHIC_TERRAINDIS", 2);
-                updateSetting("GRAPHIC_PROPDIS", 2);
-                updateSetting("GRAPHIC_SPEEDDIS", 2);
-                updateSetting("GRAPHIC_GRASSDIS", 2);
-                updateSetting("GRAPHIC_AVATARDIS", 2);
-                updateSetting("GRAPHIC_SHADOWDIS", 2);
-                updateSetting("GRAPHIC_GLOWQUAL", 0);
-                updateSetting("GRAPHIC_WATERQUAL", 1);
-                updateSetting("GRAPHIC_RENDERTREE", 1);
-                updateSetting("GRAPHIC_TREEALPHA", 0);
-                updateSetting("GRAPHIC_ENHANCE", 1);
-                updateSetting("GRAPHIC_RENDERGRASS", 1);
-                updateSetting("GRAPHIC_LIGHT", 0);
-                updateSetting("GRAPHIC_SHADOW", 1);
-                updateSetting("GRAPHIC_LOWSHADOW", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_CREATURE", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_PARTY", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_ENEMY", 0);
-                updateSetting("GRAPHIC_EFFECT", 1);
-                updateSetting("GRAPHIC_EFFECT_CREATURE", 1);
-                updateSetting("GRAPHIC_EFFECT_PARTY", 1);
-                updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
-                updateSetting("PLAY_MANTLE", 1);
-                updateSetting("PLAY_HELM", 1);
-                updateSetting("PLAY_AVATAR_DECO", 1);
-                //updateSetting("PLAY_TITLE_SHOW", 1);
-                updateSetting("PLAY_NAME", 1);
-                updateSetting("PLAY_PLAYERNAME", 1);
-                updateSetting("PLAY_CREATURENAME", 1);
-                updateSetting("PLAY_MOBNAME", 1);
-                updateSetting("PLAY_NPCNAME", 1);
-                updateSetting("PLAY_HPGAGE", 1);
-                updateSetting("PLAY_PLAYERGAGE", 1);
-                updateSetting("PLAY_MOBGAGE", 1);
-                updateSetting("PLAY_TARGETGAGE", 1);
-                updateSetting("PLAY_DAMAGE", 1);
-                updateSetting("PLAY_PLAYERDM", 1);
-                updateSetting("PLAY_CREATUREDM", 1);
-                updateSetting("GRAPHIC_TOWNLIMIT", 1);
-                updateSetting("GRAPHIC_RENDER_OTHERPLAYER", 1);
-                updateSetting("GRAPHIC_MIPBIAS", 1);
-                updateSetting("GRAPHIC_SPEEDQUAL", 1);
-                updateSetting("GRAPHIC_SELFSHADOWQUAL", 1);
-                updateSetting("GRAPHIC_WATERQUAL", 1);
-                updateSetting("PLAY_WEATHER_QUALITY", 1);
+                RappelzSettings.Update("GRAPHIC_PRESETOPTION", "3");
+                RappelzSettings.Update("GRAPHIC_REFRESHRATE", "0");
+                RappelzSettings.Update("GRAPHIC_BACKGROUNDDIS", "2");
+                RappelzSettings.Update("GRAPHIC_TERRAINDIS", "2");
+                RappelzSettings.Update("GRAPHIC_PROPDIS", "2");
+                RappelzSettings.Update("GRAPHIC_SPEEDDIS", "2");
+                RappelzSettings.Update("GRAPHIC_GRASSDIS", "2");
+                RappelzSettings.Update("GRAPHIC_AVATARDIS", "2");
+                RappelzSettings.Update("GRAPHIC_SHADOWDIS", "2");
+                RappelzSettings.Update("GRAPHIC_GLOWQUAL", "0");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "1");
+                RappelzSettings.Update("GRAPHIC_RENDERTREE", "1");
+                RappelzSettings.Update("GRAPHIC_TREEALPHA", "0");
+                RappelzSettings.Update("GRAPHIC_ENHANCE", "1");
+                RappelzSettings.Update("GRAPHIC_RENDERGRASS", "1");
+                RappelzSettings.Update("GRAPHIC_LIGHT", "0");
+                RappelzSettings.Update("GRAPHIC_SHADOW", "1");
+                RappelzSettings.Update("GRAPHIC_LOWSHADOW", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_CREATURE", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_ENEMY", "0");
+                RappelzSettings.Update("GRAPHIC_EFFECT", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "0");
+                RappelzSettings.Update("PLAY_MANTLE", "1");
+                RappelzSettings.Update("PLAY_HELM", "1");
+                RappelzSettings.Update("PLAY_AVATAR_DECO", "1");
+                //RappelzSettings.Update("PLAY_TITLE_SHOW", "1");
+                RappelzSettings.Update("PLAY_NAME", "1");
+                RappelzSettings.Update("PLAY_PLAYERNAME", "1");
+                RappelzSettings.Update("PLAY_CREATURENAME", "1");
+                RappelzSettings.Update("PLAY_MOBNAME", "1");
+                RappelzSettings.Update("PLAY_NPCNAME", "1");
+                RappelzSettings.Update("PLAY_HPGAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERGAGE", "1");
+                RappelzSettings.Update("PLAY_MOBGAGE", "1");
+                RappelzSettings.Update("PLAY_TARGETGAGE", "1");
+                RappelzSettings.Update("PLAY_DAMAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERDM", "1");
+                RappelzSettings.Update("PLAY_CREATUREDM", "1");
+                RappelzSettings.Update("GRAPHIC_TOWNLIMIT", "1");
+                RappelzSettings.Update("GRAPHIC_RENDER_OTHERPLAYER", "1");
+                RappelzSettings.Update("GRAPHIC_MIPBIAS", "1");
+                RappelzSettings.Update("GRAPHIC_SPEEDQUAL", "1");
+                RappelzSettings.Update("GRAPHIC_SELFSHADOWQUAL", "1");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "1");
+                RappelzSettings.Update("PLAY_WEATHER_QUALITY", "1");
                 
                 setValues();
             }
 
             if (gfxPreset.Value == 4) //High
             {
-                updateSetting("GRAPHIC_PRESETOPTION", 4);
-                updateSetting("GRAPHIC_REFRESHRATE", 0);
-                updateSetting("GRAPHIC_BACKGROUNDDIS", 3);
-                updateSetting("GRAPHIC_TERRAINDIS", 3);
-                updateSetting("GRAPHIC_PROPDIS", 3);
-                updateSetting("GRAPHIC_SPEEDDIS", 3);
-                updateSetting("GRAPHIC_GRASSDIS", 3);
-                updateSetting("GRAPHIC_AVATARDIS", 3);
-                updateSetting("GRAPHIC_SHADOWDIS", 3);
-                updateSetting("GRAPHIC_GLOWQUAL", 0);
-                updateSetting("GRAPHIC_WATERQUAL", 1);
-                updateSetting("GRAPHIC_RENDERTREE", 1);
-                updateSetting("GRAPHIC_TREEALPHA", 1);
-                updateSetting("GRAPHIC_ENHANCE", 1);
-                updateSetting("GRAPHIC_RENDERGRASS", 1);
-                updateSetting("GRAPHIC_LIGHT", 1);
-                updateSetting("GRAPHIC_SHADOW", 1);
-                updateSetting("GRAPHIC_LOWSHADOW", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_CREATURE", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_PARTY", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_ENEMY", 0);
-                updateSetting("GRAPHIC_EFFECT", 1);
-                updateSetting("GRAPHIC_EFFECT_CREATURE", 1);
-                updateSetting("GRAPHIC_EFFECT_PARTY", 1);
-                updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 0);
-                updateSetting("PLAY_MANTLE", 1);
-                updateSetting("PLAY_HELM", 1);
-                updateSetting("PLAY_AVATAR_DECO", 1);
-                //updateSetting("PLAY_TITLE_SHOW", 1);
-                updateSetting("PLAY_NAME", 1);
-                updateSetting("PLAY_PLAYERNAME", 1);
-                updateSetting("PLAY_CREATURENAME", 1);
-                updateSetting("PLAY_MOBNAME", 1);
-                updateSetting("PLAY_NPCNAME", 1);
-                updateSetting("PLAY_HPGAGE", 1);
-                updateSetting("PLAY_PLAYERGAGE", 1);
-                updateSetting("PLAY_MOBGAGE", 1);
-                updateSetting("PLAY_TARGETGAGE", 1);
-                updateSetting("PLAY_DAMAGE", 1);
-                updateSetting("PLAY_PLAYERDM", 1);
-                updateSetting("PLAY_CREATUREDM", 1);
-                updateSetting("GRAPHIC_TOWNLIMIT", 0);
-                updateSetting("GRAPHIC_RENDER_OTHERPLAYER", 1);
-                updateSetting("GRAPHIC_MIPBIAS", 2);
-                updateSetting("GRAPHIC_SPEEDQUAL", 2);
-                updateSetting("GRAPHIC_SELFSHADOWQUAL", 2);
-                updateSetting("GRAPHIC_WATERQUAL", 2);
-                updateSetting("PLAY_WEATHER_QUALITY", 2);
+                RappelzSettings.Update("GRAPHIC_PRESETOPTION", "4");
+                RappelzSettings.Update("GRAPHIC_REFRESHRATE", "0");
+                RappelzSettings.Update("GRAPHIC_BACKGROUNDDIS", "3");
+                RappelzSettings.Update("GRAPHIC_TERRAINDIS", "3");
+                RappelzSettings.Update("GRAPHIC_PROPDIS", "3");
+                RappelzSettings.Update("GRAPHIC_SPEEDDIS", "3");
+                RappelzSettings.Update("GRAPHIC_GRASSDIS", "3");
+                RappelzSettings.Update("GRAPHIC_AVATARDIS", "3");
+                RappelzSettings.Update("GRAPHIC_SHADOWDIS", "3");
+                RappelzSettings.Update("GRAPHIC_GLOWQUAL", "0");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "1");
+                RappelzSettings.Update("GRAPHIC_RENDERTREE", "1");
+                RappelzSettings.Update("GRAPHIC_TREEALPHA", "1");
+                RappelzSettings.Update("GRAPHIC_ENHANCE", "1");
+                RappelzSettings.Update("GRAPHIC_RENDERGRASS", "1");
+                RappelzSettings.Update("GRAPHIC_LIGHT", "1");
+                RappelzSettings.Update("GRAPHIC_SHADOW", "1");
+                RappelzSettings.Update("GRAPHIC_LOWSHADOW", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_CREATURE", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_ENEMY", "0");
+                RappelzSettings.Update("GRAPHIC_EFFECT", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "0");
+                RappelzSettings.Update("PLAY_MANTLE", "1");
+                RappelzSettings.Update("PLAY_HELM", "1");
+                RappelzSettings.Update("PLAY_AVATAR_DECO", "1");
+                //RappelzSettings.Update("PLAY_TITLE_SHOW", "1");
+                RappelzSettings.Update("PLAY_NAME", "1");
+                RappelzSettings.Update("PLAY_PLAYERNAME", "1");
+                RappelzSettings.Update("PLAY_CREATURENAME", "1");
+                RappelzSettings.Update("PLAY_MOBNAME", "1");
+                RappelzSettings.Update("PLAY_NPCNAME", "1");
+                RappelzSettings.Update("PLAY_HPGAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERGAGE", "1");
+                RappelzSettings.Update("PLAY_MOBGAGE", "1");
+                RappelzSettings.Update("PLAY_TARGETGAGE", "1");
+                RappelzSettings.Update("PLAY_DAMAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERDM", "1");
+                RappelzSettings.Update("PLAY_CREATUREDM", "1");
+                RappelzSettings.Update("GRAPHIC_TOWNLIMIT", "0");
+                RappelzSettings.Update("GRAPHIC_RENDER_OTHERPLAYER", "1");
+                RappelzSettings.Update("GRAPHIC_MIPBIAS", "2");
+                RappelzSettings.Update("GRAPHIC_SPEEDQUAL", "2");
+                RappelzSettings.Update("GRAPHIC_SELFSHADOWQUAL", "2");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "2");
+                RappelzSettings.Update("PLAY_WEATHER_QUALITY", "2");
 
                 setValues();
             }
 
             if (gfxPreset.Value == 5) //Maximum
             {
-                updateSetting("GRAPHIC_PRESETOPTION", 5);
-                updateSetting("GRAPHIC_REFRESHRATE", 0);
-                updateSetting("GRAPHIC_BACKGROUNDDIS", 4);
-                updateSetting("GRAPHIC_TERRAINDIS", 4);
-                updateSetting("GRAPHIC_PROPDIS", 4);
-                updateSetting("GRAPHIC_SPEEDDIS", 4);
-                updateSetting("GRAPHIC_GRASSDIS", 4);
-                updateSetting("GRAPHIC_AVATARDIS", 4);
-                updateSetting("GRAPHIC_SHADOWDIS", 4);
-                updateSetting("GRAPHIC_GLOWQUAL", 1);
-                updateSetting("GRAPHIC_WATERQUAL", 1);
-                updateSetting("GRAPHIC_RENDERTREE", 1);
-                updateSetting("GRAPHIC_TREEALPHA", 1);
-                updateSetting("GRAPHIC_ENHANCE", 1);
-                updateSetting("GRAPHIC_RENDERGRASS", 1);
-                updateSetting("GRAPHIC_LIGHT", 1);
-                updateSetting("GRAPHIC_SHADOW", 1);
-                updateSetting("GRAPHIC_LOWSHADOW", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_CREATURE", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_PARTY", 1);
-                updateSetting("GRAPHIC_STATE_EFFECT_ENEMY", 1);
-                updateSetting("GRAPHIC_EFFECT", 1);
-                updateSetting("GRAPHIC_EFFECT_CREATURE", 1);
-                updateSetting("GRAPHIC_EFFECT_PARTY", 1);
-                updateSetting("GRAPHIC_EFFECT_ENEMY", 0);
-                //updateSetting("PLAY_SELECT_OUTLINE_SHOW", 1);
-                updateSetting("PLAY_MANTLE", 1);
-                updateSetting("PLAY_HELM", 1);
-                updateSetting("PLAY_AVATAR_DECO", 1);
-                //updateSetting("PLAY_TITLE_SHOW", 1);
-                updateSetting("PLAY_NAME", 1);
-                updateSetting("PLAY_PLAYERNAME", 1);
-                updateSetting("PLAY_CREATURENAME", 1);
-                updateSetting("PLAY_MOBNAME", 1);
-                updateSetting("PLAY_NPCNAME", 1);
-                updateSetting("PLAY_HPGAGE", 1);
-                updateSetting("PLAY_PLAYERGAGE", 1);
-                updateSetting("PLAY_MOBGAGE", 1);
-                updateSetting("PLAY_TARGETGAGE", 1);
-                updateSetting("PLAY_DAMAGE", 1);
-                updateSetting("PLAY_PLAYERDM", 1);
-                updateSetting("PLAY_CREATUREDM", 1);
-                updateSetting("GRAPHIC_TOWNLIMIT", 0);
-                updateSetting("GRAPHIC_RENDER_OTHERPLAYER", 1);
-                updateSetting("GRAPHIC_MIPBIAS", 3);
-                updateSetting("GRAPHIC_SPEEDQUAL", 3);
-                updateSetting("GRAPHIC_SELFSHADOWQUAL", 3);
-                updateSetting("GRAPHIC_WATERQUAL", 3);
-                updateSetting("PLAY_WEATHER_QUALITY", 3);
+                RappelzSettings.Update("GRAPHIC_PRESETOPTION", "5");
+                RappelzSettings.Update("GRAPHIC_REFRESHRATE", "0");
+                RappelzSettings.Update("GRAPHIC_BACKGROUNDDIS", "4");
+                RappelzSettings.Update("GRAPHIC_TERRAINDIS", "4");
+                RappelzSettings.Update("GRAPHIC_PROPDIS", "4");
+                RappelzSettings.Update("GRAPHIC_SPEEDDIS", "4");
+                RappelzSettings.Update("GRAPHIC_GRASSDIS", "4");
+                RappelzSettings.Update("GRAPHIC_AVATARDIS", "4");
+                RappelzSettings.Update("GRAPHIC_SHADOWDIS", "4");
+                RappelzSettings.Update("GRAPHIC_GLOWQUAL", "1");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "1");
+                RappelzSettings.Update("GRAPHIC_RENDERTREE", "1");
+                RappelzSettings.Update("GRAPHIC_TREEALPHA", "1");
+                RappelzSettings.Update("GRAPHIC_ENHANCE", "1");
+                RappelzSettings.Update("GRAPHIC_RENDERGRASS", "1");
+                RappelzSettings.Update("GRAPHIC_LIGHT", "1");
+                RappelzSettings.Update("GRAPHIC_SHADOW", "1");
+                RappelzSettings.Update("GRAPHIC_LOWSHADOW", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_CREATURE", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", "1");
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_ENEMY", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "1");
+                RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "1");
+                RappelzSettings.Update("PLAY_MANTLE", "1");
+                RappelzSettings.Update("PLAY_HELM", "1");
+                RappelzSettings.Update("PLAY_AVATAR_DECO", "1");
+                //RappelzSettings.Update("PLAY_TITLE_SHOW", "1");
+                RappelzSettings.Update("PLAY_NAME", "1");
+                RappelzSettings.Update("PLAY_PLAYERNAME", "1");
+                RappelzSettings.Update("PLAY_CREATURENAME", "1");
+                RappelzSettings.Update("PLAY_MOBNAME", "1");
+                RappelzSettings.Update("PLAY_NPCNAME", "1");
+                RappelzSettings.Update("PLAY_HPGAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERGAGE", "1");
+                RappelzSettings.Update("PLAY_MOBGAGE", "1");
+                RappelzSettings.Update("PLAY_TARGETGAGE", "1");
+                RappelzSettings.Update("PLAY_DAMAGE", "1");
+                RappelzSettings.Update("PLAY_PLAYERDM", "1");
+                RappelzSettings.Update("PLAY_CREATUREDM", "1");
+                RappelzSettings.Update("GRAPHIC_TOWNLIMIT", "0");
+                RappelzSettings.Update("GRAPHIC_RENDER_OTHERPLAYER", "1");
+                RappelzSettings.Update("GRAPHIC_MIPBIAS", "3");
+                RappelzSettings.Update("GRAPHIC_SPEEDQUAL", "3");
+                RappelzSettings.Update("GRAPHIC_SELFSHADOWQUAL", "3");
+                RappelzSettings.Update("GRAPHIC_WATERQUAL", "3");
+                RappelzSettings.Update("PLAY_WEATHER_QUALITY", "3");
 
                 setValues();
             }
@@ -703,6 +698,7 @@ namespace Client
             else { lowQualityShadows.Enabled = true; }
         }
 
+        // TODO: Disable all sub features (last fx)
         private void lastingEffects_CheckedChanged(object sender, EventArgs e)
         {
             RappelzSettings.Update("GRAPHIC_STATE_EFFECT", Convert.ToInt32(lastingEffects.CheckState).ToString());
@@ -723,6 +719,7 @@ namespace Client
             RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", Convert.ToInt32(lastingEffects_o.CheckState).ToString());
         }
 
+        // TODO: Onclick disable all sub features (effects)
         private void effect_CheckedChanged(object sender, EventArgs e)
         {
             RappelzSettings.Update("GRAPHIC_EFFECT", Convert.ToInt32(effect.CheckState).ToString());
@@ -761,6 +758,86 @@ namespace Client
         private void weatherQuality_Scroll(object sender, EventArgs e)
         {
             RappelzSettings.Update("PLAY_WEATHER_QUALITY", weatherQuality.Value.ToString());
+        }
+
+        private void helmets_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_HELM", Convert.ToInt32(helmets.CheckState).ToString());
+        }
+
+        private void deco_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_AVATAR_DECO", Convert.ToInt32(deco.CheckState).ToString());
+        }
+
+        private void chatBalloons_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_CHATBALLOON", Convert.ToInt32(chatBalloons.CheckState).ToString());
+        }
+
+        private void monsterAvatar_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_MOBFACE", Convert.ToInt32(monsterAvatar.CheckState).ToString());
+        }
+
+        private void names_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_NAME", Convert.ToInt32(names.CheckState).ToString());
+        }
+
+        private void playerNames_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_PLAYERNAME", Convert.ToInt32(playerNames.CheckState).ToString());
+        }
+
+        private void creatureNames_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_CREATURENAME", Convert.ToInt32(creatureNames.CheckState).ToString());
+        }
+
+        private void monsterNames_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_MOBNAME", Convert.ToInt32(monsterNames.CheckState).ToString());
+        }
+
+        private void npcNames_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_NPCNAME", Convert.ToInt32(npcNames.CheckState).ToString());
+        }
+
+        private void hpGauges_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void damage_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_DAMAGE", Convert.ToInt32(damage.CheckState).ToString());
+        }
+
+        private void playerDamage_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_PLAYERDM", Convert.ToInt32(playerDamage.CheckState).ToString());
+        }
+
+        private void creatureDamage_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_CREATUREDM", Convert.ToInt32(creatureDamage.CheckState).ToString());
+        }
+
+        private void minStructures_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_TOWNLIMIT", Convert.ToInt32(minStructures.CheckState).ToString());
+        }
+
+        private void showOthers_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("GRAPHIC_RENDER_OTHERPLAYER", Convert.ToInt32(showOthers.CheckState).ToString());
+        }
+
+        private void enterToChat_CheckedChanged(object sender, EventArgs e)
+        {
+            RappelzSettings.Update("PLAY_ENTERCHAT", Convert.ToInt32(enterToChat.CheckState).ToString());
         }
     }
 }

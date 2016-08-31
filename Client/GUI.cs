@@ -14,6 +14,10 @@ namespace Client
     // TODO: Request epic from server
     // TODO: Add Volume Menu
     // TODO: Add Shader menu
+    // TODO: Implement PLAY_WINLOCK
+    // TODO: Implement PLAY_WINALPHA ???
+    // TODO: Implement PLAY_PARTYDM ???
+    // TODO: Implement PLAY_
     public partial class GUI : Form
     {
         #region Drag Hack
