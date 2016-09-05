@@ -12,23 +12,24 @@ DataCore this launcher can make quick work of updating your client in more ways 
 - TCP/IP based Client <> Server model
   - All sensitive data encrypted (DES / RC4)
   - No sensitive information stored directly inside of Client (Decompiling will be useless)
+  - Load remote IP/Port from config.opt
 - User authentication 
   - FingerPrint generated based on users computer hardware (used in banning)
 - Client auth-login (using OTP)
   - Tradition login also available
 - BlankIndex (data.blk) tracking (used to recover space from orphaned files)
 - Reimplemented rappelz_v1.opt editor (for editing client functions)
-- Unique settings such as (always on-top, toggle fps (on sframe titlebar [windowed mode]) and close-on-start)
+  - Reimplemented volume menu (includes expiremental toggle "lobby" theme and disable "music/bgm" repeat
 - Unique ability to be run outside of the Rappelz Client folder
 
 # Features (Future)
 - (CLIENT) Self-Updating (being reimplemented)
-- (CLIENT) Multiple File Delivery (via Google Drive, HTTP, FTP and eventually TCP)
+  - Self-Updater is also self-updating
+- (CLIENT) Multiple File Downloading Engines (via Google Drive, HTTP, FTP and eventually TCP)
 - (CLIENT) Defragment data.xxx files (essentially shrinking them by rebuilding them)
 - (CLIENT) Ability to go into manual update mode (must install updates from .zip packages)
 - (CLIENT) Ability to toggle on backups (All files will be compressed and moved to /backups/ and a restore point created in restore.opt
-- (CLIENT) Loading remote ip/port from config.opt
 - (CLIENT) Ability to re-skin GUI
 - (CLIENT/SERVER) Ability to toggle off user authentication
 - (CLIENT) Shader menu (allows use of any epic shaders or custom shader files
-- (CLIENT) Volume menu with ability to toggle on/off Lobby music
+- (CLIENT) Unique settings such as (always on-top, toggle fps (on sframe titlebar [windowed mode]) and close-on-start)
