@@ -146,13 +146,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\KnobRenderer.cs" />
-    <Compile Include="Controls\LBKnob.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\LBKnob.designer.cs">
-      <DependentUpon>LBKnob.cs</DependentUpon>
-    </Compile>
     <Compile Include="Functions\Drive.cs" />
     <Compile Include="Functions\FingerPrint.cs" />
     <Compile Include="Functions\Hash.cs" />
@@ -204,9 +197,6 @@
     <Compile Include="Structures\Settings.cs" />
     <Compile Include="Functions\UpdateHandler.cs" />
     <Compile Include="Structures\IndexEntry.cs" />
-    <EmbeddedResource Include="Controls\LBKnob.resx">
-      <DependentUpon>LBKnob.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GeneralSettingsGUI.resx">
       <DependentUpon>GeneralSettingsGUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -265,7 +255,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\rappelz-logo.jpg" />
-    <Content Include="Controls\Knob.bmp" />
     <Content Include="LBIndustrialCtrls.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

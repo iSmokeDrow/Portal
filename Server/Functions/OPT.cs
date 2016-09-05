@@ -19,6 +19,7 @@ namespace Server.Functions
         /// Dictionary holding all the settings loaded from portal.opt
         /// </summary>
         protected static Dictionary<string, string> SettingsList = new Dictionary<string, string>();
+        protected static List<string> legacyList = new List<string>();
 
         public static bool SettingExists(string key)
         {
@@ -47,23 +48,31 @@ namespace Server.Functions
             return false;
         }
 
+        public static bool IsLegacy(string key)
+        {
+            return legacyList.Contains(key);
+        }
+
+        public static int LegacyCount
+        {
+            get { return legacyList.Count; }
+        }
+
         /// <summary>
         /// Parses: portal.opt, legacy.opt, legacy_delete.opt into their appropriate Dictionary and List variables
         /// </summary>
         public static void LoadSettings()
         {
-            Console.Write("Loading settings in: portal.opt...");
-
+            // TODO: Implement trigger to read gIndex.opt
             if (File.Exists("portal.opt"))
             {
+                Console.Write("Loading settings in: portal.opt...");
+
                 using (StreamReader sR = new StreamReader("portal.opt"))
                 {
-                    int currentLineIdx = 0;
                     string currentLineValue = null;
                     while ((currentLineValue = sR.ReadLine()) != null)
                     {
-                        currentLineIdx++;
-
                         if (!currentLineValue.StartsWith("#"))
                         {
                             //Break the line 
@@ -79,8 +88,24 @@ namespace Server.Functions
             }
             else
             {
-                Console.WriteLine("[Fail]\n\t** The portal.opt does not exist, create it.");
+                Console.WriteLine("[Fail]\n\t-The portal.opt does not exist, create it!");
             }
+        }
+
+        public static void LoadLegacyFiles()
+        {
+            if (File.Exists("legacy.opt"))
+            {
+                using (StreamReader sr = new StreamReader("legacy.opt"))
+                {
+                    string currentLineValue = null;
+                    while ((currentLineValue = sr.ReadLine()) != null)
+                    {
+                        legacyList.Add(currentLineValue);
+                    }
+                }
+            }
+            else { Console.WriteLine("[FAIL]\n\t-The legacy.opt does not exist, create it!"); }
         }
 
         /// <summary>

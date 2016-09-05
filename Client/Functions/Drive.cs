@@ -9,6 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Client.Functions
 {
+    // TODO: Request gDrive credentials from server!
     public class Drive
     {
         GUI guiInstance = GUI.Instance;

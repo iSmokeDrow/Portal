@@ -154,6 +154,7 @@ namespace Server.Functions
             }
         }
 
+        // TODO: Remove username argument (REDUNDANT)
         internal void OnUserRequestArguments(Client client, string username)
         {
             ClientPackets.Instance.Arguments(client, string.Format("/auth_ip:127.0.0.1 /auth_port:13544 /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:{0} /password:?", username));

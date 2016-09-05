@@ -59,6 +59,7 @@
             this.enviromentDistance = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.enterToChat = new System.Windows.Forms.CheckBox();
             this.creatureDamage = new System.Windows.Forms.CheckBox();
             this.playerDamage = new System.Windows.Forms.CheckBox();
             this.damage = new System.Windows.Forms.CheckBox();
@@ -107,8 +108,7 @@
             this.shadowSelfQuality = new System.Windows.Forms.TrackBar();
             this.label13 = new System.Windows.Forms.Label();
             this.volumeMixerlb = new System.Windows.Forms.Label();
-            this.save_lb = new System.Windows.Forms.Label();
-            this.enterToChat = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gfxPreset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightness)).BeginInit();
@@ -595,6 +595,17 @@
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Graphics (Render)";
+            // 
+            // enterToChat
+            // 
+            this.enterToChat.AutoSize = true;
+            this.enterToChat.Location = new System.Drawing.Point(355, 157);
+            this.enterToChat.Name = "enterToChat";
+            this.enterToChat.Size = new System.Drawing.Size(88, 18);
+            this.enterToChat.TabIndex = 42;
+            this.enterToChat.Text = "Enter to Chat";
+            this.enterToChat.UseVisualStyleBackColor = true;
+            this.enterToChat.CheckedChanged += new System.EventHandler(this.enterToChat_CheckedChanged);
             // 
             // creatureDamage
             // 
@@ -1120,27 +1131,18 @@
             this.volumeMixerlb.Text = "Open Volume Mixer";
             this.volumeMixerlb.Click += new System.EventHandler(this.volumeMixerlb_Click);
             // 
-            // save_lb
+            // button1
             // 
-            this.save_lb.AutoSize = true;
-            this.save_lb.Font = new System.Drawing.Font("Arial", 10.25F);
-            this.save_lb.Location = new System.Drawing.Point(559, 735);
-            this.save_lb.Name = "save_lb";
-            this.save_lb.Size = new System.Drawing.Size(40, 16);
-            this.save_lb.TabIndex = 6;
-            this.save_lb.Text = "Save";
-            this.save_lb.Click += new System.EventHandler(this.saveBtn_Click);
-            // 
-            // enterToChat
-            // 
-            this.enterToChat.AutoSize = true;
-            this.enterToChat.Location = new System.Drawing.Point(355, 157);
-            this.enterToChat.Name = "enterToChat";
-            this.enterToChat.Size = new System.Drawing.Size(88, 18);
-            this.enterToChat.TabIndex = 42;
-            this.enterToChat.Text = "Enter to Chat";
-            this.enterToChat.UseVisualStyleBackColor = true;
-            this.enterToChat.CheckedChanged += new System.EventHandler(this.enterToChat_CheckedChanged);
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Arial", 12F);
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(516, 726);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(83, 32);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Save";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.saveBtn_Click);
             // 
             // RappelzSettingsGUI
             // 
@@ -1148,7 +1150,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
             this.ClientSize = new System.Drawing.Size(613, 769);
-            this.Controls.Add(this.save_lb);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.volumeMixerlb);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -1269,7 +1271,7 @@
         private System.Windows.Forms.TrackBar weatherQuality;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label volumeMixerlb;
-        private System.Windows.Forms.Label save_lb;
         private System.Windows.Forms.CheckBox enterToChat;
+        private System.Windows.Forms.Button button1;
     }
 }

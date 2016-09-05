@@ -77,6 +77,7 @@ namespace Client
                 if (currentName == "GRAPHIC_EFFECT_PARTY") { effect_p.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "GRAPHIC_EFFECT_ENEMY") { effect_o.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "GRAPHIC_EFFECT_ENEMY") { effect_o.Checked = Convert.ToBoolean(currentValue); }
+                if (currentName == "PLAY_MOBFACE") { monsterAvatar.Checked = Convert.ToBoolean(currentValue); }
                 //if (currentName == "GRAPHIC_FACE_ANI", );
                 if (currentName == "GRAPHIC_RENDER_OTHERPLAYER") { showOthers.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_CHATBALLOON") { chatBalloons.Checked = Convert.ToBoolean(currentValue); }
@@ -91,7 +92,7 @@ namespace Client
                 if (currentName == "PLAY_CREATURENAME") { creatureNames.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_MOBNAME") { monsterNames.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_NPCNAME") { npcNames.Checked = Convert.ToBoolean(currentValue); }
-                if (currentName == "PLAYER_DAMAGE") { damage.Checked = Convert.ToBoolean(currentValue); }
+                if (currentName == "PLAY_DAMAGE") { damage.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_PLAYERDM") { playerDamage.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_CREATUREDM") { creatureDamage.Checked = Convert.ToBoolean(currentValue); }
                 if (currentName == "PLAY_WEATHER_QUALITY") { weatherQuality.Value = currentValue; }
@@ -152,6 +153,7 @@ namespace Client
                 RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "0");
                 RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "0");
                 RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                RappelzSettings.Update("PLAY_MOBFACE", "1");
                 //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "0");
                 RappelzSettings.Update("PLAY_MANTLE", "0");
                 RappelzSettings.Update("PLAY_HELM", "0");
@@ -208,6 +210,7 @@ namespace Client
                 RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "1");
                 RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "0");
                 RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                RappelzSettings.Update("PLAY_MOBFACE", "1");
                 //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "0");
                 RappelzSettings.Update("PLAY_MANTLE", "0");
                 RappelzSettings.Update("PLAY_HELM", "0");
@@ -264,6 +267,7 @@ namespace Client
                 RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "1");
                 RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "1");
                 RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                RappelzSettings.Update("PLAY_MOBFACE", "1");
                 //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "0");
                 RappelzSettings.Update("PLAY_MANTLE", "1");
                 RappelzSettings.Update("PLAY_HELM", "1");
@@ -320,6 +324,7 @@ namespace Client
                 RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "1");
                 RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "1");
                 RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                RappelzSettings.Update("PLAY_MOBFACE", "1");
                 //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "0");
                 RappelzSettings.Update("PLAY_MANTLE", "1");
                 RappelzSettings.Update("PLAY_HELM", "1");
@@ -376,6 +381,7 @@ namespace Client
                 RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "1");
                 RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "1");
                 RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+                RappelzSettings.Update("PLAY_MOBFACE", "1");
                 //RappelzSettings.Update("PLAY_SELECT_OUTLINE_SHOW", "1");
                 RappelzSettings.Update("PLAY_MANTLE", "1");
                 RappelzSettings.Update("PLAY_HELM", "1");

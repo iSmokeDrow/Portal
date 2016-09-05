@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace Server
 {
     //TODO: Implement HTTP/FTP download engines
+    //TODO: Implement a 'wait' function to make clients wait for an operation to complete
     class Program
     {
         /// <summary>
@@ -29,19 +30,7 @@ namespace Server
         }
         static internal Dictionary<int, Client> clientList;
 
-        static internal string updatePath
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(OPT.GetString("update.dir")))
-                {
-                    return OPT.GetString("update.dir");
-                }
-                else { return string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/updates/"); }
-            }
-        }
-
-        static internal string tmpPath = string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/tmp/");
+        internal static string tmpPath = string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/tmp/");
 
         internal static Timer otpTimer;
         
@@ -52,11 +41,15 @@ namespace Server
 
             clientList = new Dictionary<int, Client>();
 
+            Console.WriteLine("Indexing legacy file names...");
+            OPT.LoadLegacyFiles();
+
+            Console.WriteLine("\t- {0} legacy files indexed!", OPT.LegacyCount);
+
             Console.WriteLine("Indexing update files...");
             UpdateHandler.Instance.LoadUpdateList();
 
-            Console.WriteLine("\t- {0} files indexed from the update index!\n\t- {1} of which are legacy updates!", UpdateHandler.Instance.UpdateIndex.Count, UpdateHandler.Instance.UpdateIndex.FindAll(i => i.Legacy == true).Count);
-            
+            Console.WriteLine("\t- {0} files indexed!", UpdateHandler.Instance.UpdateIndex.Count);
 
             Console.Write("Checking for tmp directory...");
             if (!Directory.Exists(tmpPath)) { Directory.CreateDirectory(tmpPath); }

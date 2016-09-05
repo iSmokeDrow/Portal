@@ -43,12 +43,12 @@
             this.logErrors = new System.Windows.Forms.CheckBox();
             this.logReports = new System.Windows.Forms.CheckBox();
             this.closeOnStart = new System.Windows.Forms.CheckBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.port = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ip = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.langBox.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -219,17 +219,6 @@
             this.closeOnStart.Text = "Close on Start";
             this.closeOnStart.UseVisualStyleBackColor = true;
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Arial", 15.25F);
-            this.label7.Location = new System.Drawing.Point(358, 304);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(62, 24);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "SAVE";
-            this.label7.Click += new System.EventHandler(this.save_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.port);
@@ -276,14 +265,26 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "IP:";
             // 
+            // button1
+            // 
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Arial", 12F);
+            this.button1.Location = new System.Drawing.Point(345, 316);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 35);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Save";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.save_Click);
+            // 
             // GeneralSettingsGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
-            this.ClientSize = new System.Drawing.Size(434, 336);
+            this.ClientSize = new System.Drawing.Size(434, 367);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.langBox);
             this.Controls.Add(this.groupBox2);
@@ -302,7 +303,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -322,11 +322,11 @@
         private System.Windows.Forms.Button locateClientDirectory_btn;
         private System.Windows.Forms.TextBox clientDirectory;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox port;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox ip;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
     }
 }

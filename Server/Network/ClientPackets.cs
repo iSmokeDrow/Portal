@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Server.Functions;
@@ -28,6 +29,8 @@ namespace Server.Network
             PacketsDb.Add(0x0002, CS_RequestSelfUpdate);
             PacketsDb.Add(0x0003, CS_RequestUpdater);
             PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
+            PacketsDb.Add(0x0040, CS_RequestSendType);
+            PacketsDb.Add(0x0041, CS_RequestFileTransfer);
             PacketsDb.Add(0x0030, CS_RequestArguments);
             PacketsDb.Add(0x0100, CS_RequestValidation);
             PacketsDb.Add(0x00DC, CS_RequestDisconnect);
@@ -98,7 +101,21 @@ namespace Server.Network
         /// <param name="stream">data</param>
         private void CS_RequestUpdateIndex(Client client, PacketStream stream)
         {
-            UpdateHandler.Instance.OnUserRequestUpdateIndex(client, stream.ReadInt32());
+            UpdateHandler.Instance.OnUserRequestUpdateIndex(client);
+        }
+
+        private void CS_RequestSendType(Client client, PacketStream stream)
+        {
+            if (debug) { Console.WriteLine("Client [{0}] requested send.type", client.Id); }
+
+            PacketStream outStream = new PacketStream(0x0040);
+            outStream.WriteInt32(OPT.GetInt("send.type"));
+            ClientManager.Instance.Send(client, outStream);
+        }
+
+        private void CS_RequestFileTransfer(Client client, PacketStream stream)
+        {
+            UpdateHandler.Instance.OnUserRequestFile(client, stream.ReadString());
         }
 
         /// <summary>
@@ -168,23 +185,10 @@ namespace Server.Network
         /// Informs the end of UpdateIndex sending
         /// </summary>
         /// <param name="client"></param>
-        public void UpdateIndexEnd(Client client, int type)
+        public void UpdateIndexEnd(Client client)
         {
             PacketStream stream = new PacketStream(0x0012);
-            stream.WriteInt32(type);
             ClientManager.Instance.Send(client, stream);
-        }
-
-        /// <summary>
-        /// Sends bytes of a file
-        /// </summary>
-        /// <param name="client">target client</param>
-        /// <param name="path">zip file path</param>
-        public void File(Client client, string path)
-        {
-            PacketStream s = new PacketStream(0x0021);
-            s.WriteString(path, path.Length + 1);
-            ClientManager.Instance.Send(client, s);
         }
 
         public void OTP(Client client, string otp)
@@ -207,6 +211,65 @@ namespace Server.Network
         }
 
         public void SendAccountNull(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0015)); }
+
+        public void SendFile(Client client, string filePath)
+        {
+            int chunkSize = 64000;
+
+            string fileName = Path.GetFileName(filePath);
+
+            byte[] buffer = (File.Exists(filePath)) ? File.ReadAllBytes(filePath) : null;
+            if (buffer.Length > 0)
+            {
+                // Just incase file is smaller than initial chunkSize
+                chunkSize = Math.Min(64000, buffer.Length);
+
+                SendFileInfo(client, buffer.Length);
+
+                int i = 0;
+
+                while (true)
+                {
+                    if (i == buffer.Length) { break; }
+
+                    PacketStream fStream = new PacketStream(0x0042);
+
+                    fStream.Flush();
+
+                    fStream.WriteInt32(chunkSize);
+                    fStream.WriteInt32(i);
+
+                    byte[] tempBuffer = new byte[chunkSize];
+                    Array.Copy(buffer, i, tempBuffer, 0, chunkSize);
+
+                    fStream.WriteBytes(tempBuffer);
+
+                    ClientManager.Instance.Send(client, fStream);
+
+                    // Increase the index position
+                    i = i + chunkSize;
+
+                    // Refresh the chunkSize
+                    chunkSize = Math.Min(64000, buffer.Length - i);
+                }
+
+                SendEOF(client, fileName);
+            }
+        }
+
+        private void SendFileInfo(Client client, int fileSize)
+        {
+            PacketStream stream = new PacketStream(0x0041);
+            stream.WriteInt32(fileSize);
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        public void SendEOF(Client client, string fileName) 
+        {
+            PacketStream stream = new PacketStream(0x0043);
+            stream.WriteString(fileName);
+            ClientManager.Instance.Send(client, stream);
+        }
 
         /// <summary>
         /// Informs the client of required start arguments

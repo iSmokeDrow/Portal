@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -18,6 +20,8 @@ namespace Client.Network
         private Dictionary<ushort, PacketAction> PacketsDb;
         private XDes DesCipher = new XDes(Program.DesKey);
 
+        private byte[] tempBuffer;
+
         public ServerPackets()
         {
             // Loads PacketsDb
@@ -32,6 +36,10 @@ namespace Client.Network
             PacketsDb.Add(0x0013, SC_UserValidated);
             PacketsDb.Add(0x0014, SC_UserBanned);
             PacketsDb.Add(0x0015, SC_AccountNull);
+            PacketsDb.Add(0x0040, SC_ReceiveSendType);
+            PacketsDb.Add(0x0041, SC_ReceiveFileSize);
+            PacketsDb.Add(0x0042, SC_ReceiveFile);
+            PacketsDb.Add(0x0043, SC_ReceiveEOF);
             PacketsDb.Add(0x0031, SC_Arguments);
             PacketsDb.Add(0x0099, SC_Disconnect);
             PacketsDb.Add(0x9999, SC_DesKey);
@@ -92,7 +100,7 @@ namespace Client.Network
 
         private void SC_UpdateIndexEnd(PacketStream stream)
         {
-            UpdateHandler.Instance.OnUpdateIndexEnd(stream.ReadInt32());
+            UpdateHandler.Instance.OnUpdateIndexEnd();
         }
 
         private void SC_UserBanned(PacketStream stream)
@@ -111,6 +119,49 @@ namespace Client.Network
             string otpHash = DesCipher.Decrypt(stream.ReadBytes(otpLength));
 
             GUI.Instance.OnValidationResultReceived(otpHash);
+        }
+
+        private void SC_ReceiveSendType(PacketStream stream)
+        {
+            UpdateHandler.Instance.OnSendTypeReceived(stream.ReadInt32());
+        }
+
+        private void SC_ReceiveFileSize(PacketStream stream)
+        {
+            int fileSize = stream.ReadInt32();
+            if (fileSize > 0)
+            {
+                tempBuffer = new byte[fileSize];
+                GUI.Instance.UpdateProgressMaximum(1, fileSize);
+                GUI.Instance.UpdateProgressValue(1, 0);
+            }
+        }
+
+        private void SC_ReceiveFile(PacketStream stream)
+        {
+            int chunkSize = stream.ReadInt32();
+            int offset = stream.ReadInt32();
+            byte[] chunks = stream.ReadBytes(chunkSize);
+            Buffer.BlockCopy(chunks, 0, tempBuffer, offset, chunkSize);
+            GUI.Instance.UpdateProgressValue(1, offset);
+        }
+
+        private void SC_ReceiveEOF(PacketStream stream)
+        {
+            string fileName = stream.ReadString();
+
+            string filePath = String.Format(@"{0}\Downloads\{1}", Directory.GetCurrentDirectory(), fileName);
+
+            if (File.Exists(filePath)) { File.Delete(filePath); }
+
+            GUI.Instance.UpdateProgressValue(1, tempBuffer.Length);
+
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+            {
+                fs.Write(tempBuffer, 0, tempBuffer.Length);
+            }
+
+            UpdateHandler.Instance.OnFileTransfered(fileName);
         }
 
         private void SC_Arguments(PacketStream stream)
@@ -183,10 +234,21 @@ namespace Client.Network
         /// <summary>
         /// Requests the list of files
         /// </summary>
-        internal void RequestUpdateIndex(int type)
+        internal void RequestUpdateIndex()
         {
             PacketStream stream = new PacketStream(0x0010);
-            stream.WriteInt32(type);
+            ServerManager.Instance.Send(stream);
+        }
+
+        internal void CS_RequestTransferType()
+        {
+            ServerManager.Instance.Send(new PacketStream(0x0040));
+        }
+
+        internal void CS_RequestFileTransfer(string fileName)
+        {
+            PacketStream stream = new PacketStream(0x0041);
+            stream.WriteString(fileName);
             ServerManager.Instance.Send(stream);
         }
 

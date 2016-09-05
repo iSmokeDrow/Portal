@@ -38,13 +38,13 @@
             this.musicMute = new System.Windows.Forms.CheckBox();
             this.environmentalMute = new System.Windows.Forms.CheckBox();
             this.disableLobbyTheme = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.musicRepeat = new System.Windows.Forms.CheckBox();
             this.environmentalVolume = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.musicVolume = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.sfxVolume = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.overallVolume = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -144,25 +144,13 @@
             // 
             this.disableLobbyTheme.AutoSize = true;
             this.disableLobbyTheme.ForeColor = System.Drawing.Color.White;
-            this.disableLobbyTheme.Location = new System.Drawing.Point(21, 344);
+            this.disableLobbyTheme.Location = new System.Drawing.Point(12, 351);
             this.disableLobbyTheme.Name = "disableLobbyTheme";
             this.disableLobbyTheme.Size = new System.Drawing.Size(91, 17);
             this.disableLobbyTheme.TabIndex = 12;
             this.disableLobbyTheme.Text = "Lobby Theme";
             this.disableLobbyTheme.UseVisualStyleBackColor = true;
             this.disableLobbyTheme.CheckedChanged += new System.EventHandler(this.disableLobbyTheme_CheckedChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(283, 338);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 22);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "SAVE";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // musicRepeat
             // 
@@ -269,9 +257,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.musicRepeat);
             this.groupBox1.Controls.Add(this.overallVolume);
-            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.sfxVolume);
-            this.groupBox1.Controls.Add(this.disableLobbyTheme);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.environmentalMute);
             this.groupBox1.Controls.Add(this.musicVolume);
@@ -284,17 +270,32 @@
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(362, 381);
+            this.groupBox1.Size = new System.Drawing.Size(362, 309);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
+            // 
+            // button1
+            // 
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(299, 336);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 32);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Save";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.label5_Click);
             // 
             // RappelzVolumeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
-            this.ClientSize = new System.Drawing.Size(390, 407);
+            this.ClientSize = new System.Drawing.Size(390, 387);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.disableLobbyTheme);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -306,6 +307,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -324,8 +326,8 @@
         private System.Windows.Forms.CheckBox musicMute;
         private System.Windows.Forms.CheckBox environmentalMute;
         private System.Windows.Forms.CheckBox disableLobbyTheme;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox musicRepeat;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button button1;
     }
 }

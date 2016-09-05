@@ -11,5 +11,6 @@ namespace Server.Structures
         public string FileName { get; set; }
         public string SHA512 { get; set; }
         public bool Legacy { get; set; }
+        public bool Delete { get; set; }
     }
 }

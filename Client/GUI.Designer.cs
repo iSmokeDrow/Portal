@@ -31,11 +31,11 @@
             this.totalStatus = new System.Windows.Forms.Label();
             this.currentStatus = new System.Windows.Forms.Label();
             this.currentProgress = new System.Windows.Forms.ProgressBar();
-            this.start_lb = new System.Windows.Forms.Label();
             this.gameSettings_lb = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.close_lb = new System.Windows.Forms.Label();
             this.totalProgress = new System.Windows.Forms.ProgressBar();
+            this.start_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // totalStatus
@@ -60,24 +60,12 @@
             // 
             // currentProgress
             // 
+            this.currentProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
             this.currentProgress.ForeColor = System.Drawing.Color.White;
             this.currentProgress.Location = new System.Drawing.Point(12, 252);
             this.currentProgress.Name = "currentProgress";
             this.currentProgress.Size = new System.Drawing.Size(566, 13);
             this.currentProgress.TabIndex = 11;
-            // 
-            // start_lb
-            // 
-            this.start_lb.AutoSize = true;
-            this.start_lb.BackColor = System.Drawing.Color.Transparent;
-            this.start_lb.Font = new System.Drawing.Font("Arial", 14F);
-            this.start_lb.ForeColor = System.Drawing.Color.White;
-            this.start_lb.Location = new System.Drawing.Point(505, 274);
-            this.start_lb.Name = "start_lb";
-            this.start_lb.Size = new System.Drawing.Size(73, 22);
-            this.start_lb.TabIndex = 16;
-            this.start_lb.Text = "START";
-            this.start_lb.Click += new System.EventHandler(this.start_btn_Click);
             // 
             // gameSettings_lb
             // 
@@ -120,11 +108,26 @@
             // 
             // totalProgress
             // 
+            this.totalProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
             this.totalProgress.ForeColor = System.Drawing.Color.White;
             this.totalProgress.Location = new System.Drawing.Point(12, 220);
             this.totalProgress.Name = "totalProgress";
             this.totalProgress.Size = new System.Drawing.Size(566, 13);
             this.totalProgress.TabIndex = 21;
+            // 
+            // start_btn
+            // 
+            this.start_btn.BackColor = System.Drawing.Color.Transparent;
+            this.start_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.start_btn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.start_btn.ForeColor = System.Drawing.Color.White;
+            this.start_btn.Location = new System.Drawing.Point(503, 273);
+            this.start_btn.Name = "start_btn";
+            this.start_btn.Size = new System.Drawing.Size(75, 34);
+            this.start_btn.TabIndex = 22;
+            this.start_btn.Text = "START";
+            this.start_btn.UseVisualStyleBackColor = false;
+            this.start_btn.Click += new System.EventHandler(this.start_btn_Click);
             // 
             // GUI
             // 
@@ -133,11 +136,11 @@
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::Client.Properties.Resources.rappelz_logo;
             this.ClientSize = new System.Drawing.Size(590, 319);
+            this.Controls.Add(this.start_btn);
             this.Controls.Add(this.totalProgress);
             this.Controls.Add(this.close_lb);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.gameSettings_lb);
-            this.Controls.Add(this.start_lb);
             this.Controls.Add(this.currentStatus);
             this.Controls.Add(this.currentProgress);
             this.Controls.Add(this.totalStatus);
@@ -166,11 +169,11 @@
         public System.Windows.Forms.Label totalStatus;
         public System.Windows.Forms.Label currentStatus;
         public System.Windows.Forms.ProgressBar currentProgress;
-        private System.Windows.Forms.Label start_lb;
         private System.Windows.Forms.Label gameSettings_lb;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label close_lb;
         public System.Windows.Forms.ProgressBar totalProgress;
+        private System.Windows.Forms.Button start_btn;
     }
 }
 

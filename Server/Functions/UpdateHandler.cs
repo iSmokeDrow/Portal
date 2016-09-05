@@ -8,6 +8,7 @@ using ZLibNet;
 
 namespace Server.Functions
 {
+    // TODO: Implement a trigger to decide how to create the UpdateIndex
     public class UpdateHandler
     {
         public static readonly UpdateHandler Instance = new UpdateHandler();
@@ -16,23 +17,61 @@ namespace Server.Functions
         internal static string updaterPath = Path.Combine(selfUpdatesDir, @"Updater.exe");
         internal static string indexPath = Path.Combine(Directory.GetCurrentDirectory(), @"index.opt");
         public List<IndexEntry> UpdateIndex = new List<IndexEntry>();
+        protected List<string> legacyIndex = new List<string>();
 
-        public void LoadUpdateList()
+        protected static string updatesDir
         {
-            using (StreamReader sr = new StreamReader(File.Open(string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), "index.opt"), FileMode.Open, FileAccess.Read)))
+            get
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                if (!string.IsNullOrEmpty(OPT.GetString("update.dir")))
                 {
-                    string[] optBlocks = line.Split('|');
-                    if (optBlocks.Length == 3)
-                    {
-                        UpdateIndex.Add(new IndexEntry { FileName = optBlocks[0], SHA512 = optBlocks[1], Legacy = Convert.ToBoolean(Convert.ToInt32(optBlocks[2])) });
-                    }
+                    return OPT.GetString("update.dir");
                 }
+                else { return string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/updates/"); }
             }
         }
 
+        public void LoadUpdateList()
+        {
+            switch (OPT.GetInt("send.type"))
+            {
+                case 0: // Google drive //TODO: REMEMBER TO RENAME ME FROM INDEX.OPT!!!!
+                    using (StreamReader sr = new StreamReader(File.Open(string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), "gIndex.opt"), FileMode.Open, FileAccess.Read)))
+                    {
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            string[] optBlocks = line.Split('|');
+                            if (optBlocks.Length == 4)
+                            {
+                                UpdateIndex.Add(new IndexEntry { FileName = optBlocks[0], SHA512 = optBlocks[1], Legacy = Convert.ToBoolean(Convert.ToInt32(optBlocks[2])), Delete = Convert.ToBoolean(Convert.ToInt32(optBlocks[3])) });
+                            }
+                        }
+                    }
+                    break;
+
+                case 1: // HTTP
+                    break;
+
+                case 2: // FTP
+                    break;
+
+                case 3: // TCP
+                    foreach (string filePath in Directory.GetFiles(updatesDir))
+                    {
+                        UpdateIndex.Add(new IndexEntry
+                        {
+                            FileName = Path.GetFileName(filePath),
+                            SHA512 = Hash.GetSHA512Hash(filePath),
+                            Legacy = OPT.IsLegacy(Path.GetFileName(filePath)),
+                            Delete = false // TODO: Update me!
+                        });
+                    }
+                    break;
+            }
+        }
+
+        // TODO: Send back based on updates load method
         public void OnUserRequestUpdateDateTime(Client client)
         {
             if (File.Exists(indexPath))
@@ -76,29 +115,42 @@ namespace Server.Functions
             }
         }
 
-        public void OnUserRequestUpdateIndex(Client client, int indexType)
+        public void OnUserRequestUpdateIndex(Client client)
         {
             foreach (IndexEntry indexEntry in UpdateIndex)
             {
                 ClientPackets.Instance.UpdateIndex(client, indexEntry.FileName, indexEntry.SHA512, indexEntry.Legacy);
             }
 
-            ClientPackets.Instance.UpdateIndexEnd(client, indexType);
+            ClientPackets.Instance.UpdateIndexEnd(client);
+        }
+
+        internal void OnUserRequestFile(Client client, string fileName)
+        {
+            if (OPT.GetBool("debug")) { Console.WriteLine("Client [{0}] requested file: {1}", client.Id, fileName); }
+
+            string updatePath = string.Format(@"{0}\{1}", updatesDir, fileName);
+            string archiveName = compressFile(updatePath);
+            string archivePath = string.Format(@"{0}\{1}.zip", Program.tmpPath, archiveName);
+
+            if (File.Exists(archivePath))
+            {
+                ClientPackets.Instance.SendFile(client, archivePath);
+            }
         }
 
         internal string compressFile(string filePath)
         {
             string name = OTP.GenerateRandomPassword(10);
-            string zipPath = Path.Combine(@"tmp/", name);
-            
+            string zipPath = Path.Combine(Program.tmpPath, string.Concat(name, ".zip"));
+
             Zipper z = new Zipper();
             z.ItemList.Add(filePath);
             z.ZipFile = zipPath;
             z.Zip();
             z = null;
-            
+
             return name;
         }
-
     }
 }

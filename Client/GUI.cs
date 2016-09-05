@@ -12,12 +12,11 @@ using Client.Structures;
 namespace Client
 {
     // TODO: Request epic from server
-    // TODO: Add Volume Menu
     // TODO: Add Shader menu
     // TODO: Implement PLAY_WINLOCK
     // TODO: Implement PLAY_WINALPHA ???
     // TODO: Implement PLAY_PARTYDM ???
-    // TODO: Implement PLAY_
+    // TODO: Implement support for /double_exec:1
     public partial class GUI : Form
     {
         #region Drag Hack
@@ -65,7 +64,7 @@ namespace Client
         // TODO: Use a better name for Updater.exe
         private void GUI_Load(object sender, EventArgs e)
         {
-            Task.Run(() => 
+            Task.Run(() =>
             {
                 if (Process.GetProcessesByName("Updater").Length > 0)
                 {
@@ -161,7 +160,7 @@ namespace Client
         {
             using (LoginGUI login = new LoginGUI())
             {
-                this.Invoke(new MethodInvoker(delegate 
+                this.Invoke(new MethodInvoker(delegate
                 {
                     login.ShowDialog(this);
 
@@ -197,14 +196,14 @@ namespace Client
             {
                 GUI.Instance.UpdateStatus(0, "Disconnected!");
                 ServerManager.Instance.Close();
-            }          
+            }
         }
 
         public async void OnValidationResultReceived(string otp)
         {
             if (otp != null)
             {
-                this.otp = otp;            
+                this.otp = otp;
                 canStart = true;
                 Instance.UpdateStatus(0, "Checking for Updater Update...");
                 await Task.Run(() => { checkForUpdater(); });
@@ -285,6 +284,43 @@ namespace Client
             }
         }
 
+        public void ResetProgressStatus(int type)
+        {
+            switch (type)
+            {
+                case 0: // total
+                    this.Invoke(new MethodInvoker(delegate 
+                    {
+                        totalProgress.Value = 0;
+                        totalProgress.Maximum = 100;
+                        totalStatus.Text = string.Empty;
+                    }));
+                    break;
+
+                case 1: // current
+                    this.Invoke(new MethodInvoker(delegate 
+                    {
+                        currentProgress.Value = 0;
+                        currentProgress.Maximum = 100;
+                        currentStatus.Text = string.Empty;
+                    }));
+                    break;
+
+                case 2: // both
+                    this.Invoke(new MethodInvoker(delegate 
+                    {
+                        totalProgress.Value = 0;
+                        totalProgress.Maximum = 100;
+                        totalStatus.Text = string.Empty;
+
+                        currentProgress.Value = 0;
+                        currentProgress.Maximum = 100;
+                        currentStatus.Text = string.Empty;
+                    }));
+                    break;
+            }
+        }
+
         private void start_btn_Click(object sender, EventArgs e)
         {
             if (canStart)
@@ -301,6 +337,8 @@ namespace Client
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("codepage"));
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("country"));
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", otp);
+
+                if (OPT.Instance.GetBool("showfps")) { launchArgs += " /winfps"; }
 
                 if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.Close(); })); } }
                 else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.Close(); }
