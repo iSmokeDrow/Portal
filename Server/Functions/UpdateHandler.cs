@@ -8,7 +8,6 @@ using ZLibNet;
 
 namespace Server.Functions
 {
-    // TODO: Implement a trigger to decide how to create the UpdateIndex
     public class UpdateHandler
     {
         public static readonly UpdateHandler Instance = new UpdateHandler();
@@ -35,7 +34,7 @@ namespace Server.Functions
         {
             switch (OPT.GetInt("send.type"))
             {
-                case 0: // Google drive //TODO: REMEMBER TO RENAME ME FROM INDEX.OPT!!!!
+                case 0: // Google drive 
                     using (StreamReader sr = new StreamReader(File.Open(string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), "gIndex.opt"), FileMode.Open, FileAccess.Read)))
                     {
                         string line;
@@ -59,27 +58,43 @@ namespace Server.Functions
                 case 3: // TCP
                     foreach (string filePath in Directory.GetFiles(updatesDir))
                     {
+                        string fileName = Path.GetFileName(filePath);
+
                         UpdateIndex.Add(new IndexEntry
                         {
-                            FileName = Path.GetFileName(filePath),
+                            FileName = fileName,
                             SHA512 = Hash.GetSHA512Hash(filePath),
-                            Legacy = OPT.IsLegacy(Path.GetFileName(filePath)),
-                            Delete = false // TODO: Update me!
+                            Legacy = OPT.IsLegacy(fileName),
+                            Delete = OPT.IsDelete(fileName)
                         });
                     }
                     break;
             }
         }
 
-        // TODO: Send back based on updates load method
         public void OnUserRequestUpdateDateTime(Client client)
         {
-            if (File.Exists(indexPath))
+            DateTime dateTime = default(DateTime);
+
+            switch (OPT.GetInt("send.type"))
             {
-                DateTime dateTime = Directory.GetLastWriteTimeUtc(indexPath);
-                ClientPackets.Instance.UpdateDateTime(client, dateTime.ToString(CultureInfo.InvariantCulture));
+                case 0:
+                    dateTime = Directory.GetLastWriteTimeUtc(indexPath);
+                    break;
+
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    dateTime = Directory.GetLastWriteTimeUtc(updatesDir);
+                    break;
             }
-            else { Console.WriteLine("Cannot find updates file: {0}", indexPath); }
+
+            if (dateTime != default(DateTime)) { ClientPackets.Instance.SC_SendUpdateTime(client, dateTime.ToString(CultureInfo.InvariantCulture)); }
+            else { Console.WriteLine("Failed to get proper update time for Client [{0}]", client.Id); }
         }
 
         public void OnUserRequestSelfUpdate(Client client, string remoteHash)
@@ -93,7 +108,7 @@ namespace Server.Functions
                     {
                         string zipName = compressFile(selfUpdatePath);
                         
-                        ClientPackets.Instance.UpdateSelfUpdate(client, zipName);
+                        ClientPackets.Instance.SC_SendSelfUpdate(client, zipName);
                     }
                 }
             }
@@ -109,7 +124,7 @@ namespace Server.Functions
                     if (hash != remoteHash || remoteHash == "NO_HASH")
                     {
                         string zipName = compressFile(updaterPath);
-                        ClientPackets.Instance.SendUpdater(client, zipName);
+                        ClientPackets.Instance.SC_SendSelfUpdater(client, zipName);
                     }
                 }
             }
@@ -117,12 +132,9 @@ namespace Server.Functions
 
         public void OnUserRequestUpdateIndex(Client client)
         {
-            foreach (IndexEntry indexEntry in UpdateIndex)
-            {
-                ClientPackets.Instance.UpdateIndex(client, indexEntry.FileName, indexEntry.SHA512, indexEntry.Legacy);
-            }
+            foreach (IndexEntry indexEntry in UpdateIndex) { ClientPackets.Instance.SC_SendUpdateIndex(client, indexEntry.FileName, indexEntry.SHA512, indexEntry.Legacy, indexEntry.Delete); }
 
-            ClientPackets.Instance.UpdateIndexEnd(client);
+            ClientPackets.Instance.SC_SendUpdateIndexEOF(client);
         }
 
         internal void OnUserRequestFile(Client client, string fileName)
@@ -135,7 +147,7 @@ namespace Server.Functions
 
             if (File.Exists(archivePath))
             {
-                ClientPackets.Instance.SendFile(client, archivePath);
+                ClientPackets.Instance.SC_SendFile(client, archivePath);
             }
         }
 

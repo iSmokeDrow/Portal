@@ -12,34 +12,20 @@ namespace Server.Functions
     /// </summary>
     public class OPT
     {
-        // TODO: Reimplement legacy_delete
-        // Replace legacy_delete.opt with Delete bool in UpdateIndex
-
         /// <summary>
         /// Dictionary holding all the settings loaded from portal.opt
         /// </summary>
         protected static Dictionary<string, string> SettingsList = new Dictionary<string, string>();
         protected static List<string> legacyList = new List<string>();
+        protected static List<string> deleteList = new List<string>();
 
-        public static bool SettingExists(string key)
-        {
-            return (SettingsList[key] != null) ? true : false;
-        }
+        public static bool SettingExists(string key) { return (SettingsList[key] != null) ? true : false; }
 
-        public static string GetString(string key)
-        {
-            return (SettingExists(key)) ? SettingsList[key] : null;
-        }
+        public static string GetString(string key) { return (SettingExists(key)) ? SettingsList[key] : null; }
 
-        public static bool GetBool(string key)
-        {
-            return (SettingExists(key)) ? Convert.ToBoolean(Convert.ToInt32(SettingsList[key])) : false;
-        }
+        public static bool GetBool(string key) { return (SettingExists(key)) ? Convert.ToBoolean(Convert.ToInt32(SettingsList[key])) : false; }
 
-        public static int GetInt(string key)
-        {
-            return (SettingExists(key)) ? Convert.ToInt32(SettingsList[key]) : 0;
-        }
+        public static int GetInt(string key) { return (SettingExists(key)) ? Convert.ToInt32(SettingsList[key]) : 0; }
 
         public static bool UpdateSetting(string key, string value)
         {
@@ -48,15 +34,13 @@ namespace Server.Functions
             return false;
         }
 
-        public static bool IsLegacy(string key)
-        {
-            return legacyList.Contains(key);
-        }
+        public static bool IsLegacy(string key) { return legacyList.Contains(key); }
 
-        public static int LegacyCount
-        {
-            get { return legacyList.Count; }
-        }
+        public static int LegacyCount { get { return legacyList.Count; } }
+
+        public static bool IsDelete(string key) { return deleteList.Contains(key); }
+
+        public static int DeleteCount { get { return deleteList.Count; } }
 
         /// <summary>
         /// Parses: portal.opt, legacy.opt, legacy_delete.opt into their appropriate Dictionary and List variables
@@ -99,13 +83,23 @@ namespace Server.Functions
                 using (StreamReader sr = new StreamReader("legacy.opt"))
                 {
                     string currentLineValue = null;
-                    while ((currentLineValue = sr.ReadLine()) != null)
-                    {
-                        legacyList.Add(currentLineValue);
-                    }
+                    while ((currentLineValue = sr.ReadLine()) != null) { legacyList.Add(currentLineValue); }
                 }
             }
-            else { Console.WriteLine("[FAIL]\n\t-The legacy.opt does not exist, create it!"); }
+            else { Console.WriteLine("The legacy.opt does not exist, create it!"); }
+        }
+
+        public static void LoadDeleteFiles()
+        {
+            if (File.Exists("delete.opt"))
+            {
+                using (StreamReader sr = new StreamReader("delete.opt"))
+                {
+                    string currentLineValue = null;
+                    while ((currentLineValue = sr.ReadLine()) != null) { deleteList.Add(currentLineValue); }
+                }
+            }
+            else { Console.WriteLine("The delete.opt does not exist, create it!"); }
         }
 
         /// <summary>

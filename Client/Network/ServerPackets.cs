@@ -40,7 +40,7 @@ namespace Client.Network
             PacketsDb.Add(0x0041, SC_ReceiveFileSize);
             PacketsDb.Add(0x0042, SC_ReceiveFile);
             PacketsDb.Add(0x0043, SC_ReceiveEOF);
-            PacketsDb.Add(0x0031, SC_Arguments);
+            PacketsDb.Add(0x0031, SC_ReceiveArguments);
             PacketsDb.Add(0x0099, SC_Disconnect);
             PacketsDb.Add(0x9999, SC_DesKey);
             #endregion
@@ -94,6 +94,7 @@ namespace Client.Network
             string name = stream.ReadString();
             string fileHash = stream.ReadString();
             bool isLegacy = stream.ReadBool();
+            bool isDelete = stream.ReadBool();
 
             UpdateHandler.Instance.OnUpdateIndexReceived(name, fileHash, isLegacy);
         }
@@ -164,7 +165,7 @@ namespace Client.Network
             UpdateHandler.Instance.OnFileTransfered(fileName);
         }
 
-        private void SC_Arguments(PacketStream stream)
+        private void SC_ReceiveArguments(PacketStream stream)
         {
             int len = stream.ReadInt32();
             byte[] arguments = stream.ReadBytes(len);
@@ -188,7 +189,7 @@ namespace Client.Network
             ServerManager.Instance.Send(stream);
         }
 
-        internal void  RequestUserValidation(string desKey, string name, string password, string fingerprint)
+        internal void  CS_ValidateUser(string desKey, string name, string password, string fingerprint)
         {
             des = new XDes(desKey);
             PacketStream stream = new PacketStream(0x0100);
@@ -202,21 +203,21 @@ namespace Client.Network
             ServerManager.Instance.Send(stream);
         }
 
-        internal void RequestUpdateDateTime()
+        internal void CS_GetUpdateDateTime()
         {
             PacketStream stream = new PacketStream(0x0001);
             ServerManager.Instance.Send(stream);
             
         }
 
-        internal void RequestSelfUpdate(string hash)
+        internal void CS_RequestSelfUpdate(string hash)
         {
             PacketStream stream = new PacketStream(0x0002);
             stream.WriteString(hash, hash.Length + 1);
             ServerManager.Instance.Send(stream);
         }
 
-        internal void RequestUpdater(string hash)
+        internal void CS_RequestSelfUpdater(string hash)
         {
             PacketStream stream = new PacketStream(0x0003);
             if (hash != null)
@@ -234,16 +235,13 @@ namespace Client.Network
         /// <summary>
         /// Requests the list of files
         /// </summary>
-        internal void RequestUpdateIndex()
+        internal void CS_RequestUpdateIndex()
         {
             PacketStream stream = new PacketStream(0x0010);
             ServerManager.Instance.Send(stream);
         }
 
-        internal void CS_RequestTransferType()
-        {
-            ServerManager.Instance.Send(new PacketStream(0x0040));
-        }
+        internal void CS_RequestTransferType() { ServerManager.Instance.Send(new PacketStream(0x0040)); }
 
         internal void CS_RequestFileTransfer(string fileName)
         {
@@ -252,10 +250,9 @@ namespace Client.Network
             ServerManager.Instance.Send(stream);
         }
 
-        internal void RequestArguments(string username)
+        internal void CS_RequestArguments()
         {
             PacketStream stream = new PacketStream(0x0030);
-            stream.WriteString(username, username.Length + 1);
             ServerManager.Instance.Send(stream);
         }
 

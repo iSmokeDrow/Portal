@@ -43,8 +43,6 @@ namespace Client.Functions
 
         private string GetFileExtension(string fileName) { return (Core.IsEncoded(fileName)) ? Path.GetExtension(Core.DecodeName(fileName)).Remove(0, 1).ToLower() : Path.GetExtension(fileName).Remove(0, 1).ToLower(); }
 
-        public bool NetworkError = false;
-
         public List<Structures.IndexEntry> FileList { get; set; }
         
         private int currentIndex { get; set; }
@@ -114,7 +112,7 @@ namespace Client.Functions
             if (!Directory.Exists(tmpDirectory)) { Directory.CreateDirectory(tmpDirectory); }
 
             ServerPackets.Instance.CS_RequestTransferType();
-            ServerPackets.Instance.RequestUpdateDateTime();
+            ServerPackets.Instance.CS_GetUpdateDateTime();
         }
 
         public void OnUpdateDateTimeReceived(DateTime dateTime)
@@ -126,15 +124,15 @@ namespace Client.Functions
             bool updateRequired = indexDateTime < dateTime || resourceDateTime < dateTime;
 
             if (updateRequired)
-                ServerPackets.Instance.RequestUpdateIndex();
+                ServerPackets.Instance.CS_RequestUpdateIndex();
 
             else { guiInstance.OnUpdateComplete(); }
         }
 
-        // TODO: Update me to use google drive for file fetching
+        // TODO: Update me to use TCP
         public void ExecuteSelfUpdate(string fileName) { DownloadSelfUpdate(fileName); }
 
-        // TODO: Upgrade to use Drive.cs
+        // TODO: Upgrade to use TCP
         // Review me!
         internal void ExecuteUpdaterUpdate(string fileName)
         {
@@ -213,87 +211,6 @@ namespace Client.Functions
             }
         }
 
-        internal void checkFiles()
-        {
-            // Filter  only the currently relevant files
-            filteredUpdates = new List<Structures.IndexEntry>();
-            filteredUpdates = FileList.FindAll(i => i.IsLegacy == false);
-
-            guiInstance.UpdateStatus(0, "Checking indexed data files...");
-
-            // Loop through the filteredUpdates
-            for (; this.currentIndex < this.filteredUpdates.Count; ++this.currentIndex)
-            {
-                guiInstance.UpdateProgressValue(0, this.currentIndex);
-
-                // Collect the current index entries information
-                Structures.IndexEntry file = this.filteredUpdates[this.currentIndex];
-                bool download = false;
-
-                guiInstance.UpdateStatus(1, string.Format("Checking file: {0}", file.FileName));
-
-                // Collect relevant data from the loaded data.000 index (if existing)
-                DataCore.Structures.IndexEntry fileEntry = Core.GetEntry(ref index, file.FileName);
-                if (fileEntry != null)
-                {
-                    // Compute file SHA512 hash (of file stored in data.xxx file system)
-                    string fileHash = Core.GetFileSHA512(settings.GetString("clientdirectory"), Core.GetID(fileEntry.Name), fileEntry.Offset, fileEntry.Length, GetFileExtension(fileEntry.Name));
-
-                    // If the local/remote file hashes don't match, flag this file for remote download
-                    if (file.FileHash != fileHash)
-                    {
-                        guiInstance.UpdateStatus(1, string.Format("File: {0} is depreciated!", file.FileName));
-                        download = true;
-                    }
-                }
-
-                if (download) { doUpdate(); break; }
-            }
-
-            if (this.currentIndex == this.filteredUpdates.Count)
-            {
-                currentIndex = 0;
-                guiInstance.UpdateProgressMaximum(0, 100);
-                guiInstance.UpdateProgressValue(0, 0);
-                guiInstance.UpdateStatus(0, "Saving Client index...");
-                Core.Save(ref index, settings.GetString("clientDirectory"), false, false);
-                guiInstance.OnUpdateComplete();
-            }
-        }
-
-        internal void checkLegacyFiles()
-        {
-            filteredUpdates = new List<Structures.IndexEntry>();
-            filteredUpdates = FileList.FindAll(i => i.IsLegacy == true);
-
-            guiInstance.UpdateStatus(0, "Checking Resource Files...");
-
-            for (; this.currentIndex < this.filteredUpdates.Count; ++this.currentIndex)
-            {
-                guiInstance.UpdateProgressValue(0, this.currentIndex);
-
-                Structures.IndexEntry file = this.FileList[this.currentIndex];
-                bool download = false;
-
-                guiInstance.UpdateStatus(1, string.Format("Checking resource: {0}", file.FileName));
-
-                if (!File.Exists(resourceFolder + file.FileName) || (Hash.GetSHA512Hash(resourceFolder + file.FileName) != file.FileHash))
-                {
-                    download = true;
-                }
-
-                if (download) { doUpdate(); break; }
-            }
-
-            if (this.currentIndex == this.filteredUpdates.Count)
-            {
-                currentIndex = 0;
-                guiInstance.UpdateProgressMaximum(0, 100);
-                guiInstance.UpdateProgressValue(0, 0);
-                guiInstance.OnUpdateComplete();
-            }
-        }
-
         private void DownloadSelfUpdate(string fileName)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -332,35 +249,50 @@ namespace Client.Functions
             }
         }
 
-        internal void OnFileTransfered(string fileName)
+        internal void OnFileTransfered(string zipName)
         {
-            GUI.Instance.ResetProgressStatus(2);
+            GUI.Instance.ResetProgressStatus(1);
 
-            //GUI.Instance.UpdateStatus(0, "Unpacking update...");
+            GUI.Instance.UpdateStatus(0, "Unpacking update...");
 
-            //bool isLegacy = this.filteredUpdates[this.currentIndex].IsLegacy;
+            bool isLegacy = this.filteredUpdates[this.currentIndex].IsLegacy;
 
-            //if (isLegacy)
-            //{
-            //    GUI.Instance.UpdateStatus(1, string.Format("Moving {0} to /Resource/...", filteredUpdates[currentIndex].FileName));
+            string zipPath = string.Format(@"{0}\Downloads\{1}", zipName);
 
-            //    string zipPath = string.Format(@"{0}\Downloads\{1}", fileName);
+            string fileName = filteredUpdates[currentIndex].FileName;
 
-            //    // Extract the zip to the /resource/ folder of client
-            //    ZIP.Unpack(zipPath, resourceFolder);
+            if (isLegacy)
+            {
+                GUI.Instance.UpdateStatus(1, string.Format("Moving {0} to /Resource/...", fileName));
 
-            //    GUI.Instance.UpdateStatus(1, "Cleaning up...");
+                // Extract the zip to the /resource/ folder of client
+                ZIP.Unpack(zipPath, resourceFolder);
+            }
+            else
+            {
+                string filePath = string.Format(@"{0}\{1}", tmpDirectory, fileName);
 
-            //    // Delete the zip
-            //    File.Delete(zipPath);
-            //}
-            //else
-            //{
-            //    // TODO: Implement file insertion!
-            //}
+                // Extract the zip to the /tmp/ folder for processing
+                ZIP.Unpack(zipPath, tmpDirectory);
+
+                DataCore.Structures.IndexEntry indexEntry = Core.GetEntry(ref index, fileName);
+
+                if (indexEntry != null)
+                {
+                    GUI.Instance.UpdateStatus(0, string.Format("Updating indexed file: {0}...", fileName));
+
+                    Core.UpdateFileEntry(ref index, settings.GetString("clientdirectory"), filePath, 0);
+
+                    Core.Save(ref index, settings.GetString("clientdirectory"), false, false);
+                }
+            }
+
+            GUI.Instance.UpdateStatus(1, "Cleaning up...");
+
+            // Delete the zip
+            File.Delete(zipPath);
 
             if (this.currentIndex == this.FileList.Count) { GUI.Instance.OnUpdateComplete(); }
         }
-
     }
 }

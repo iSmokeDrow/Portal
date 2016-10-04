@@ -43,8 +43,11 @@ namespace Server
 
             Console.WriteLine("Indexing legacy file names...");
             OPT.LoadLegacyFiles();
-
             Console.WriteLine("\t- {0} legacy files indexed!", OPT.LegacyCount);
+
+            Console.WriteLine("Indexing delete file names...");
+            OPT.LoadDeleteFiles();
+            Console.WriteLine("\t- {0} delete files indexed!", OPT.DeleteCount);
 
             Console.WriteLine("Indexing update files...");
             UpdateHandler.Instance.LoadUpdateList();

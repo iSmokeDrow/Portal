@@ -11,15 +11,7 @@ namespace Server.Functions
         protected bool debug = false;
 
         protected static UserHandler instance;
-        public static UserHandler Instance
-        {
-            get
-            {
-                if (instance == null) { instance = new UserHandler(); }
-
-                return instance;
-            }
-        }
+        public static UserHandler Instance { get { return (instance == null) ? new UserHandler() : instance; } }
 
         public static List<Client> ClientList = new List<Client>();
 
@@ -128,7 +120,7 @@ namespace Server.Functions
 
                                     setOTP(ref client, ref sqlCmd, account_id);
                                 }
-                                else { ClientPackets.Instance.SendBanStatus(client, 1); }
+                                else { ClientPackets.Instance.SC_SendBanStatus(client, 1); }
                             }
                         }
                         else
@@ -148,16 +140,15 @@ namespace Server.Functions
 
                         }
                     }
-                    else { ClientPackets.Instance.SendBanStatus(client, 0); } // Account is banned
+                    else { ClientPackets.Instance.SC_SendBanStatus(client, 0); } // Account is banned
                 }
-                else { ClientPackets.Instance.SendAccountNull(client); } // Account doesn't exist
+                else { ClientPackets.Instance.SC_SendAccountNull(client); } // Account doesn't exist
             }
         }
 
-        // TODO: Remove username argument (REDUNDANT)
-        internal void OnUserRequestArguments(Client client, string username)
+        internal void OnUserRequestArguments(Client client)
         {
-            ClientPackets.Instance.Arguments(client, string.Format("/auth_ip:127.0.0.1 /auth_port:13544 /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:{0} /password:?", username));
+            ClientPackets.Instance.SC_SendArguments(client, string.Format("/auth_ip:{0} /auth_port:{1} /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:? /password:?", OPT.GetString("auth.io.ip"), OPT.GetString("auth.io.port"));
         }
 
         internal void OnUserRequestDisconnect(Client client)
@@ -205,7 +196,7 @@ namespace Server.Functions
                 if (debug) { Console.WriteLine(((int)result == 1) ? "[SUCCESS]" : "[FAIL]"); }
             }
 
-            ClientPackets.Instance.OTP(client, otpHash);
+            ClientPackets.Instance.SC_SendOTP(client, otpHash);
         }
     }
 }

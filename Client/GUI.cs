@@ -11,7 +11,7 @@ using Client.Structures;
 
 namespace Client
 {
-    // TODO: Request epic from server
+    // TODO: Request start method (ON_START) from server
     // TODO: Add Shader menu
     // TODO: Implement PLAY_WINLOCK
     // TODO: Implement PLAY_WINALPHA ???
@@ -66,10 +66,7 @@ namespace Client
         {
             Task.Run(() =>
             {
-                if (Process.GetProcessesByName("Updater").Length > 0)
-                {
-                    foreach (var process in Process.GetProcessesByName("Updater")) { process.Kill(); }
-                }
+                if (Process.GetProcessesByName("Updater").Length > 0) { foreach (var process in Process.GetProcessesByName("Updater")) { process.Kill(); } }
             });
         }
 
@@ -95,10 +92,7 @@ namespace Client
 
         internal void connectToServer()
         {
-            if (!ServerManager.Instance.Start(ip, port))
-            {
-                this.Close();
-            }
+            if (!ServerManager.Instance.Start(ip, port)) { this.Close(); }
         }
 
         private void Login()
@@ -116,15 +110,15 @@ namespace Client
 
         internal void checkForUpdater()
         {
-            if (File.Exists("Updater.exe")) { ServerPackets.Instance.RequestUpdater(Hash.GetSHA512Hash("Updater.exe")); }
-            else { ServerPackets.Instance.RequestUpdater(null); }
+            if (File.Exists("Updater.exe")) { ServerPackets.Instance.CS_RequestSelfUpdater(Hash.GetSHA512Hash("Updater.exe")); }
+            else { ServerPackets.Instance.CS_RequestSelfUpdater(null); }
         }
 
         internal void checkForSelfUpdate()
         {
             if (File.Exists("Launcher.exe"))
             {
-                ServerPackets.Instance.RequestSelfUpdate(Hash.GetSHA512Hash("Launcher.exe"));
+                ServerPackets.Instance.CS_RequestSelfUpdate(Hash.GetSHA512Hash("Launcher.exe"));
             }
         }
 
@@ -167,7 +161,7 @@ namespace Client
                     if (!login.Cancelled)
                     {
                         UpdateStatus(0, "Validating your credentials...");
-                        ServerPackets.Instance.RequestUserValidation(desKey, login.Username, login.Password, FingerPrint.Value);
+                        ServerPackets.Instance.CS_ValidateUser(desKey, login.Username, login.Password, FingerPrint.Value);
                     }
                     else
                     {
@@ -199,12 +193,15 @@ namespace Client
             }
         }
 
-        public async void OnValidationResultReceived(string otp)
+        public async void OnValidationResultReceived(string otp) // TODO: Send int updatesDisable 
         {
             if (otp != null)
             {
                 this.otp = otp;
+
+                // TODO: Move me to OnUpdateCompleted (unless disable.updating:1)
                 canStart = true;
+
                 Instance.UpdateStatus(0, "Checking for Updater Update...");
                 await Task.Run(() => { checkForUpdater(); });
                 Instance.UpdateStatus(0, "Checking for Launcher Update...");
@@ -216,12 +213,7 @@ namespace Client
 
         internal void updateClient()
         {
-            if (checkForClient())
-            {
-                UpdateHandler.Instance.Start();
-
-                if (UpdateHandler.Instance.NetworkError) { return; }
-            }
+            if (checkForClient()) { UpdateHandler.Instance.Start(); }
             else
             {
                 this.Invoke(new MethodInvoker(delegate { this.Close(); }));
@@ -289,7 +281,7 @@ namespace Client
             switch (type)
             {
                 case 0: // total
-                    this.Invoke(new MethodInvoker(delegate 
+                    this.Invoke(new MethodInvoker(delegate
                     {
                         totalProgress.Value = 0;
                         totalProgress.Maximum = 100;
@@ -298,7 +290,7 @@ namespace Client
                     break;
 
                 case 1: // current
-                    this.Invoke(new MethodInvoker(delegate 
+                    this.Invoke(new MethodInvoker(delegate
                     {
                         currentProgress.Value = 0;
                         currentProgress.Maximum = 100;
@@ -307,7 +299,7 @@ namespace Client
                     break;
 
                 case 2: // both
-                    this.Invoke(new MethodInvoker(delegate 
+                    this.Invoke(new MethodInvoker(delegate
                     {
                         totalProgress.Value = 0;
                         totalProgress.Maximum = 100;
@@ -321,13 +313,7 @@ namespace Client
             }
         }
 
-        private void start_btn_Click(object sender, EventArgs e)
-        {
-            if (canStart)
-            {
-                ServerPackets.Instance.RequestArguments(OPT.Instance.GetString("username"));
-            }
-        }
+        private void start_btn_Click(object sender, EventArgs e) { if (canStart) { ServerPackets.Instance.CS_RequestArguments(); } }
 
         public void OnArgumentsReceived(string arguments)
         {
@@ -336,6 +322,7 @@ namespace Client
                 string launchArgs = arguments.TrimEnd('\0');
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("codepage"));
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("country"));
+                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("username"));
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", otp);
 
                 if (OPT.Instance.GetBool("showfps")) { launchArgs += " /winfps"; }

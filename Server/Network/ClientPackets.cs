@@ -60,10 +60,7 @@ namespace Server.Network
 
         private void CS_RequestDesKey(Client client, PacketStream stream)
         {
-            if (debug)
-            {
-                Console.Write("Client [{0}] requested des.key...", client.Id);
-            }
+            if (debug) { Console.Write("Client [{0}] requested des.key...", client.Id); }
 
             UserHandler.Instance.OnUserRequestDesKey(client);
         }
@@ -79,20 +76,11 @@ namespace Server.Network
             UserHandler.Instance.OnValidateUser(client, username, password, fingerprint);
         }
 
-        private void CS_RequestUpdateDateTime(Client client, PacketStream stream)
-        {
-            UpdateHandler.Instance.OnUserRequestUpdateDateTime(client);
-        }
+        private void CS_RequestUpdateDateTime(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestUpdateDateTime(client); }
 
-        private void CS_RequestSelfUpdate(Client client, PacketStream stream)
-        {
-            UpdateHandler.Instance.OnUserRequestSelfUpdate(client, stream.ReadString());
-        }
+        private void CS_RequestSelfUpdate(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestSelfUpdate(client, stream.ReadString()); }
 
-        private void CS_RequestUpdater(Client client, PacketStream stream)
-        {
-            UpdateHandler.Instance.OnUserRequestUpdater(client, stream.ReadString());          
-        }
+        private void CS_RequestUpdater(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestUpdater(client, stream.ReadString()); }
 
         /// <summary>
         /// Client wants the file list
@@ -113,26 +101,19 @@ namespace Server.Network
             ClientManager.Instance.Send(client, outStream);
         }
 
-        private void CS_RequestFileTransfer(Client client, PacketStream stream)
-        {
-            UpdateHandler.Instance.OnUserRequestFile(client, stream.ReadString());
-        }
+        private void CS_RequestFileTransfer(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestFile(client, stream.ReadString()); }
 
         /// <summary>
         /// Request launch arguments
         /// </summary>
         /// <param name="client"></param>
         /// <param name="stream"></param>
-        private void CS_RequestArguments(Client client, PacketStream stream)
-        {
-            string name = stream.ReadString();
-            UserHandler.Instance.OnUserRequestArguments(client, name);
-        }
+        private void CS_RequestArguments(Client client, PacketStream stream) { UserHandler.Instance.OnUserRequestArguments(client); }
 
         private void CS_RequestDisconnect(Client client, PacketStream stream)
         {
             UserHandler.ClientList.Remove(client);
-            OkDisconnect(client);
+            SC_SendOkDisconnect(client);
             client.ClSocket.Close();
             if (debug) { Console.WriteLine("Client [{0}] disconnected!", client.Id); }
         }
@@ -141,57 +122,46 @@ namespace Server.Network
 
         #region Server-Client Packets (SC)
 
-        public void UpdateDateTime(Client client, string DateTime)
+        internal void SC_SendUpdateTime(Client client, string DateTime)
         {
             PacketStream stream = new PacketStream(0x000A);
-
             stream.WriteString(DateTime, DateTime.Length + 1);
-
             ClientManager.Instance.Send(client, stream);
         }
 
-        public void UpdateSelfUpdate(Client client, string tmpName)
+        internal void SC_SendSelfUpdate(Client client, string tmpName)
         {
             PacketStream stream = new PacketStream(0x000B);
             stream.WriteString(tmpName, tmpName.Length + 1);
             ClientManager.Instance.Send(client, stream);
         }
 
-        internal void SendUpdater(Client client, string tmpName)
+        internal void SC_SendSelfUpdater(Client client, string tmpName)
         {
             PacketStream stream = new PacketStream(0x001E);
             stream.WriteString(tmpName, tmpName.Length + 1);
             ClientManager.Instance.Send(client, stream);
         }
 
-        /// <summary>
-        /// Sends UpdateIndex of a file
-        /// </summary>
-        /// <param name="client">target client</param>
-        /// <param name="fileName">file name (hashed)</param>
-        /// <param name="fileHash">SHA512 hash of this file</param>
-        public void UpdateIndex(Client client, string fileName, string fileHash, bool isLegacy)
+        internal void SC_SendUpdateIndex(Client client, string fileName, string fileHash, bool isLegacy, bool isDelete)
         {
             PacketStream stream = new PacketStream(0x0011);
 
             stream.WriteString(fileName, fileName.Length + 1);
             stream.WriteString(fileHash, fileHash.Length + 1);
             stream.WriteBool(isLegacy);
+            stream.WriteBool(isDelete);
 
             ClientManager.Instance.Send(client, stream);
         }
 
-        /// <summary>
-        /// Informs the end of UpdateIndex sending
-        /// </summary>
-        /// <param name="client"></param>
-        public void UpdateIndexEnd(Client client)
+        internal void SC_SendUpdateIndexEOF(Client client)
         {
             PacketStream stream = new PacketStream(0x0012);
             ClientManager.Instance.Send(client, stream);
         }
 
-        public void OTP(Client client, string otp)
+        internal void SC_SendOTP(Client client, string otp)
         {
             PacketStream stream = new PacketStream(0x0013);
 
@@ -202,7 +172,7 @@ namespace Server.Network
             ClientManager.Instance.Send(client, stream);
         }
 
-        public void SendBanStatus(Client client, int banType)
+        internal void SC_SendBanStatus(Client client, int banType)
         {
             PacketStream stream = new PacketStream(0x0014);
             stream.WriteInt32(banType);
@@ -210,9 +180,16 @@ namespace Server.Network
             ClientManager.Instance.Send(client, stream);
         }
 
-        public void SendAccountNull(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0015)); }
+        internal void SC_SendAccountNull(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0015)); }
 
-        public void SendFile(Client client, string filePath)
+        internal void SC_SendFileInfo(Client client, int fileSize)
+        {
+            PacketStream stream = new PacketStream(0x0041);
+            stream.WriteInt32(fileSize);
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        internal void SC_SendFile(Client client, string filePath)
         {
             int chunkSize = 64000;
 
@@ -224,7 +201,7 @@ namespace Server.Network
                 // Just incase file is smaller than initial chunkSize
                 chunkSize = Math.Min(64000, buffer.Length);
 
-                SendFileInfo(client, buffer.Length);
+                SC_SendFileInfo(client, buffer.Length);
 
                 int i = 0;
 
@@ -253,29 +230,18 @@ namespace Server.Network
                     chunkSize = Math.Min(64000, buffer.Length - i);
                 }
 
-                SendEOF(client, fileName);
+                SC_SendFileEOF(client, fileName);
             }
         }
 
-        private void SendFileInfo(Client client, int fileSize)
-        {
-            PacketStream stream = new PacketStream(0x0041);
-            stream.WriteInt32(fileSize);
-            ClientManager.Instance.Send(client, stream);
-        }
-
-        public void SendEOF(Client client, string fileName) 
+        internal void SC_SendFileEOF(Client client, string fileName) 
         {
             PacketStream stream = new PacketStream(0x0043);
             stream.WriteString(fileName);
             ClientManager.Instance.Send(client, stream);
         }
 
-        /// <summary>
-        /// Informs the client of required start arguments
-        /// </summary>
-        /// <param name="client"></param>
-        public void Arguments(Client client, string arguments)
+        internal void SC_SendArguments(Client client, string arguments)
         {
             PacketStream stream = new PacketStream(0x0031);
 
@@ -286,7 +252,7 @@ namespace Server.Network
             ClientManager.Instance.Send(client, stream);
         }
 
-        public void OkDisconnect(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0099)); }
+        internal void SC_SendOkDisconnect(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0099)); }
 
         #endregion
     }

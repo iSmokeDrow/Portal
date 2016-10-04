@@ -704,10 +704,19 @@ namespace Client
             else { lowQualityShadows.Enabled = true; }
         }
 
-        // TODO: Disable all sub features (last fx)
         private void lastingEffects_CheckedChanged(object sender, EventArgs e)
         {
             RappelzSettings.Update("GRAPHIC_STATE_EFFECT", Convert.ToInt32(lastingEffects.CheckState).ToString());
+
+            if (!lastingEffects.Checked)
+            {
+                lastingEffects_cs.Checked = false;
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_CREATURE", "0");
+                lastingEffects_p.Checked = false;
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", "0");
+                lastingEffects_o.Checked = false;
+                RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", "0");
+            }
         }
 
         private void lastingEffects_cs_CheckedChanged(object sender, EventArgs e)
@@ -725,10 +734,19 @@ namespace Client
             RappelzSettings.Update("GRAPHIC_STATE_EFFECT_PARTY", Convert.ToInt32(lastingEffects_o.CheckState).ToString());
         }
 
-        // TODO: Onclick disable all sub features (effects)
         private void effect_CheckedChanged(object sender, EventArgs e)
         {
             RappelzSettings.Update("GRAPHIC_EFFECT", Convert.ToInt32(effect.CheckState).ToString());
+
+            if (!effect.Checked)
+            {
+                effect_cs.Checked = false;
+                RappelzSettings.Update("GRAPHIC_EFFECT_CREATURE", "0");
+                effect_p.Checked = false;
+                RappelzSettings.Update("GRAPHIC_EFFECT_PARTY", "0");
+                effect_o.Checked = false;
+                RappelzSettings.Update("GRAPHIC_EFFECT_ENEMY", "0");
+            }
         }
 
         private void effect_cs_CheckedChanged(object sender, EventArgs e)
