@@ -5,9 +5,8 @@ DataCore this launcher can make quick work of updating your client in more ways 
 # Features (Currently Implemented)
 - Powered by DataCore v3.0.0.5 (unreleased)
 - Non-Traditional versioning system
-  - File list kept @ server in updates.opt (format: hashed-name|file-sha512|isLegacy)
-- Non-Tradition storage system
-  - All updates are kept unhashed in a Google Drive accessed via Google Service Account (see google apis)
+  - Updates are compared on a case by case basis using SHA512
+  - Update list is requested on demand and generated in real-time
 - Capability to mark updates for remote deletion (Incase of bad updates issued)
 - TCP/IP based Client <> Server model
   - All sensitive data encrypted (DES / RC4)
