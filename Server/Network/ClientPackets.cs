@@ -30,10 +30,12 @@ namespace Server.Network
             PacketsDb.Add(0x0003, CS_RequestUpdater);
             PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
             PacketsDb.Add(0x0040, CS_RequestSendType);
-            PacketsDb.Add(0x0041, CS_RequestFileTransfer);
+            PacketsDb.Add(0x0041, CS_RequestFileSize);
+            PacketsDb.Add(0x0042, CS_RequestFileTransfer);
             PacketsDb.Add(0x0030, CS_RequestArguments);
             PacketsDb.Add(0x0100, CS_RequestValidation);
             PacketsDb.Add(0x00DC, CS_RequestDisconnect);
+            PacketsDb.Add(0x0999, CS_RequestAuthenticationType);
             PacketsDb.Add(0x9999, CS_RequestDesKey);
             #endregion
         }
@@ -64,6 +66,8 @@ namespace Server.Network
 
             UserHandler.Instance.OnUserRequestDesKey(client);
         }
+
+        private void CS_RequestAuthenticationType(Client client, PacketStream stream) { UserHandler.Instance.OnAuthenticationTypeRequest(client); }
 
         private void CS_RequestValidation(Client client, PacketStream stream)
         {
@@ -100,6 +104,8 @@ namespace Server.Network
             outStream.WriteInt32(OPT.GetInt("send.type"));
             ClientManager.Instance.Send(client, outStream);
         }
+
+        private void CS_RequestFileSize(Client client, PacketStream stream) { UpdateHandler.Instance.OnRequestFileInfo(client, stream.ReadString()); }
 
         private void CS_RequestFileTransfer(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestFile(client, stream.ReadString()); }
 
@@ -182,10 +188,11 @@ namespace Server.Network
 
         internal void SC_SendAccountNull(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0015)); }
 
-        internal void SC_SendFileInfo(Client client, int fileSize)
+        internal void SC_SendFileInfo(Client client, string fileName, long fileSize)
         {
             PacketStream stream = new PacketStream(0x0041);
-            stream.WriteInt32(fileSize);
+            stream.WriteString(fileName, fileName.Length + 1);
+            stream.WriteInt64(fileSize);
             ClientManager.Instance.Send(client, stream);
         }
 
@@ -200,8 +207,6 @@ namespace Server.Network
             {
                 // Just incase file is smaller than initial chunkSize
                 chunkSize = Math.Min(64000, buffer.Length);
-
-                SC_SendFileInfo(client, buffer.Length);
 
                 int i = 0;
 
@@ -249,6 +254,13 @@ namespace Server.Network
             stream.WriteInt32(argEncrypt.Length);
             stream.WriteBytes(argEncrypt);
 
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        internal void SC_SendAuthenticationType(Client client, int type)
+        {
+            PacketStream stream = new PacketStream(0x0999);
+            stream.WriteInt32(type);
             ClientManager.Instance.Send(client, stream);
         }
 

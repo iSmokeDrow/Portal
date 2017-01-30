@@ -82,7 +82,7 @@
     </Reference>
     <Reference Include="DataCore, Version=3.0.0.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DataCore\DataCore\bin\Release\DataCore.dll</HintPath>
+      <HintPath>..\..\DataCore\DataCore\bin\Debug\DataCore.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis, Version=1.15.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.1.15.0\lib\net45\Google.Apis.dll</HintPath>

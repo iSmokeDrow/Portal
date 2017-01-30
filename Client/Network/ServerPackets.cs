@@ -11,16 +11,16 @@ namespace Client.Network
 {
     public class ServerPackets
     {
-        protected static XDes des;
-
         public static readonly ServerPackets Instance = new ServerPackets();
 
         private delegate void PacketAction(PacketStream stream);
 
         private Dictionary<ushort, PacketAction> PacketsDb;
-        private XDes DesCipher = new XDes(Program.DesKey);
+        private XDes desCipher = new XDes(Program.DesKey);
 
         private byte[] tempBuffer;
+
+        internal void SetDES(string key) { desCipher = new XDes(key); }
 
         public ServerPackets()
         {
@@ -37,14 +37,17 @@ namespace Client.Network
             PacketsDb.Add(0x0014, SC_UserBanned);
             PacketsDb.Add(0x0015, SC_AccountNull);
             PacketsDb.Add(0x0040, SC_ReceiveSendType);
-            PacketsDb.Add(0x0041, SC_ReceiveFileSize);
+            PacketsDb.Add(0x0041, SC_ReceiveFileInfo);
             PacketsDb.Add(0x0042, SC_ReceiveFile);
             PacketsDb.Add(0x0043, SC_ReceiveEOF);
             PacketsDb.Add(0x0031, SC_ReceiveArguments);
             PacketsDb.Add(0x0099, SC_Disconnect);
+            PacketsDb.Add(0x0999, SC_AuthenticationType);
             PacketsDb.Add(0x9999, SC_DesKey);
             #endregion
         }
+
+        private void SC_AuthenticationType(PacketStream stream) { GUI.Instance.OnAuthenticationTypeReceived(stream.ReadInt32()); }
 
         /// <summary>
         /// Called whenever a packet is received from the Server
@@ -117,7 +120,7 @@ namespace Client.Network
         private void SC_UserValidated(PacketStream stream)
         {
             int otpLength = stream.ReadInt32();
-            string otpHash = DesCipher.Decrypt(stream.ReadBytes(otpLength));
+            string otpHash = desCipher.Decrypt(stream.ReadBytes(otpLength));
 
             GUI.Instance.OnValidationResultReceived(otpHash);
         }
@@ -127,14 +130,17 @@ namespace Client.Network
             UpdateHandler.Instance.OnSendTypeReceived(stream.ReadInt32());
         }
 
-        private void SC_ReceiveFileSize(PacketStream stream)
+        //TODO: Move tempBuffer to UpdateHandler?
+        private void SC_ReceiveFileInfo(PacketStream stream)
         {
+            string tmpName = stream.ReadString();
             int fileSize = stream.ReadInt32();
             if (fileSize > 0)
             {
                 tempBuffer = new byte[fileSize];
                 GUI.Instance.UpdateProgressMaximum(1, fileSize);
                 GUI.Instance.UpdateProgressValue(1, 0);
+                UpdateHandler.Instance.OnFileInfoReceived(tmpName);
             }
         }
 
@@ -150,17 +156,13 @@ namespace Client.Network
         private void SC_ReceiveEOF(PacketStream stream)
         {
             string fileName = stream.ReadString();
-
             string filePath = String.Format(@"{0}\Downloads\{1}", Directory.GetCurrentDirectory(), fileName);
 
             if (File.Exists(filePath)) { File.Delete(filePath); }
 
             GUI.Instance.UpdateProgressValue(1, tempBuffer.Length);
 
-            using (FileStream fs = new FileStream(filePath, FileMode.Create))
-            {
-                fs.Write(tempBuffer, 0, tempBuffer.Length);
-            }
+            using (FileStream fs = new FileStream(filePath, FileMode.Create)) { fs.Write(tempBuffer, 0, tempBuffer.Length); }
 
             UpdateHandler.Instance.OnFileTransfered(fileName);
         }
@@ -170,7 +172,7 @@ namespace Client.Network
             int len = stream.ReadInt32();
             byte[] arguments = stream.ReadBytes(len);
 
-            GUI.Instance.OnArgumentsReceived(DesCipher.Decrypt(arguments));
+            GUI.Instance.OnArgumentsReceived(desCipher.Decrypt(arguments));
         }
 
         private void SC_Disconnect(PacketStream stream)
@@ -189,12 +191,13 @@ namespace Client.Network
             ServerManager.Instance.Send(stream);
         }
 
-        internal void  CS_ValidateUser(string desKey, string name, string password, string fingerprint)
+        internal void CS_RequestAuthenticationType() { ServerManager.Instance.Send(new PacketStream(0x0999)); }
+
+        internal void  CS_ValidateUser(string name, string password, string fingerprint)
         {
-            des = new XDes(desKey);
             PacketStream stream = new PacketStream(0x0100);
-            byte[] encName = des.Encrypt(name);
-            byte[] encPass = des.Encrypt(password);
+            byte[] encName = desCipher.Encrypt(name);
+            byte[] encPass = desCipher.Encrypt(password);
             stream.WriteInt32(encName.Length);
             stream.WriteBytes(encName);
             stream.WriteInt32(encPass.Length);
@@ -243,9 +246,16 @@ namespace Client.Network
 
         internal void CS_RequestTransferType() { ServerManager.Instance.Send(new PacketStream(0x0040)); }
 
-        internal void CS_RequestFileTransfer(string fileName)
+        internal void CS_RequestFileSize(string fileName)
         {
             PacketStream stream = new PacketStream(0x0041);
+            stream.WriteString(fileName);
+            ServerManager.Instance.Send(stream);
+        }
+
+        internal void CS_RequestFileTransfer(string fileName)
+        {
+            PacketStream stream = new PacketStream(0x0042);
             stream.WriteString(fileName);
             ServerManager.Instance.Send(stream);
         }

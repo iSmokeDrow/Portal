@@ -16,7 +16,7 @@ namespace Client
     // TODO: Implement PLAY_WINLOCK
     // TODO: Implement PLAY_WINALPHA ???
     // TODO: Implement PLAY_PARTYDM ???
-    // TODO: Implement support for /double_exec:1
+    // TODO: Gray out user credentials if imbc login isn't enabled
     public partial class GUI : Form
     {
         #region Drag Hack
@@ -53,6 +53,7 @@ namespace Client
         public static GUI Instance;
         protected bool canStart = false;
         protected string otp = string.Empty;
+        protected int authenticationType = 0;
 
         public GUI()
         {
@@ -79,8 +80,7 @@ namespace Client
             await Task.Run(() => { checkForSFrame(); });
             Instance.UpdateStatus(0, "Connecting to Update Server...");
             connectToServer();
-            Instance.UpdateStatus(0, "Waiting for User Credentials...");
-            Login();
+            ServerPackets.Instance.RequestDESKey();
             Instance.UpdateStatus(0, "");
         }
 
@@ -90,15 +90,9 @@ namespace Client
             port = OPT.Instance.GetInt("port");
         }
 
-        internal void connectToServer()
-        {
-            if (!ServerManager.Instance.Start(ip, port)) { this.Close(); }
-        }
+        internal void checkAuthenticationType() { ServerPackets.Instance.CS_RequestAuthenticationType(); }
 
-        private void Login()
-        {
-            ServerPackets.Instance.RequestDESKey();
-        }
+        internal void connectToServer() { if (!ServerManager.Instance.Start(ip, port)) { this.Close(); } }
 
         internal void checkForSFrame()
         {
@@ -150,7 +144,30 @@ namespace Client
             return false;
         }
 
-        public void OnDesKeyReceived(string desKey)
+        internal void OnDesKeyReceived(string desKey)
+        {
+            ServerPackets.Instance.SetDES(desKey);
+            checkAuthenticationType();
+        }
+
+        internal void OnAuthenticationTypeReceived(int type)
+        {
+            this.authenticationType = type;
+
+            switch (type)
+            {
+                case 0: //imbc off
+                    doUpdateTasks();
+                    break;
+
+                case 1: //imbc on
+                    Instance.UpdateStatus(0, "Waiting for User Credentials...");
+                    login();
+                    break;
+            }
+        }
+
+        internal void login()
         {
             using (LoginGUI login = new LoginGUI())
             {
@@ -161,7 +178,7 @@ namespace Client
                     if (!login.Cancelled)
                     {
                         UpdateStatus(0, "Validating your credentials...");
-                        ServerPackets.Instance.CS_ValidateUser(desKey, login.Username, login.Password, FingerPrint.Value);
+                        ServerPackets.Instance.CS_ValidateUser(login.Username, login.Password, FingerPrint.Value);
                     }
                     else
                     {
@@ -184,7 +201,7 @@ namespace Client
         {
             if (MessageBox.Show("The username or password you entered is incorrect, would you like to try again?", "Login Exception", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Login();
+                login();
             }
             else
             {
@@ -193,31 +210,30 @@ namespace Client
             }
         }
 
-        public async void OnValidationResultReceived(string otp) // TODO: Send int updatesDisable 
+        public void OnValidationResultReceived(string otp) // TODO: Send int updatesDisable 
         {
             if (otp != null)
             {
                 this.otp = otp;
-
-                // TODO: Move me to OnUpdateCompleted (unless disable.updating:1)
+                doUpdateTasks();
                 canStart = true;
-
-                Instance.UpdateStatus(0, "Checking for Updater Update...");
-                await Task.Run(() => { checkForUpdater(); });
-                Instance.UpdateStatus(0, "Checking for Launcher Update...");
-                await Task.Run(() => { checkForSelfUpdate(); });
-                Instance.UpdateStatus(0, "Checking for Client Updates...");
-                await Task.Run(() => { updateClient(); });
             }
+        }
+
+        internal async void doUpdateTasks()
+        {
+            Instance.UpdateStatus(0, "Checking for Updater Update...");
+            await Task.Run(() => { checkForUpdater(); });
+            Instance.UpdateStatus(0, "Checking for Launcher Update...");
+            await Task.Run(() => { checkForSelfUpdate(); });
+            Instance.UpdateStatus(0, "Checking for Client Updates...");
+            await Task.Run(() => { updateClient(); });
         }
 
         internal void updateClient()
         {
             if (checkForClient()) { UpdateHandler.Instance.Start(); }
-            else
-            {
-                this.Invoke(new MethodInvoker(delegate { this.Close(); }));
-            }
+            else { this.Invoke(new MethodInvoker(delegate { this.Close(); })); }
         }
 
         public void OnUpdateComplete()
@@ -323,8 +339,9 @@ namespace Client
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("codepage"));
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("country"));
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("username"));
-                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", otp);
 
+                if (authenticationType == 1) { launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", otp); }
+                
                 if (OPT.Instance.GetBool("showfps")) { launchArgs += " /winfps"; }
 
                 if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.Close(); })); } }

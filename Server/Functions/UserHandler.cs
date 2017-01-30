@@ -146,9 +146,18 @@ namespace Server.Functions
             }
         }
 
+        internal void OnAuthenticationTypeRequest(Client client)
+        {
+            ClientPackets.Instance.SC_SendAuthenticationType(client, OPT.GetInt("imbc.login"));
+        }
+
         internal void OnUserRequestArguments(Client client)
         {
-            ClientPackets.Instance.SC_SendArguments(client, string.Format("/auth_ip:{0} /auth_port:{1} /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:1 /imbclogin /account:? /password:?", OPT.GetString("auth.io.ip"), OPT.GetString("auth.io.port"));
+            string arguments = string.Format("/auth_ip:{0} /auth_port:{1} /locale:? country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:{2}", OPT.GetString("auth.io.ip"), OPT.GetString("auth.io.port"), OPT.GetString("double.execute"));
+
+            if (OPT.GetBool("imbc.login")) { arguments += "/imbclogin /account:? /password:?"; }
+
+            ClientPackets.Instance.SC_SendArguments(client, arguments);
         }
 
         internal void OnUserRequestDisconnect(Client client)

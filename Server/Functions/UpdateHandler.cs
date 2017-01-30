@@ -137,18 +137,23 @@ namespace Server.Functions
             ClientPackets.Instance.SC_SendUpdateIndexEOF(client);
         }
 
-        internal void OnUserRequestFile(Client client, string fileName)
+        internal void OnRequestFileInfo(Client client, string fileName)
         {
-            if (OPT.GetBool("debug")) { Console.WriteLine("Client [{0}] requested file: {1}", client.Id, fileName); }
+            if (OPT.GetBool("debug")) { Console.WriteLine("Client [{0}] requested file info for: {1}", client.Id, fileName); }
 
             string updatePath = string.Format(@"{0}\{1}", updatesDir, fileName);
             string archiveName = compressFile(updatePath);
             string archivePath = string.Format(@"{0}\{1}.zip", Program.tmpPath, archiveName);
 
-            if (File.Exists(archivePath))
-            {
-                ClientPackets.Instance.SC_SendFile(client, archivePath);
-            }
+            if (File.Exists(archivePath)) { ClientPackets.Instance.SC_SendFileInfo(client, archiveName, new FileInfo(archivePath).Length); }
+            else {  }           
+        }
+
+        internal void OnUserRequestFile(Client client, string archiveName)
+        {
+            if (OPT.GetBool("debug")) { Console.WriteLine("Client [{0}] requested archive {1}", client.Id, archiveName); }
+
+            ClientPackets.Instance.SC_SendFile(client, string.Format(@"{0}\{1}.zip", Program.tmpPath, archiveName));
         }
 
         internal string compressFile(string filePath)
