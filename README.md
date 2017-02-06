@@ -17,7 +17,7 @@ DataCore this launcher can make quick work of updating your client in more ways 
   - FingerPrint generated based on users computer hardware (used in banning)
 - Dual-Authentication mode
   - Launcher Login (imbc) and Client Login (normal)
- - Dual Client Start Methods
+- Dual Client Start Methods
   - Pre 8.1 (no bypass required) (NOT IMPLEMENTED)
   - 8.1+ (bypass required) (IMPLEMENTED)
 - BlankIndex (data.blk) tracking (used to recover space from orphaned files)
