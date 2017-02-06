@@ -85,8 +85,6 @@ namespace Client.Network
             // Completes the packet and retrieve it
             byte[] data = packet.GetPacket().ToArray();
 
-            // TODO: Check for disconnection/disposal
-
             // Dump and send
             _Server.ClSocket.BeginSend(
                 _Server.OutCipher.DoCipher(ref data),

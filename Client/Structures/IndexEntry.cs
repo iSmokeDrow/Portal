@@ -10,7 +10,6 @@ namespace Client.Structures
     {
         public string FileName { get; set; }
         public string FileHash { get; set; }
-        public bool IsLegacy { get; set; }
         public bool Delete { get; set; }
     }
 }

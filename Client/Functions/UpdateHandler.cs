@@ -12,6 +12,8 @@ using Client.Structures;
 
 namespace Client.Functions
 {
+
+    // TODO: Implement inserting new files
     public class UpdateHandler
     {
         private string indexPath;
@@ -25,19 +27,7 @@ namespace Client.Functions
 
         internal OPT settings = OPT.Instance;
         protected static UpdateHandler instance;
-        public static UpdateHandler Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new UpdateHandler();
-                }
-
-                return instance;
-            }
-        }
-        private GUI guiInstance = GUI.Instance;
+        public static UpdateHandler Instance { get { if (instance == null) { instance = new UpdateHandler(); } return instance; } }
 
         protected int receiveType = 0;
 
@@ -47,47 +37,50 @@ namespace Client.Functions
         
         private int currentIndex { get; set; }
 
-        internal bool isLegacy = false;
+        private bool updateData = false;
+        private bool updatingData = false;
+        private bool updateResource = false;
+        private bool updatingResource = false;
 
         internal Drive gDrive;
 
         public UpdateHandler()
         {
             Core = new Core();
-            Core.TotalMaxDetermined += (o, x) => { guiInstance.Invoke(new MethodInvoker(delegate { guiInstance.totalProgress.Maximum = x.Maximum; })); };
+            Core.TotalMaxDetermined += (o, x) => { GUI.Instance.Invoke(new MethodInvoker(delegate { GUI.Instance.totalProgress.Maximum = x.Maximum; })); };
             Core.TotalProgressChanged += (o, x) =>
             {
-                guiInstance.Invoke(new MethodInvoker(delegate
+                GUI.Instance.Invoke(new MethodInvoker(delegate
                 {
-                    guiInstance.totalProgress.Value = x.Value;
-                    guiInstance.totalStatus.Text = x.Status;
+                    GUI.Instance.totalProgress.Value = x.Value;
+                    GUI.Instance.totalStatus.Text = x.Status;
                 }));
             };
             Core.TotalProgressReset += (o, x) =>
             {
-                guiInstance.Invoke(new MethodInvoker(delegate
+                GUI.Instance.Invoke(new MethodInvoker(delegate
                 {
-                    guiInstance.totalProgress.Value = 0;
-                    guiInstance.totalProgress.Maximum = 100;
-                    guiInstance.totalStatus.ResetText();
+                    GUI.Instance.totalProgress.Value = 0;
+                    GUI.Instance.totalProgress.Maximum = 100;
+                    GUI.Instance.totalStatus.ResetText();
                 }));
             };
-            Core.CurrentMaxDetermined += (o, x) => { guiInstance.Invoke(new MethodInvoker(delegate { guiInstance.currentProgress.Maximum = Convert.ToInt32(x.Maximum); })); };
+            Core.CurrentMaxDetermined += (o, x) => { GUI.Instance.UpdateProgressMaximum(1, (int)x.Maximum); };
             Core.CurrentProgressChanged += (o, x) =>
             {
-                guiInstance.Invoke(new MethodInvoker(delegate
+                GUI.Instance.Invoke(new MethodInvoker(delegate
                 {
-                    guiInstance.currentProgress.Value = Convert.ToInt32(x.Value);
-                    guiInstance.currentStatus.Text = x.Status;
+                    GUI.Instance.UpdateProgressValue(1, (int)x.Value);
+                    if (x.Status.Length > 0) { GUI.Instance.UpdateStatus(1, x.Status); }                   
                 }));
             };
             Core.CurrentProgressReset += (o, x) =>
             {
-                guiInstance.Invoke(new MethodInvoker(delegate
+                GUI.Instance.Invoke(new MethodInvoker(delegate
                 {
-                    guiInstance.currentProgress.Value = 0;
-                    guiInstance.currentProgress.Maximum = 100;
-                    guiInstance.currentStatus.ResetText();
+                    GUI.Instance.currentProgress.Value = 0;
+                    GUI.Instance.currentProgress.Maximum = 100;
+                    GUI.Instance.currentStatus.ResetText();
                 }));
             };
             Core.WarningOccured += (o, x) => { MessageBox.Show(x.Warning, "DataCore Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); };
@@ -104,84 +97,81 @@ namespace Client.Functions
         public void Start()
         {
             indexPath = Path.Combine(OPT.Instance.GetString("clientdirectory"), "data.000");
+            GUI.Instance.UpdateStatus(1, "Loading data index...");
             index = Core.Load(indexPath, false, 64000);
 
             if (!Directory.Exists(disabledFolder)) { Directory.CreateDirectory(disabledFolder); }
             if (!Directory.Exists(tmpDirectory)) { Directory.CreateDirectory(tmpDirectory); }
 
             ServerPackets.Instance.CS_RequestTransferType();
-            ServerPackets.Instance.CS_GetUpdateDateTime();
         }
 
         public void OnUpdateDateTimeReceived(DateTime dateTime)
         {
-            guiInstance.UpdateStatus(0, "Checking times...");
+            GUI.Instance.UpdateStatus(0, "Checking times...");
 
             DateTime indexDateTime = File.GetLastWriteTimeUtc(indexPath);
-            DateTime resourceDateTime = Directory.GetLastWriteTime(resourceFolder);
-            bool updateRequired = indexDateTime < dateTime || resourceDateTime < dateTime;
+            DateTime resourceDateTime = Directory.GetLastWriteTimeUtc(resourceFolder);
 
-            if (updateRequired) { ServerPackets.Instance.CS_RequestUpdateIndex(); }
-            else { guiInstance.OnUpdateComplete(); }
+            updateData = indexDateTime < dateTime;
+            updateResource = resourceDateTime < dateTime;
+
+            executeUpdate();
         }
 
-        // TODO: Update me to use TCP
+        private void executeUpdate()
+        {
+            if (updateData && !updateResource || updateData && updateResource)
+            {
+                updatingData = true;
+                ServerPackets.Instance.CS_RequestDataUpdateIndex();
+            }
+            else if (!updateData && updateResource)
+            {
+                updatingResource = true;
+                ServerPackets.Instance.CS_RequestResourceUpdateIndex();
+            }
+            else if (!updateData && !updateResource) { GUI.Instance.OnUpdateComplete(); }
+        }
+
+        // TODO: Reimplement self-update
         public void ExecuteSelfUpdate(string fileName) { DownloadSelfUpdate(fileName); }
 
-        // TODO: Upgrade to use TCP
-        // Review me!
-        internal void ExecuteUpdaterUpdate(string fileName)
-        {
-            //guiInstance.UpdateStatus(0, "Downloading Updater...");
+        // TODO: Reimplement updater-update
+        internal void ExecuteUpdaterUpdate(string fileName) { }
 
-            //string zipPath = Path.Combine(tmpDirectory, string.Concat(fileName, ".zip"));
-            //WebClient client = new WebClient();
-            //client.DownloadFileCompleted += (o, x) => 
-            //{
-            //    if (File.Exists(zipPath))
-            //    {
-            //        File.Delete("Updater.exe");
-            //        ZIP.Unpack(zipPath, Directory.GetCurrentDirectory());
-            //        File.Delete(zipPath);
-            //    }
-            //};
-            //string url = String.Concat(patcherUrl, fileName, ".zip");
-            //client.DownloadFileAsync(new Uri(url), Path.Combine(tmpDirectory, string.Concat(fileName, ".zip")), client);
+        public void OnDataEntryReceived(string fileName, string hash)
+        {
+            this.FileList.Add(new Structures.IndexEntry() { FileName = fileName, FileHash = hash });
         }
 
-        public void OnUpdateIndexReceived(string fileName, string hash, bool isLegacy)
+        internal void OnResourceEntryReceived(string fileName, string fileHash, bool delete)
         {
-            this.FileList.Add(new Structures.IndexEntry() { FileName = fileName, FileHash = hash, IsLegacy = isLegacy });
+            this.FileList.Add(new Structures.IndexEntry() { FileName = fileName, FileHash = fileHash, Delete = delete });
         }
 
-        public void OnUpdateIndexEnd()
+        public void OnDataIndexEOF()
         {
             this.currentIndex = 0;
-            guiInstance.UpdateProgressMaximum(0, this.FileList.Count);
-
-            compareFiles();
+            compareDataEntries();
         }
 
-        protected void compareFiles()
+        internal void OnResourceIndexEOF()
         {
-            guiInstance.UpdateStatus(0, "Checking client files...");
+            this.currentIndex = 0;
+            compareResourceEntries();
+        }
+
+        private void compareDataEntries()
+        {
+            GUI.Instance.UpdateStatus(0, "Comparing data entries...");
             GUI.Instance.UpdateProgressMaximum(0, FileList.Count);
-            guiInstance.UpdateProgressValue(0, currentIndex);
+            GUI.Instance.UpdateProgressValue(0, currentIndex);
 
-            Structures.IndexEntry file = FileList[currentIndex];
-            bool download = false;
-
-            guiInstance.UpdateStatus(1, string.Format("Checking file: {0}", file.FileName));
-
-            if (file.IsLegacy)
+            if (FileList.Count > 0)
             {
-                if (!File.Exists(resourceFolder + file.FileName) || (Hash.GetSHA512Hash(resourceFolder + file.FileName) != file.FileHash))
-                {
-                    download = true;
-                }
-            }
-            else
-            {
+                Structures.IndexEntry file = FileList[currentIndex];
+
                 DataCore.Structures.IndexEntry fileEntry = Core.GetEntry(ref index, file.FileName);
 
                 if (fileEntry != null)
@@ -190,19 +180,46 @@ namespace Client.Functions
 
                     if (file.FileHash != fileHash)
                     {
-                        guiInstance.UpdateStatus(1, string.Format("File: {0} is depreciated!", file.FileName));
-                        download = true;
-                    }
+                        GUI.Instance.UpdateStatus(1, string.Format("Downloading {0}...", FileList[currentIndex].FileName));
+                        downloadUpdate();
+                    }                  
                 }
-                else { /* TODO: Throw exception about file not found in data.000 */ }
-            }
-
-            if (download)
-            {
-                GUI.Instance.UpdateStatus(1, string.Format("Downloading {0}...", FileList[currentIndex].FileName));
-                doUpdate();
+                else { /* TODO: Implement inserting new files */ }
             }
             else { iterateCurrentIndex(); }
+        }
+
+        private void compareResourceEntries()
+        {
+            GUI.Instance.UpdateStatus(0, "Comparing resource files...");
+            GUI.Instance.UpdateProgressMaximum(0, FileList.Count);
+            GUI.Instance.UpdateProgressValue(0, currentIndex);
+
+            if (FileList.Count > 0)
+            {
+                Structures.IndexEntry file = FileList[currentIndex];
+
+                if (file != null)
+                {
+                    string resourceName = string.Concat(resourceFolder, file.FileName);
+
+                    if (!File.Exists(resourceName) || (Hash.GetSHA512Hash(resourceName) != file.FileHash))
+                    {
+                        GUI.Instance.UpdateStatus(1, string.Format("Downloading {0}...", FileList[currentIndex].FileName));
+                        downloadUpdate();
+                    }
+                }
+            }
+            else
+            {
+                // Write dummy file to update folder time (to avoid redundant rechecking)
+                string dummy = string.Concat(resourceFolder, "DummyFile.dmy");
+
+                File.Create(dummy);
+                if (File.Exists(dummy)) { File.Delete(dummy); }
+
+                iterateCurrentIndex();
+            }
         }
 
         private void DownloadSelfUpdate(string fileName)
@@ -213,9 +230,14 @@ namespace Client.Functions
             Process.Start(startInfo);
         }
 
-        internal void OnSendTypeReceived(int transferType) { receiveType = transferType;  }
+        internal void OnSendTypeReceived(int transferType)
+        {
+            receiveType = transferType;
 
-        protected void doUpdate()
+            ServerPackets.Instance.CS_GetUpdateDateTime();
+        }
+
+        protected void downloadUpdate()
         {
             switch (receiveType)
             {
@@ -249,7 +271,7 @@ namespace Client.Functions
 
             GUI.Instance.UpdateStatus(0, "Unpacking update...");
 
-            bool isLegacy = this.FileList[this.currentIndex].IsLegacy;
+            bool isLegacy = updatingResource;
 
             string zipPath = string.Format(@"{0}\Downloads\{1}", Directory.GetCurrentDirectory(), zipName);
 
@@ -284,6 +306,9 @@ namespace Client.Functions
             // Delete the zip
             File.Delete(zipPath);
 
+            // Clear the tmp folder
+            foreach (string tmpFileName in Directory.GetFiles(tmpDirectory)) { File.Delete(tmpFileName); }
+
             // Increase the currentIndex
             iterateCurrentIndex();
         }
@@ -291,8 +316,17 @@ namespace Client.Functions
         private void iterateCurrentIndex()
         {
             this.currentIndex++;
-            if (this.currentIndex == this.FileList.Count) { GUI.Instance.OnUpdateComplete(); }
-            else { compareFiles(); }
+
+            if (this.currentIndex == this.FileList.Count && updatingData && !updateResource || this.FileList.Count == 0 && !updateResource) { GUI.Instance.OnUpdateComplete(); }
+            else if (this.currentIndex == this.FileList.Count && updatingData && updateResource || this.FileList.Count == 0 && updatingData && updateResource)
+            {
+                updateData = updatingData = false;
+                executeUpdate();
+            }
+            else if (this.currentIndex < this.FileList.Count && updatingData) { compareDataEntries(); }
+
+            if (this.currentIndex == this.FileList.Count && updatingResource || this.FileList.Count == 0 && updatingResource) { GUI.Instance.OnUpdateComplete(); }
+            else if (this.currentIndex < this.FileList.Count && updatingResource) { compareResourceEntries(); }
         }
     }
 }

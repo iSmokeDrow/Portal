@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace Server
 {
     //TODO: Implement HTTP/FTP download engines
-    //TODO: Implement a 'wait' function to make clients wait for an operation to complete
     class Program
     {
         /// <summary>

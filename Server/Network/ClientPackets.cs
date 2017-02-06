@@ -28,7 +28,9 @@ namespace Server.Network
             PacketsDb.Add(0x0001, CS_RequestUpdateDateTime);
             PacketsDb.Add(0x0002, CS_RequestSelfUpdate);
             PacketsDb.Add(0x0003, CS_RequestUpdater);
-            PacketsDb.Add(0x0010, CS_RequestUpdateIndex);
+            PacketsDb.Add(0x0008, CS_RequestUpdatesDisabled);
+            PacketsDb.Add(0x0010, CS_RequestDataUpdateIndex);
+            PacketsDb.Add(0x0110, CS_RequestResourceUpdateIndex);
             PacketsDb.Add(0x0040, CS_RequestSendType);
             PacketsDb.Add(0x0041, CS_RequestFileSize);
             PacketsDb.Add(0x0042, CS_RequestFileTransfer);
@@ -80,6 +82,8 @@ namespace Server.Network
             UserHandler.Instance.OnValidateUser(client, username, password, fingerprint);
         }
 
+        private void CS_RequestUpdatesDisabled(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestUpdatesEnabled(client); }
+
         private void CS_RequestUpdateDateTime(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestUpdateDateTime(client); }
 
         private void CS_RequestSelfUpdate(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestSelfUpdate(client, stream.ReadString()); }
@@ -91,10 +95,9 @@ namespace Server.Network
         /// </summary>
         /// <param name="client">the client</param>
         /// <param name="stream">data</param>
-        private void CS_RequestUpdateIndex(Client client, PacketStream stream)
-        {
-            UpdateHandler.Instance.OnUserRequestUpdateIndex(client);
-        }
+        private void CS_RequestDataUpdateIndex(Client client, PacketStream stream) { UpdateHandler.Instance.OnRequestDataUpdateIndex(client); }
+
+        private void CS_RequestResourceUpdateIndex(Client client, PacketStream stream) { UpdateHandler.Instance.OnRequestResourceUpdateIndex(client); }
 
         private void CS_RequestSendType(Client client, PacketStream stream)
         {
@@ -109,6 +112,7 @@ namespace Server.Network
 
         private void CS_RequestFileTransfer(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestFile(client, stream.ReadString()); }
 
+
         /// <summary>
         /// Request launch arguments
         /// </summary>
@@ -122,6 +126,13 @@ namespace Server.Network
             SC_SendOkDisconnect(client);
             client.ClSocket.Close();
             if (debug) { Console.WriteLine("Client [{0}] disconnected!", client.Id); }
+        }
+
+        internal void SC_SendUpdatesDisabled(Client client, int updatingDisabled)
+        {
+            PacketStream stream = new PacketStream(0x0008);
+            stream.WriteInt32(updatingDisabled);
+            ClientManager.Instance.Send(client, stream);
         }
 
         #endregion
@@ -149,23 +160,30 @@ namespace Server.Network
             ClientManager.Instance.Send(client, stream);
         }
 
-        internal void SC_SendUpdateIndex(Client client, string fileName, string fileHash, bool isLegacy, bool isDelete)
+        internal void SC_SendDataEntry(Client client, string fileName, string fileHash)
         {
             PacketStream stream = new PacketStream(0x0011);
 
             stream.WriteString(fileName, fileName.Length + 1);
             stream.WriteString(fileHash, fileHash.Length + 1);
-            stream.WriteBool(isLegacy);
+
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        internal void SC_SendResourceEntry(Client client, string fileName, string fileHash, bool isDelete)
+        {
+            PacketStream stream = new PacketStream(0x0111);
+
+            stream.WriteString(fileName, fileName.Length + 1);
+            stream.WriteString(fileHash, fileHash.Length + 1);
             stream.WriteBool(isDelete);
 
             ClientManager.Instance.Send(client, stream);
         }
 
-        internal void SC_SendUpdateIndexEOF(Client client)
-        {
-            PacketStream stream = new PacketStream(0x0012);
-            ClientManager.Instance.Send(client, stream);
-        }
+        internal void SC_SendDataIndexEOF(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0012)); }
+
+        internal void SC_SendResourceIndexEOF(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0112)); }
 
         internal void SC_SendOTP(Client client, string otp)
         {
@@ -183,6 +201,13 @@ namespace Server.Network
             PacketStream stream = new PacketStream(0x0014);
             stream.WriteInt32(banType);
 
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        internal void SC_SendStartType(Client client, int startType)
+        {
+            PacketStream stream = new PacketStream(0x0032);
+            stream.WriteInt32(startType);
             ClientManager.Instance.Send(client, stream);
         }
 
@@ -246,13 +271,14 @@ namespace Server.Network
             ClientManager.Instance.Send(client, stream);
         }
 
-        internal void SC_SendArguments(Client client, string arguments)
+        internal void SC_SendArguments(Client client, string arguments, int startType)
         {
             PacketStream stream = new PacketStream(0x0031);
 
             byte[] argEncrypt = DesCipher.Encrypt(arguments);
             stream.WriteInt32(argEncrypt.Length);
             stream.WriteBytes(argEncrypt);
+            stream.WriteInt32(startType);
 
             ClientManager.Instance.Send(client, stream);
         }

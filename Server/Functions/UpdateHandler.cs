@@ -130,11 +130,31 @@ namespace Server.Functions
             }
         }
 
-        public void OnUserRequestUpdateIndex(Client client)
-        {
-            foreach (IndexEntry indexEntry in UpdateIndex) { ClientPackets.Instance.SC_SendUpdateIndex(client, indexEntry.FileName, indexEntry.SHA512, indexEntry.Legacy, indexEntry.Delete); }
 
-            ClientPackets.Instance.SC_SendUpdateIndexEOF(client);
+        internal void OnUserRequestUpdatesEnabled(Client client)
+        {
+            if (OPT.SettingExists("disable.updating"))
+            {
+                ClientPackets.Instance.SC_SendUpdatesDisabled(client, OPT.GetInt("disable.updating"));
+            }
+        }
+
+        public void OnRequestDataUpdateIndex(Client client)
+        {
+            List<IndexEntry> filteredIndex = UpdateIndex.FindAll(i => !i.Legacy);
+
+            foreach (IndexEntry indexEntry in filteredIndex) { ClientPackets.Instance.SC_SendDataEntry(client, indexEntry.FileName, indexEntry.SHA512); }
+
+            ClientPackets.Instance.SC_SendDataIndexEOF(client);
+        }
+
+        internal void OnRequestResourceUpdateIndex(Client client)
+        {
+            List<IndexEntry> filteredIndex = UpdateIndex.FindAll(i => i.Legacy);
+
+            foreach (IndexEntry indexEntry in filteredIndex) { ClientPackets.Instance.SC_SendResourceEntry(client, indexEntry.FileName, indexEntry.SHA512, indexEntry.Delete); }
+
+            ClientPackets.Instance.SC_SendResourceIndexEOF(client);
         }
 
         internal void OnRequestFileInfo(Client client, string fileName)

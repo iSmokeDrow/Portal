@@ -11,12 +11,11 @@ using Client.Structures;
 
 namespace Client
 {
-    // TODO: Request start method (ON_START) from server
     // TODO: Add Shader menu
     // TODO: Implement PLAY_WINLOCK
     // TODO: Implement PLAY_WINALPHA ???
     // TODO: Implement PLAY_PARTYDM ???
-    // TODO: Gray out user credentials if imbc login isn't enabled
+    // TODO: Implement maintenance mode which disables the start button
     public partial class GUI : Form
     {
         #region Drag Hack
@@ -62,7 +61,6 @@ namespace Client
             Instance = this;
         }
 
-        // TODO: Use a better name for Updater.exe
         private void GUI_Load(object sender, EventArgs e)
         {
             Task.Run(() =>
@@ -84,15 +82,15 @@ namespace Client
             Instance.UpdateStatus(0, "");
         }
 
-        private void assignIP()
+        protected void assignIP()
         {
             ip = OPT.Instance.GetString("ip");
             port = OPT.Instance.GetInt("port");
         }
 
-        internal void checkAuthenticationType() { ServerPackets.Instance.CS_RequestAuthenticationType(); }
-
         internal void connectToServer() { if (!ServerManager.Instance.Start(ip, port)) { this.Close(); } }
+
+        internal void checkAuthenticationType() { ServerPackets.Instance.CS_RequestAuthenticationType(); }
 
         internal void checkForSFrame()
         {
@@ -158,6 +156,7 @@ namespace Client
             {
                 case 0: //imbc off
                     doUpdateTasks();
+                    canStart = true;
                     break;
 
                 case 1: //imbc on
@@ -210,7 +209,7 @@ namespace Client
             }
         }
 
-        public void OnValidationResultReceived(string otp) // TODO: Send int updatesDisable 
+        internal void OnValidationResultReceived(string otp)
         {
             if (otp != null)
             {
@@ -220,14 +219,20 @@ namespace Client
             }
         }
 
-        internal async void doUpdateTasks()
+        internal void doUpdateTasks() { ServerPackets.Instance.CS_RequestUpdatesEnabled(); }
+
+        internal async void OnUpdatesEnabledReceived(int updatesDisabled)
         {
-            Instance.UpdateStatus(0, "Checking for Updater Update...");
-            await Task.Run(() => { checkForUpdater(); });
-            Instance.UpdateStatus(0, "Checking for Launcher Update...");
-            await Task.Run(() => { checkForSelfUpdate(); });
-            Instance.UpdateStatus(0, "Checking for Client Updates...");
-            await Task.Run(() => { updateClient(); });
+            if (updatesDisabled == 0)
+            {
+                Instance.UpdateStatus(0, "Checking for Updater Update...");
+                await Task.Run(() => { checkForUpdater(); });
+                Instance.UpdateStatus(0, "Checking for Launcher Update...");
+                await Task.Run(() => { checkForSelfUpdate(); });
+                Instance.UpdateStatus(0, "Checking for Client Updates...");
+                await Task.Run(() => { updateClient(); });
+            }
+            else { OnUpdateComplete(); }
         }
 
         internal void updateClient()
@@ -236,7 +241,7 @@ namespace Client
             else { this.Invoke(new MethodInvoker(delegate { this.Close(); })); }
         }
 
-        public void OnUpdateComplete()
+        internal void OnUpdateComplete()
         {
             Instance.Invoke(new MethodInvoker(delegate
             {
@@ -331,8 +336,10 @@ namespace Client
 
         private void start_btn_Click(object sender, EventArgs e) { if (canStart) { ServerPackets.Instance.CS_RequestArguments(); } }
 
-        public void OnArgumentsReceived(string arguments)
+        internal void OnArgumentsReceived(string arguments, int startType)
         {
+            canStart = false;
+
             if (!string.IsNullOrEmpty(arguments))
             {
                 string launchArgs = arguments.TrimEnd('\0');
@@ -341,11 +348,15 @@ namespace Client
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("username"));
 
                 if (authenticationType == 1) { launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", otp); }
-                
+
                 if (OPT.Instance.GetBool("showfps")) { launchArgs += " /winfps"; }
 
-                if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.Close(); })); } }
-                else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.Close(); }
+                if (startType == 1) // Use SFrameBypass
+                {
+                    if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.close_Click(null, EventArgs.Empty); })); } }
+                    else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.close_Click(null, EventArgs.Empty); }
+                }
+                else { /* TODO: Use normal start method */ }
             }
         }
 
@@ -361,10 +372,7 @@ namespace Client
             this.Invoke(new MethodInvoker(delegate { settingsGUI.ShowDialog(this); }));
         }
 
-        private void GUI_DoubleClick(object sender, EventArgs e)
-        {
-
-        }
+        private void GUI_DoubleClick(object sender, EventArgs e) { /* Dummy Method */ }
 
         private void gameSettings_lb_Click(object sender, EventArgs e)
         {

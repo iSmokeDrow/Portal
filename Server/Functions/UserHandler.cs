@@ -157,7 +157,7 @@ namespace Server.Functions
 
             if (OPT.GetBool("imbc.login")) { arguments += "/imbclogin /account:? /password:?"; }
 
-            ClientPackets.Instance.SC_SendArguments(client, arguments);
+            ClientPackets.Instance.SC_SendArguments(client, arguments, OPT.GetInt("sframe.bypass"));
         }
 
         internal void OnUserRequestDisconnect(Client client)

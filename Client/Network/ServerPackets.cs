@@ -31,8 +31,11 @@ namespace Client.Network
             PacketsDb.Add(0x000A, SC_UpdateDateTime);
             PacketsDb.Add(0x000B, SC_UpdateSelfUpdate);
             PacketsDb.Add(0x001E, SC_UpdateUpdater);
-            PacketsDb.Add(0x0011, SC_UpdateIndex);
+            PacketsDb.Add(0x0008, SC_ReceiveUpdatesDisabled);
+            PacketsDb.Add(0x0011, SC_DataUpdateEntry);
+            PacketsDb.Add(0x0111, SC_ResourceUpdateEntry);
             PacketsDb.Add(0x0012, SC_UpdateIndexEnd);
+            PacketsDb.Add(0x0112, SC_ResourceIndexEnd);
             PacketsDb.Add(0x0013, SC_UserValidated);
             PacketsDb.Add(0x0014, SC_UserBanned);
             PacketsDb.Add(0x0015, SC_AccountNull);
@@ -92,19 +95,32 @@ namespace Client.Network
         /// UpdateIndex entry received
         /// </summary>
         /// <param name="stream"></param>
-        private void SC_UpdateIndex(PacketStream stream)
+        private void SC_DataUpdateEntry(PacketStream stream)
         {
             string name = stream.ReadString();
             string fileHash = stream.ReadString();
-            bool isLegacy = stream.ReadBool();
-            bool isDelete = stream.ReadBool();
 
-            UpdateHandler.Instance.OnUpdateIndexReceived(name, fileHash, isLegacy);
+            UpdateHandler.Instance.OnDataEntryReceived(name, fileHash);
+        }
+
+
+        private void SC_ResourceUpdateEntry(PacketStream stream)
+        {
+            string name = stream.ReadString();
+            string fileHash = stream.ReadString();
+            bool delete = stream.ReadBool();
+
+            UpdateHandler.Instance.OnResourceEntryReceived(name, fileHash, delete);
         }
 
         private void SC_UpdateIndexEnd(PacketStream stream)
         {
-            UpdateHandler.Instance.OnUpdateIndexEnd();
+            UpdateHandler.Instance.OnDataIndexEOF();
+        }
+
+        private void SC_ResourceIndexEnd(PacketStream stream)
+        {
+            UpdateHandler.Instance.OnResourceIndexEOF();
         }
 
         private void SC_UserBanned(PacketStream stream)
@@ -130,7 +146,12 @@ namespace Client.Network
             UpdateHandler.Instance.OnSendTypeReceived(stream.ReadInt32());
         }
 
-        //TODO: Move tempBuffer to UpdateHandler?
+
+        private void SC_ReceiveUpdatesDisabled(PacketStream stream)
+        {
+            GUI.Instance.OnUpdatesEnabledReceived(stream.ReadInt32());
+        }
+
         private void SC_ReceiveFileInfo(PacketStream stream)
         {
             string tmpName = stream.ReadString();
@@ -146,11 +167,15 @@ namespace Client.Network
 
         private void SC_ReceiveFile(PacketStream stream)
         {
-            int chunkSize = stream.ReadInt32();
-            int offset = stream.ReadInt32();
-            byte[] chunks = stream.ReadBytes(chunkSize);
-            Buffer.BlockCopy(chunks, 0, tempBuffer, offset, chunkSize);
-            GUI.Instance.UpdateProgressValue(1, offset);
+            try
+            {
+                int chunkSize = stream.ReadInt32();
+                int offset = stream.ReadInt32();
+                byte[] chunks = stream.ReadBytes(chunkSize);
+                Buffer.BlockCopy(chunks, 0, tempBuffer, offset, chunkSize);
+                GUI.Instance.UpdateProgressValue(1, offset);
+            }
+            catch (Exception ex) { System.Windows.Forms.MessageBox.Show(ex.ToString(), "SC_ReceiveFile Exception"); }
         }
 
         private void SC_ReceiveEOF(PacketStream stream)
@@ -171,8 +196,9 @@ namespace Client.Network
         {
             int len = stream.ReadInt32();
             byte[] arguments = stream.ReadBytes(len);
+            int startType = stream.ReadInt32();
 
-            GUI.Instance.OnArgumentsReceived(desCipher.Decrypt(arguments));
+            GUI.Instance.OnArgumentsReceived(desCipher.Decrypt(arguments), startType);
         }
 
         private void SC_Disconnect(PacketStream stream)
@@ -235,14 +261,14 @@ namespace Client.Network
             ServerManager.Instance.Send(stream);
         }
 
+        internal void CS_RequestUpdatesEnabled() { ServerManager.Instance.Send(new PacketStream(0x0008)); }
+
         /// <summary>
         /// Requests the list of files
         /// </summary>
-        internal void CS_RequestUpdateIndex()
-        {
-            PacketStream stream = new PacketStream(0x0010);
-            ServerManager.Instance.Send(stream);
-        }
+        internal void CS_RequestDataUpdateIndex() { ServerManager.Instance.Send(new PacketStream(0x0010)); }
+
+        internal void CS_RequestResourceUpdateIndex() { ServerManager.Instance.Send(new PacketStream(0x0110)); }
 
         internal void CS_RequestTransferType() { ServerManager.Instance.Send(new PacketStream(0x0040)); }
 
@@ -260,11 +286,7 @@ namespace Client.Network
             ServerManager.Instance.Send(stream);
         }
 
-        internal void CS_RequestArguments()
-        {
-            PacketStream stream = new PacketStream(0x0030);
-            ServerManager.Instance.Send(stream);
-        }
+        internal void CS_RequestArguments() { ServerManager.Instance.Send(new PacketStream(0x0030)); }
 
         internal void RequestDisconnect()
         {
