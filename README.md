@@ -8,18 +8,23 @@ DataCore this launcher can make quick work of updating your client in more ways 
   - Updates are compared on a case by case basis using SHA512
   - Update list is requested on demand and generated in real-time
 - Capability to mark updates for remote deletion (Incase of bad updates issued)
+- Processes Data.000 / Resource-Folder updates seperately and/or side-by-side
 - TCP/IP based Client <> Server model
   - All sensitive data encrypted (DES / RC4)
   - No sensitive information stored directly inside of Client (Decompiling will be useless)
   - Load remote IP/Port from config.opt
 - User authentication 
   - FingerPrint generated based on users computer hardware (used in banning)
-- Client auth-login (using OTP)
-  - Tradition login also available
+- Dual-Authentication mode
+  - Launcher Login (imbc) and Client Login (normal)
+- Dual Client Start Methods
+  - Pre 8.1 (no bypass required) (NOT IMPLEMENTED)
+  - 8.1+ (bypass required) (IMPLEMENTED)
 - BlankIndex (data.blk) tracking (used to recover space from orphaned files)
 - Reimplemented rappelz_v1.opt editor (for editing client functions)
   - Reimplemented volume menu (includes expiremental toggle "lobby" theme and disable "music/bgm" repeat
 - Unique ability to be run outside of the Rappelz Client folder
+- Unique settings such as (always on-top, toggle fps (on sframe titlebar [windowed mode]) and close-on-start)
 
 # Features (Future)
 - (CLIENT) Self-Updating (being reimplemented)
@@ -29,6 +34,4 @@ DataCore this launcher can make quick work of updating your client in more ways 
 - (CLIENT) Ability to go into manual update mode (must install updates from .zip packages)
 - (CLIENT) Ability to toggle on backups (All files will be compressed and moved to /backups/ and a restore point created in restore.opt
 - (CLIENT) Ability to re-skin GUI
-- (CLIENT/SERVER) Ability to toggle off user authentication
-- (CLIENT) Shader menu (allows use of any epic shaders or custom shader files
-- (CLIENT) Unique settings such as (always on-top, toggle fps (on sframe titlebar [windowed mode]) and close-on-start)
+- (CLIENT) Shader menu (allows use of any epic shaders or custom shader file
