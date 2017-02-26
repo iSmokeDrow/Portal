@@ -11,7 +11,6 @@ using Client.Structures;
 
 namespace Client
 {
-    //TODO: Check for missing settings (in rappelz_v1.opt) like: titles, outline
     public partial class RappelzSettingsGUI : Form
     {
         public bool Save = false;

@@ -14,6 +14,8 @@ namespace Client.Functions
 {
 
     // TODO: Implement inserting new files
+    // TODO: If old file is removed, server still thinks it exists
+    // TODO: File is being downloaded and updated twice
     public class UpdateHandler
     {
         private string indexPath;
@@ -133,8 +135,7 @@ namespace Client.Functions
             }
             else if (!updateData && !updateResource) { GUI.Instance.OnUpdateComplete(); }
         }
-
-        // TODO: Reimplement self-update
+        
         public void ExecuteSelfUpdate(string fileName) { DownloadSelfUpdate(fileName); }
 
         // TODO: Reimplement updater-update
@@ -176,6 +177,8 @@ namespace Client.Functions
 
                 if (fileEntry != null)
                 {
+                    GUI.Instance.UpdateStatus(1, string.Format("Checking {0}...", file.FileName));
+
                     string fileHash = Core.GetFileSHA512(settings.GetString("clientdirectory"), Core.GetID(fileEntry.Name), fileEntry.Offset, fileEntry.Length, GetFileExtension(fileEntry.Name));
 
                     if (file.FileHash != fileHash)
@@ -221,12 +224,10 @@ namespace Client.Functions
                 iterateCurrentIndex();
             }
         }
-
         private void DownloadSelfUpdate(string fileName)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"Updater.exe";
-            //startInfo.Arguments = String.Concat(patcherUrl, fileName, ".zip") + " " + fileName;
             Process.Start(startInfo);
         }
 
@@ -269,7 +270,7 @@ namespace Client.Functions
         {
             GUI.Instance.ResetProgressStatus(1);
 
-            GUI.Instance.UpdateStatus(0, "Unpacking update...");
+            GUI.Instance.UpdateStatus(0, "Applying update...");
 
             bool isLegacy = updatingResource;
 
@@ -295,7 +296,7 @@ namespace Client.Functions
 
                 if (indexEntry != null)
                 {
-                    GUI.Instance.UpdateStatus(0, string.Format("Updating indexed file: {0}...", fileName));
+                    GUI.Instance.UpdateStatus(1, string.Format("Updating indexed file: {0}...", fileName));
                     Core.UpdateFileEntry(ref index, settings.GetString("clientdirectory"), filePath, 0);
                     Core.Save(ref index, settings.GetString("clientdirectory"), false);
                 }
@@ -328,5 +329,12 @@ namespace Client.Functions
             if (this.currentIndex == this.FileList.Count && updatingResource || this.FileList.Count == 0 && updatingResource) { GUI.Instance.OnUpdateComplete(); }
             else if (this.currentIndex < this.FileList.Count && updatingResource) { compareResourceEntries(); }
         }
+
+        internal void OnWaitReceived(ushort packetID, int period)
+        {
+            System.Threading.Thread.Sleep(period);
+            ServerManager.Instance.Send(new PacketStream(packetID));
+        }
+
     }
 }

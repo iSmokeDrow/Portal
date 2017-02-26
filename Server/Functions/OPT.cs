@@ -27,6 +27,8 @@ namespace Server.Functions
 
         public static int GetInt(string key) { return (SettingExists(key)) ? Convert.ToInt32(SettingsList[key]) : 0; }
 
+        public static double GetDouble(string key) { return (SettingExists(key)) ? Convert.ToDouble(SettingsList[key]) : 0.0; }
+
         public static bool UpdateSetting(string key, string value)
         {
             if (SettingsList[key] != null) { SettingsList[key] = value; return true; }

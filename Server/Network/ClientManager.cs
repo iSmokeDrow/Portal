@@ -91,10 +91,7 @@ namespace Server.Network
 
             Client client = new Client(socket);
 
-            if (OPT.GetBool("debug"))
-            {
-                Console.WriteLine("Client [{0}] connected from: {1} [{2}]", client.Id, client.Ip, client.Port);
-            }
+            if (OPT.GetBool("debug")) { Console.WriteLine("Client [{0}] connected from: {1} [{2}]", client.Id, client.Ip, client.Port); }
 
             clientList.Add(client);
 

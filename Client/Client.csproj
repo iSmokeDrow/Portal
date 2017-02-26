@@ -178,7 +178,7 @@
     <Compile Include="RappelzVolumeGUI.Designer.cs">
       <DependentUpon>RappelzVolumeGUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Server.cs" />
+    <Compile Include="Structures\Server.cs" />
     <Compile Include="GUI.cs">
       <SubType>Form</SubType>
     </Compile>

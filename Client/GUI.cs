@@ -74,8 +74,10 @@ namespace Client
             Instance.UpdateStatus(0, "Initializing settings...");
             await Task.Run(() => { OPT.Instance.Start(); });
             await Task.Run(() => { assignIP(); });
+            Instance.UpdateStatus(0, "Checking for Launcher update...");
+            await Task.Run(() => { checkForSelfUpdate(); });
             Instance.UpdateStatus(0, "Checking for SFrame...");
-            await Task.Run(() => { checkForSFrame(); });
+            await Task.Run(() => { checkForClient(); });
             Instance.UpdateStatus(0, "Connecting to Update Server...");
             connectToServer();
             ServerPackets.Instance.RequestDESKey();
@@ -100,24 +102,17 @@ namespace Client
             }
         }
 
-        internal void checkForUpdater()
-        {
-            if (File.Exists("Updater.exe")) { ServerPackets.Instance.CS_RequestSelfUpdater(Hash.GetSHA512Hash("Updater.exe")); }
-            else { ServerPackets.Instance.CS_RequestSelfUpdater(null); }
-        }
-
         internal void checkForSelfUpdate()
         {
-            if (File.Exists("Launcher.exe"))
-            {
-                ServerPackets.Instance.CS_RequestSelfUpdate(Hash.GetSHA512Hash("Launcher.exe"));
-            }
+            if (File.Exists("Launcher.exe")) { ServerPackets.Instance.CS_RequestSelfUpdate(Hash.GetSHA512Hash("Launcher.exe")); }
         }
 
         protected bool checkForClient()
         {
+            string sframePath = string.Format(@"{0}\{1}", OPT.Instance.GetString("clientdirectory"), "sframe.exe");
+
             // Check that the provided client directory exists
-            if (!Directory.Exists(OPT.Instance.GetString("clientdirectory")))
+            if (!File.Exists(sframePath))
             {
                 while (true)
                 {
@@ -225,8 +220,6 @@ namespace Client
         {
             if (updatesDisabled == 0)
             {
-                Instance.UpdateStatus(0, "Checking for Updater Update...");
-                await Task.Run(() => { checkForUpdater(); });
                 Instance.UpdateStatus(0, "Checking for Launcher Update...");
                 await Task.Run(() => { checkForSelfUpdate(); });
                 Instance.UpdateStatus(0, "Checking for Client Updates...");
@@ -345,9 +338,12 @@ namespace Client
                 string launchArgs = arguments.TrimEnd('\0');
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("codepage"));
                 launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("country"));
-                launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("username"));
 
-                if (authenticationType == 1) { launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", otp); }
+                if (authenticationType == 1)
+                {
+                    launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", OPT.Instance.GetString("username"));
+                    launchArgs = StringExtension.ReplaceFirst(launchArgs, "?", otp);
+                }
 
                 if (OPT.Instance.GetBool("showfps")) { launchArgs += " /winfps"; }
 
@@ -356,7 +352,13 @@ namespace Client
                     if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.close_Click(null, EventArgs.Empty); })); } }
                     else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.close_Click(null, EventArgs.Empty); }
                 }
-                else { /* TODO: Use normal start method */ }
+                else
+                {
+                    var p = new ProcessStartInfo();
+                    p.FileName = string.Concat(OPT.Instance.GetString("clientdirectory"), @"\SFrame.exe");
+                    p.Arguments = launchArgs;
+                    Process.Start(p);
+                }
             }
         }
 

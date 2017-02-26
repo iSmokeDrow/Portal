@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using Client.Structures;
+using Updater.Structures;
 
-namespace Client.Network
+namespace Updater.Network
 {
     public class ServerManager
     {
@@ -54,7 +56,8 @@ namespace Client.Network
             }
             catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show("Failed to connect to the Launcher Server!\nThe server may be down for a moment. Try again in a bit.", "Connection Exception", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                //TODO: Review me!
+                //System.Windows.Forms.MessageBox.Show("Failed to connect to the Launcher Server!\nThe server may be down for a moment. Try again in a bit.", "Connection Exception", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 
                 socket.Close();
                 return false;

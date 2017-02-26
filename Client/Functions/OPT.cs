@@ -102,6 +102,10 @@ namespace Client.Functions
                         case "b": // bool
                             value = Convert.ToBoolean(optBlocks[2]);
                             break;
+
+                        case "n":
+                            value = Convert.ToInt32(optBlocks[2]);
+                            break;
                     }
 
                     if (!string.IsNullOrEmpty(name) && value != null) { settingsList.Add(new LauncherSetting() { Type = type, Name = name, Value = value }); }

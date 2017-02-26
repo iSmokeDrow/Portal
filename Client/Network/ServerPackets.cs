@@ -30,7 +30,6 @@ namespace Client.Network
             #region Packets
             PacketsDb.Add(0x000A, SC_UpdateDateTime);
             PacketsDb.Add(0x000B, SC_UpdateSelfUpdate);
-            PacketsDb.Add(0x001E, SC_UpdateUpdater);
             PacketsDb.Add(0x0008, SC_ReceiveUpdatesDisabled);
             PacketsDb.Add(0x0011, SC_DataUpdateEntry);
             PacketsDb.Add(0x0111, SC_ResourceUpdateEntry);
@@ -44,6 +43,7 @@ namespace Client.Network
             PacketsDb.Add(0x0042, SC_ReceiveFile);
             PacketsDb.Add(0x0043, SC_ReceiveEOF);
             PacketsDb.Add(0x0031, SC_ReceiveArguments);
+            PacketsDb.Add(0x0050, SC_ReceiveWait);
             PacketsDb.Add(0x0099, SC_Disconnect);
             PacketsDb.Add(0x0999, SC_AuthenticationType);
             PacketsDb.Add(0x9999, SC_DesKey);
@@ -84,11 +84,6 @@ namespace Client.Network
         private void SC_UpdateSelfUpdate(PacketStream stream)
         {
             UpdateHandler.Instance.ExecuteSelfUpdate(stream.ReadString());
-        }
-
-        private void SC_UpdateUpdater(PacketStream stream)
-        {
-            UpdateHandler.Instance.ExecuteUpdaterUpdate(stream.ReadString());
         }
 
         /// <summary>
@@ -207,6 +202,13 @@ namespace Client.Network
             GUI.Instance.Invoke(new System.Windows.Forms.MethodInvoker(delegate { GUI.Instance.Close(); }));
         }
 
+        private void SC_ReceiveWait(PacketStream stream)
+        {
+            // ushort packetID (to resend)
+            // int period (to wait)
+            UpdateHandler.Instance.OnWaitReceived(stream.ReadUInt16(), stream.ReadInt32());
+        }
+
         #endregion
 
         #region Client-Server Packets (CS)
@@ -243,21 +245,6 @@ namespace Client.Network
         {
             PacketStream stream = new PacketStream(0x0002);
             stream.WriteString(hash, hash.Length + 1);
-            ServerManager.Instance.Send(stream);
-        }
-
-        internal void CS_RequestSelfUpdater(string hash)
-        {
-            PacketStream stream = new PacketStream(0x0003);
-            if (hash != null)
-            {
-                stream.WriteString(hash, hash.Length + 1);
-            }
-            else
-            {
-                string tmp = "NO_HASH";
-                stream.WriteString(tmp, tmp.Length + 1);
-            }
             ServerManager.Instance.Send(stream);
         }
 

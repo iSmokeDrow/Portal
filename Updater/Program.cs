@@ -7,23 +7,35 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Net;
 using System.ComponentModel;
+using Updater.Functions;
+using Updater.Network;
 
 namespace Updater
 {
     class Program
     {
-        static string zipName;
-        static string zipPath;
+        /// <summary>
+        /// Server and client must have the same RC4 key
+        /// it's used to encrypt packet data
+        /// </summary>
+        public static string RC4Key = "password1";
+
+        /// <summary>
+        /// Server and client must have the same DES Key
+        /// It's used to encrypt passwords
+        /// </summary>
+        public static string DesKey = "password2";
 
         static void Main(string[] args)
         {
-            zipName = string.Concat(args[1], ".zip");
-            zipPath = Path.Combine(string.Concat(Directory.GetCurrentDirectory(), "/tmp/"), zipName);
             string processName_1 = "launcher";
             string processName_2 = "client";
-            bool close = false;
 
-            Console.WriteLine("Checking for open Launcher...");
+            Console.Write("Loading configuration info from config.opt...");
+            OPT.Read();
+            Console.WriteLine("[OK]");
+
+            Console.Write("Checking for open Launcher...");
 
             if (Process.GetProcessesByName(processName_1).Length > 0)
             {
@@ -35,31 +47,46 @@ namespace Updater
                 foreach (var process in Process.GetProcessesByName(processName_2)) { process.Kill(); }
             }
 
-            Console.WriteLine("Downloading Launcher update from: {0}", args[0]);
-
-            WebClient client = new WebClient();
-            client.DownloadFileCompleted += (o, x) =>
+            Console.Write("[OK]\nConnecting to the Portal Server...");
+            try
             {
-                client.Dispose();
-
-                Console.WriteLine("Updating your Launcher...");
-
-                if (File.Exists("Launcher.exe")) { File.Delete("Launcher.exe"); }
-
-                ZIP.Unpack(zipPath, Directory.GetCurrentDirectory());
-
-                if (File.Exists("Launcher.exe"))
+                if (ServerManager.Instance.Start(OPT.GetString("ip"), OPT.GetInt("port")))
                 {
-                    Console.WriteLine("Update completed!");
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.FileName = @"Launcher.exe";
-                    Process.Start(startInfo);
-                    close = true;
-                }
-            };
-            client.DownloadFileAsync(new Uri(args[0]), zipPath, client);
 
-            if (!close) { Console.ReadLine(); }
+                    Console.Write("[OK]\nRequesting communication key...");
+                    ServerPackets.Instance.US_RequestDesKey();
+                }
+                else { Console.WriteLine("[FAIL]"); }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Errors:\n\t{0}", ex.ToString());
+            }
+
+            Console.ReadLine();
+            
+        }
+
+        internal static void OnDesKeyReceived()
+        {
+            Console.Write("Requesting launcher info...");
+            ServerPackets.Instance.US_RequestLauncherInfo();
+        }
+
+        internal static void OnLauncherInfoReceived()
+        {
+            Console.Write("[OK]\nRequesting launcher download...");
+            ServerPackets.Instance.US_RequestLauncherDownload();
+        }
+
+
+        internal static void OnLauncherVerified()
+        {
+            Console.WriteLine("Starting the Launcher!");
+            var p = new ProcessStartInfo();
+            p.FileName = string.Concat(Directory.GetCurrentDirectory(), @"\Launcher.exe");
+            Process.Start(p);
+            Environment.Exit(0);
         }
     }
 }

@@ -6,9 +6,12 @@ using Server.Functions;
 
 namespace Server.Network
 {
+    // TODO: Update sending file info to always send a DES encoded hash of the file
     public class ClientPackets
     {
         public static readonly ClientPackets Instance = new ClientPackets();
+
+        public ushort currentPacketId = 0x0000;
 
         private delegate void PacketAction(Client client, PacketStream stream);
 
@@ -24,10 +27,9 @@ namespace Server.Network
             // Loads PacketsDb
             PacketsDb = new Dictionary<ushort, PacketAction>();
 
-            #region Packets
+            #region Client Packets
             PacketsDb.Add(0x0001, CS_RequestUpdateDateTime);
             PacketsDb.Add(0x0002, CS_RequestSelfUpdate);
-            PacketsDb.Add(0x0003, CS_RequestUpdater);
             PacketsDb.Add(0x0008, CS_RequestUpdatesDisabled);
             PacketsDb.Add(0x0010, CS_RequestDataUpdateIndex);
             PacketsDb.Add(0x0110, CS_RequestResourceUpdateIndex);
@@ -39,6 +41,11 @@ namespace Server.Network
             PacketsDb.Add(0x00DC, CS_RequestDisconnect);
             PacketsDb.Add(0x0999, CS_RequestAuthenticationType);
             PacketsDb.Add(0x9999, CS_RequestDesKey);
+            #endregion
+
+            #region Updater Packets
+            PacketsDb.Add(0x1000, US_RequestLauncherInfo);
+            PacketsDb.Add(0x1100, US_RequestLauncherDownload);
             #endregion
         }
 
@@ -56,8 +63,10 @@ namespace Server.Network
                 return;
             }
 
+            currentPacketId = stream.GetId();
+
             // Calls this packet parsing function
-            Task.Run(() => { PacketsDb[stream.GetId()].Invoke(client, stream); });
+            Task.Run(() => { PacketsDb[currentPacketId].Invoke(client, stream); });
         }
 
         #region Client-Server Packets (CS)
@@ -87,8 +96,6 @@ namespace Server.Network
         private void CS_RequestUpdateDateTime(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestUpdateDateTime(client); }
 
         private void CS_RequestSelfUpdate(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestSelfUpdate(client, stream.ReadString()); }
-
-        private void CS_RequestUpdater(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestUpdater(client, stream.ReadString()); }
 
         /// <summary>
         /// Client wants the file list
@@ -149,13 +156,6 @@ namespace Server.Network
         internal void SC_SendSelfUpdate(Client client, string tmpName)
         {
             PacketStream stream = new PacketStream(0x000B);
-            stream.WriteString(tmpName, tmpName.Length + 1);
-            ClientManager.Instance.Send(client, stream);
-        }
-
-        internal void SC_SendSelfUpdater(Client client, string tmpName)
-        {
-            PacketStream stream = new PacketStream(0x001E);
             stream.WriteString(tmpName, tmpName.Length + 1);
             ClientManager.Instance.Send(client, stream);
         }
@@ -291,6 +291,80 @@ namespace Server.Network
         }
 
         internal void SC_SendOkDisconnect(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0099)); }
+
+
+        internal void SC_SendWait(Client client, ushort currentPacketId, int period)
+        {
+            PacketStream stream = new PacketStream(0x0050);
+            stream.WriteUInt16(currentPacketId);
+            stream.WriteInt32(period);
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        #endregion
+
+        #region Updater-Server Packets (US)
+
+        private void US_RequestLauncherInfo(Client client, PacketStream stream) { UpdateHandler.Instance.OnRequestLauncherInfo(client); }
+
+        private void US_RequestLauncherDownload(Client client, PacketStream stream) { UpdateHandler.Instance.OnRequestLauncherDownload(client); }
+
+        #endregion
+
+        #region Server-Updater Packets (SU)
+
+        internal void SU_SendLauncherInfo(Client client, long length, string hash)
+        {
+            PacketStream stream = new PacketStream(0x1001);
+            stream.WriteInt64(length);
+            byte[] hashEncrypt = DesCipher.Encrypt(hash);
+            stream.WriteInt32(hashEncrypt.Length);
+            stream.WriteBytes(hashEncrypt);
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        internal void SU_SendLauncher(Client client, string filePath)
+        {
+            int chunkSize = 64000;
+
+            byte[] buffer = File.ReadAllBytes(filePath);
+            if (buffer.Length > 0)
+            {
+                // Just incase file is smaller than initial chunkSize
+                chunkSize = Math.Min(64000, buffer.Length);
+
+                int i = 0;
+
+                while (true)
+                {
+                    if (i == buffer.Length) { break; }
+
+                    PacketStream fStream = new PacketStream(0x1101);
+
+                    fStream.Flush();
+
+                    fStream.WriteInt32(chunkSize);
+                    fStream.WriteInt32(i);
+
+                    byte[] tempBuffer = new byte[chunkSize];
+                    Array.Copy(buffer, i, tempBuffer, 0, chunkSize);
+
+                    fStream.WriteBytes(tempBuffer);
+
+                    ClientManager.Instance.Send(client, fStream);
+
+                    // Increase the index position
+                    i = i + chunkSize;
+
+                    // Refresh the chunkSize
+                    chunkSize = Math.Min(64000, buffer.Length - i);
+                }
+
+                SU_SendLauncherEOF(client);
+            }
+        }
+
+        private void SU_SendLauncherEOF(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x1102)); }
 
         #endregion
     }

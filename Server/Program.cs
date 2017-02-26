@@ -31,8 +31,12 @@ namespace Server
 
         internal static string tmpPath = string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/tmp/");
 
+        internal static Timer indexTimer;
+
         internal static Timer otpTimer;
-        
+
+        public static bool Wait = false;
+
         static void Main(string[] args)
         {
             OPT.LoadSettings();
@@ -48,10 +52,7 @@ namespace Server
             OPT.LoadDeleteFiles();
             Console.WriteLine("\t- {0} delete files indexed!", OPT.DeleteCount);
 
-            Console.WriteLine("Indexing update files...");
-            UpdateHandler.Instance.LoadUpdateList();
-
-            Console.WriteLine("\t- {0} files indexed!", UpdateHandler.Instance.UpdateIndex.Count);
+            IndexManager.Build(false);
 
             Console.Write("Checking for tmp directory...");
             if (!Directory.Exists(tmpPath)) { Directory.CreateDirectory(tmpPath); }
@@ -69,13 +70,20 @@ namespace Server
             Console.Write("Initializing client listener... ");
             if (ClientManager.Instance.Start()) { Console.WriteLine("[OK]"); }
 
-            Console.Write("Starting OTP Reset Service...");
+            Console.Write("Initializing Index Rebuild Service...");
+            int rebuildInterval = OPT.GetInt("rebuild.interval") * 1000;
+            indexTimer = new Timer(indexTick, null, rebuildInterval, rebuildInterval);
+            Console.WriteLine("[OK]");
+
+            Console.Write("Initializing OTP Reset Service...");
             otpTimer = new Timer(otpTick, null, 0, 300000);
             Console.WriteLine("[OK]");
 
             Console.ReadLine();
         }
 
-        internal static void otpTick(Object state) { OTP.HandleOTP(); }
+        private static async void indexTick(object state) { await Task.Run(() => { IndexManager.Build(true); }); }
+
+        internal static void otpTick(object state) { OTP.HandleOTP(); }
     }
 }

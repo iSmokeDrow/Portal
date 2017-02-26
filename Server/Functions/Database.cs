@@ -63,17 +63,11 @@ namespace Server.Functions
 
                 inSqlCommand.Connection.Close();
 
-                // Catch the null object (for executeType 0 & 1
-                if (returnObj == null && executeType <= 1)
-                {
-                    returnObj = 0;
-                }
-
-                return returnObj;
+                return (returnObj == null && executeType <= 1) ? 0 : returnObj;
             }
             catch (SqlException sqlEx)
             {
-                Console.WriteLine("\n\tWARNING SQL Error:\n{0}", sqlEx.Message);
+                Console.WriteLine("\nSQL Error:\n{0}", sqlEx.Message);
                 return null;
             }
         }
