@@ -4,6 +4,11 @@ DataCore this launcher can make quick work of updating your client in more ways 
 
 # Features (Currently Implemented)
 - Powered by DataCore v3.0.0.5 (unreleased)
+- New GUI [formerly Command Line] with Update, Connections, Logins [[For IMBC Login Mode]] statistics (server)
+- Description settings Management (Server)
+- Ability to disable updating (Server)
+- Maintenance Mode (Server)
+  - Stops user from Launching SFrame while Portal Maintenance Mode is toggled on
 - Non-Traditional versioning system
   - Updates are compared on a case by case basis using SHA512
   - Update list is requested on demand and generated in real-time
