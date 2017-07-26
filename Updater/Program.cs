@@ -52,9 +52,7 @@ namespace Updater
             {
                 if (ServerManager.Instance.Start(OPT.GetString("ip"), OPT.GetInt("port")))
                 {
-
-                    Console.Write("[OK]\nRequesting communication key...");
-                    ServerPackets.Instance.US_RequestDesKey();
+                    ServerPackets.Instance.US_RegisterUpdater();                  
                 }
                 else { Console.WriteLine("[FAIL]"); }
             }
@@ -63,8 +61,13 @@ namespace Updater
                 Console.WriteLine("Errors:\n\t{0}", ex.ToString());
             }
 
-            Console.ReadLine();
-            
+            Console.ReadLine();          
+        }
+
+        internal static void OnRegisterCompleted()
+        {
+            Console.Write("[OK]\nRequesting communication key...");
+            ServerPackets.Instance.US_RequestDesKey();
         }
 
         internal static void OnDesKeyReceived()
@@ -82,6 +85,7 @@ namespace Updater
 
         internal static void OnLauncherVerified()
         {
+            ServerPackets.Instance.US_UnregisterUpdater();
             Console.WriteLine("Starting the Launcher!");
             var p = new ProcessStartInfo();
             p.FileName = string.Concat(Directory.GetCurrentDirectory(), @"\Launcher.exe");

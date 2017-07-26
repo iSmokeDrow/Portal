@@ -79,6 +79,8 @@ namespace Config_Reader
 
         internal void readOPT()
         {
+            bool deleteOpt = false;
+
             try
             {
                 using (BinaryReader br = new BinaryReader(File.Open(optPath, FileMode.Open, FileAccess.Read), Encoding.ASCII))
@@ -104,21 +106,24 @@ namespace Config_Reader
                                 case "b": // bool
                                     value = Convert.ToBoolean(optBlocks[2]);
                                     break;
+
+                                case "n":
+                                    value = Convert.ToInt32(optBlocks[2]);
+                                    break;
                             }
 
-                            if (!string.IsNullOrEmpty(name) && value != null) { Console.WriteLine("Setting: {0}|{1}|{2}", type, name, value); }
+                            if (!string.IsNullOrEmpty(name) && value != null) { settingsList.Add(new LauncherSetting() { Type = type, Name = name, Value = value }); }
                         }
                         else
                         {
-                            Console.WriteLine("Failed to read config.opt [CORRUPTED]");
+                            deleteOpt = true;
                             break;
                         }
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine(ex.Message);
             }
         }
 

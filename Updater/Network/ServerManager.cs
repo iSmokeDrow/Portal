@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Updater.Structures;
@@ -56,8 +54,7 @@ namespace Updater.Network
             }
             catch (Exception e)
             {
-                //TODO: Review me!
-                //System.Windows.Forms.MessageBox.Show("Failed to connect to the Launcher Server!\nThe server may be down for a moment. Try again in a bit.", "Connection Exception", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                Console.WriteLine("Failed to connect to the Launcher Server!\nThe server may be down for a moment. Try again in a bit.");
 
                 socket.Close();
                 return false;

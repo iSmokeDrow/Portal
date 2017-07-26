@@ -8,14 +8,15 @@ using ZLibNet;
 
 namespace Server.Functions
 {
-    // TODO: Remove selfUpdater remnants
     public class UpdateHandler
     {
+        internal static bool wait = false;
         public static readonly UpdateHandler Instance = new UpdateHandler();
         internal static string selfUpdatesDir = string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), @"self_updates");
         internal static string selfUpdatePath = string.Format(@"{0}\{1}", selfUpdatesDir, "Launcher.exe");
         internal static string updaterPath = Path.Combine(selfUpdatesDir, @"Updater.exe");
         internal static string indexPath = Path.Combine(Directory.GetCurrentDirectory(), @"index.opt");
+        internal static string tmpPath = string.Format(@"{0}/{1}", Directory.GetCurrentDirectory(), "/tmp/");
         protected List<string> legacyIndex = new List<string>();
 
         public void OnUserRequestUpdateDateTime(Client client)
@@ -40,30 +41,22 @@ namespace Server.Functions
             }
 
             if (dateTime != default(DateTime)) { ClientPackets.Instance.SC_SendUpdateTime(client, dateTime.ToString(CultureInfo.InvariantCulture)); }
-            else { Console.WriteLine("Failed to get proper update time for Client [{0}]", client.Id); }
+            else { Output.Write(new Message() { Text = string.Format("Failed to get proper update time for Client [{0}]", client.Id), AddBreak = true }); }
         }
 
-        public void OnUserRequestSelfUpdate(Client client, string remoteHash)
-        {
+        public void OnUserRequestSelfUpdateRequired(Client client, string remoteHash)
+        {         
             if (Directory.Exists(selfUpdatesDir))
             {
                 if (File.Exists(selfUpdatePath))
                 {
                     string hash = Hash.GetSHA512Hash(selfUpdatePath);
-                    if (hash != remoteHash)
-                    {
-                        string zipName = compressFile(selfUpdatePath);
-                        
-                        ClientPackets.Instance.SC_SendSelfUpdate(client, zipName);
-                    }
+                    ClientPackets.Instance.SC_SendSelfUpdateRequired(client, hash != remoteHash);
                 }
             }
         }
 
-        internal void OnUserRequestUpdatesEnabled(Client client)
-        {
-            if (OPT.SettingExists("disable.updating")) { ClientPackets.Instance.SC_SendUpdatesDisabled(client, OPT.GetInt("disable.updating")); }
-        }
+        internal void OnUserRequestUpdatesEnabled(Client client) { if (OPT.SettingExists("disable.updating")) { ClientPackets.Instance.SC_SendUpdatesDisabled(client, OPT.GetInt("disable.updating")); } }
 
         public void OnRequestDataUpdateIndex(Client client)
         {
@@ -93,11 +86,11 @@ namespace Server.Functions
 
         internal void OnRequestFileInfo(Client client, string fileName)
         {
-            if (OPT.GetBool("debug")) { Console.WriteLine("Client [{0}] requested file info for: {1}", client.Id, fileName); }
+            if (OPT.GetBool("debug")) { Output.Write(new Message() { Text = string.Format("Client [{0}] requested file info for: {1}", client.Id, fileName), AddBreak = true }); }
 
             string updatePath = string.Format(@"{0}\{1}", IndexManager.UpdatesDirectory, fileName);
             string archiveName = compressFile(updatePath);
-            string archivePath = string.Format(@"{0}\{1}.zip", Program.tmpPath, archiveName);
+            string archivePath = string.Format(@"{0}\{1}.zip", tmpPath, archiveName);
 
             if (File.Exists(archivePath)) { ClientPackets.Instance.SC_SendFileInfo(client, archiveName, new FileInfo(archivePath).Length); }
             else { /*TODO: Send File Does Not Exist Error?*/ }           
@@ -105,15 +98,15 @@ namespace Server.Functions
 
         internal void OnUserRequestFile(Client client, string archiveName)
         {
-            if (OPT.GetBool("debug")) { Console.WriteLine("Client [{0}] requested archive {1}", client.Id, archiveName); }
+            if (OPT.GetBool("debug")) { Output.Write(new Message() { Text = string.Format("Client [{0}] requested archive {1}", client.Id, archiveName), AddBreak = true}); }
 
-            ClientPackets.Instance.SC_SendFile(client, string.Format(@"{0}\{1}.zip", Program.tmpPath, archiveName));
+            ClientPackets.Instance.SC_SendFile(client, string.Format(@"{0}\{1}.zip", tmpPath, archiveName));
         }
 
         internal string compressFile(string filePath)
         {
             string name = OTP.GenerateRandomPassword(10);
-            string zipPath = Path.Combine(Program.tmpPath, string.Concat(name, ".zip"));
+            string zipPath = Path.Combine(tmpPath, string.Concat(name, ".zip"));
 
             Zipper z = new Zipper();
             z.ItemList.Add(filePath);
@@ -128,14 +121,14 @@ namespace Server.Functions
 
         internal void OnRequestLauncherInfo(Client client)
         {
-            if (OPT.GetBool("debug")) { Console.WriteLine("Updater [{0}] requested Launcher info", client.Id); }
+            if (OPT.GetBool("debug")) { Output.Write(new Message() { Text = string.Format("Updater [{0}] requested Launcher info", client.Id), AddBreak = true }); }
 
             if (File.Exists(selfUpdatePath)) { ClientPackets.Instance.SU_SendLauncherInfo(client, new FileInfo(selfUpdatePath).Length, Hash.GetSHA512Hash(selfUpdatePath)); }
         }
 
         internal void OnRequestLauncherDownload(Client client)
         {
-            if (OPT.GetBool("debug")) { Console.WriteLine("Updater [{0}] requested Launcher download", client.Id); }
+            if (OPT.GetBool("debug")) { Output.Write(new Message() { Text = string.Format("Updater [{0}] requested Launcher download", client.Id), AddBreak = true }); }
 
             if (File.Exists(selfUpdatePath)) { ClientPackets.Instance.SU_SendLauncher(client, selfUpdatePath); }
         }

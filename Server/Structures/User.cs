@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Server.Structures
 {
-    public enum FilterType
+    public class User
     {
-        Data = 0,
-        Resource = 1
+        public int Client_ID { get; set; }
+        public int Account_ID { get; set; }
+        public string Login_Name { get; set; }
     }
 }

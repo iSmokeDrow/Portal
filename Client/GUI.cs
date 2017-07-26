@@ -15,7 +15,9 @@ namespace Client
     // TODO: Implement PLAY_WINLOCK
     // TODO: Implement PLAY_WINALPHA ???
     // TODO: Implement PLAY_PARTYDM ???
-    // TODO: Implement maintenance mode which disables the start button
+    // TODO: Remove instancing from update handler class (redundant)
+    // TODO: Reorganize packet ids on client/server sides for continuity
+    // TODO: Trigger graceful disconnect before launching updater.exe
     public partial class GUI : Form
     {
         #region Drag Hack
@@ -74,14 +76,10 @@ namespace Client
             Instance.UpdateStatus(0, "Initializing settings...");
             await Task.Run(() => { OPT.Instance.Start(); });
             await Task.Run(() => { assignIP(); });
-            Instance.UpdateStatus(0, "Checking for Launcher update...");
-            await Task.Run(() => { checkForSelfUpdate(); });
             Instance.UpdateStatus(0, "Checking for SFrame...");
-            await Task.Run(() => { checkForClient(); });
+            await Task.Run(() => { clientExists(); });
             Instance.UpdateStatus(0, "Connecting to Update Server...");
             connectToServer();
-            ServerPackets.Instance.RequestDESKey();
-            Instance.UpdateStatus(0, "");
         }
 
         protected void assignIP()
@@ -90,7 +88,26 @@ namespace Client
             port = OPT.Instance.GetInt("port");
         }
 
-        internal void connectToServer() { if (!ServerManager.Instance.Start(ip, port)) { this.Close(); } }
+        internal void connectToServer()
+        {
+            if (!ServerManager.Instance.Start(ip, port))
+            {
+                this.Close();
+            }
+
+            registerClient();
+        }
+
+        internal void registerClient() { ServerPackets.Instance.CS_RegisterClient(); }
+
+        internal void OnRegisterCompleteReceived()
+        {
+            // TODO: Initialize heartbeat
+
+            Instance.UpdateStatus(0, "Checking for Launcher update...");
+            checkForSelfUpdate();
+
+        }
 
         internal void checkAuthenticationType() { ServerPackets.Instance.CS_RequestAuthenticationType(); }
 
@@ -102,16 +119,10 @@ namespace Client
             }
         }
 
-        internal void checkForSelfUpdate()
-        {
-            if (File.Exists("Launcher.exe")) { ServerPackets.Instance.CS_RequestSelfUpdate(Hash.GetSHA512Hash("Launcher.exe")); }
-        }
-
-        protected bool checkForClient()
+        protected bool clientExists()
         {
             string sframePath = string.Format(@"{0}\{1}", OPT.Instance.GetString("clientdirectory"), "sframe.exe");
 
-            // Check that the provided client directory exists
             if (!File.Exists(sframePath))
             {
                 while (true)
@@ -135,6 +146,25 @@ namespace Client
             else { return true; }
 
             return false;
+        }
+
+        internal void checkForSelfUpdate()
+        {
+            if (File.Exists("Launcher.exe"))
+            {
+                ServerPackets.Instance.CS_RequestSelfUpdate(Hash.GetSHA512Hash("Launcher.exe")); }
+        }
+
+        internal void OnSelfUpdateCheckCompleted(bool updateRequired)
+        {
+            if (updateRequired) { UpdateHandler.Instance.ExecuteSelfUpdate(); }
+            else { RequestDesKey(); }
+        }
+
+        internal void RequestDesKey()
+        {
+            ServerPackets.Instance.RequestDESKey();
+            Instance.UpdateStatus(0, "");
         }
 
         internal void OnDesKeyReceived(string desKey)
@@ -220,18 +250,10 @@ namespace Client
         {
             if (updatesDisabled == 0)
             {
-                Instance.UpdateStatus(0, "Checking for Launcher Update...");
-                await Task.Run(() => { checkForSelfUpdate(); });
                 Instance.UpdateStatus(0, "Checking for Client Updates...");
-                await Task.Run(() => { updateClient(); });
+                await Task.Run(() => { UpdateHandler.Instance.Start(); });
             }
             else { OnUpdateComplete(); }
-        }
-
-        internal void updateClient()
-        {
-            if (checkForClient()) { UpdateHandler.Instance.Start(); }
-            else { this.Invoke(new MethodInvoker(delegate { this.Close(); })); }
         }
 
         internal void OnUpdateComplete()
@@ -299,7 +321,7 @@ namespace Client
                     {
                         totalProgress.Value = 0;
                         totalProgress.Maximum = 100;
-                        totalStatus.Text = string.Empty;
+                        totalStatus.Text = string.Empty; 
                     }));
                     break;
 
@@ -329,10 +351,8 @@ namespace Client
 
         private void start_btn_Click(object sender, EventArgs e) { if (canStart) { ServerPackets.Instance.CS_RequestArguments(); } }
 
-        internal void OnArgumentsReceived(string arguments, int startType)
+        internal void OnArgumentsReceived(string arguments, int startType, bool isMaintenance)
         {
-            canStart = false;
-
             if (!string.IsNullOrEmpty(arguments))
             {
                 string launchArgs = arguments.TrimEnd('\0');
@@ -347,18 +367,22 @@ namespace Client
 
                 if (OPT.Instance.GetBool("showfps")) { launchArgs += " /winfps"; }
 
-                if (startType == 1) // Use SFrameBypass
+                if (!isMaintenance)
                 {
-                    if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.close_Click(null, EventArgs.Empty); })); } }
-                    else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.close_Click(null, EventArgs.Empty); }
+                    if (startType == 1) // Use SFrameBypass
+                    {
+                        if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.close_Click(null, EventArgs.Empty); })); } }
+                        else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.close_Click(null, EventArgs.Empty); }
+                    }
+                    else
+                    {
+                        var p = new ProcessStartInfo();
+                        p.FileName = string.Concat(OPT.Instance.GetString("clientdirectory"), @"\SFrame.exe");
+                        p.Arguments = launchArgs;
+                        Process.Start(p);
+                    }
                 }
-                else
-                {
-                    var p = new ProcessStartInfo();
-                    p.FileName = string.Concat(OPT.Instance.GetString("clientdirectory"), @"\SFrame.exe");
-                    p.Arguments = launchArgs;
-                    Process.Start(p);
-                }
+                else { MessageBox.Show("Cannot start because the server is currently in maintenance!\n\nTry again in a little bit!", "Maintenance Exception", MessageBoxButtons.OK, MessageBoxIcon.Stop); }
             }
         }
 
@@ -368,7 +392,7 @@ namespace Client
             ServerPackets.Instance.RequestDisconnect();
         }
 
-        private void launcherSettings_btn_Click(object sender, EventArgs e)
+        internal void launcherSettings_btn_Click(object sender, EventArgs e)
         {
             GeneralSettingsGUI settingsGUI = new GeneralSettingsGUI();
             this.Invoke(new MethodInvoker(delegate { settingsGUI.ShowDialog(this); }));

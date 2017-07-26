@@ -52,10 +52,7 @@ namespace Client.Functions
             else { readOPT(); }
         }
 
-        internal bool optExists
-        {
-            get { return File.Exists(optPath); }
-        }
+        internal bool optExists { get { return File.Exists(optPath); } }
 
         public int GetInt(string name)
         {
@@ -77,7 +74,7 @@ namespace Client.Functions
 
         internal void Update(string name, object value)
         {
-            settingsList.Find(s => s.Name == name).Value = value;
+            settingsList.Find(s => s.Name == name).Value = value.ToString();
         }
 
         private void preloadDefaults()

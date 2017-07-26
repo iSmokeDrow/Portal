@@ -67,7 +67,7 @@ namespace Server.Functions
             }
             catch (SqlException sqlEx)
             {
-                Console.WriteLine("\nSQL Error:\n{0}", sqlEx.Message);
+                Output.Write(new Structures.Message() { Text = string.Format("\nSQL Error:\n{0}", sqlEx.Message), AddBreak = true });
                 return null;
             }
         }

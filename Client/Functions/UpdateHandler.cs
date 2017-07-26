@@ -13,9 +13,6 @@ using Client.Structures;
 namespace Client.Functions
 {
 
-    // TODO: Implement inserting new files
-    // TODO: If old file is removed, server still thinks it exists
-    // TODO: File is being downloaded and updated twice
     public class UpdateHandler
     {
         private string indexPath;
@@ -49,7 +46,7 @@ namespace Client.Functions
         public UpdateHandler()
         {
             Core = new Core();
-            Core.TotalMaxDetermined += (o, x) => { GUI.Instance.Invoke(new MethodInvoker(delegate { GUI.Instance.totalProgress.Maximum = x.Maximum; })); };
+            Core.TotalMaxDetermined += (o, x) => { GUI.Instance.Invoke(new MethodInvoker(delegate { GUI.Instance.UpdateProgressMaximum(0, x.Maximum); })); };
             Core.TotalProgressChanged += (o, x) =>
             {
                 GUI.Instance.Invoke(new MethodInvoker(delegate
@@ -73,7 +70,7 @@ namespace Client.Functions
                 GUI.Instance.Invoke(new MethodInvoker(delegate
                 {
                     GUI.Instance.UpdateProgressValue(1, (int)x.Value);
-                    if (x.Status.Length > 0) { GUI.Instance.UpdateStatus(1, x.Status); }                   
+                    GUI.Instance.UpdateStatus(1, x.Status);              
                 }));
             };
             Core.CurrentProgressReset += (o, x) =>
@@ -136,10 +133,12 @@ namespace Client.Functions
             else if (!updateData && !updateResource) { GUI.Instance.OnUpdateComplete(); }
         }
         
-        public void ExecuteSelfUpdate(string fileName) { DownloadSelfUpdate(fileName); }
-
-        // TODO: Reimplement updater-update
-        internal void ExecuteUpdaterUpdate(string fileName) { }
+        public void ExecuteSelfUpdate()
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"Updater.exe";
+            Process.Start(startInfo);
+        }
 
         public void OnDataEntryReceived(string fileName, string hash)
         {
@@ -224,12 +223,6 @@ namespace Client.Functions
                 iterateCurrentIndex();
             }
         }
-        private void DownloadSelfUpdate(string fileName)
-        {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"Updater.exe";
-            Process.Start(startInfo);
-        }
 
         internal void OnSendTypeReceived(int transferType)
         {
@@ -272,15 +265,20 @@ namespace Client.Functions
 
             GUI.Instance.UpdateStatus(0, "Applying update...");
 
+            string fileName = FileList[currentIndex].FileName;
+
             bool isLegacy = updatingResource;
+
+            bool isNew = Core.EntryExists(ref index, fileName);
 
             string zipPath = string.Format(@"{0}\Downloads\{1}", Directory.GetCurrentDirectory(), zipName);
 
-            string fileName = FileList[currentIndex].FileName;
 
             if (isLegacy)
             {
                 GUI.Instance.UpdateStatus(1, string.Format("Moving {0} to /Resource/...", fileName));
+
+                // TODO: Rename? Move? Delete if already exists
 
                 // Extract the zip to the /resource/ folder of client
                 ZIP.Unpack(zipPath, resourceFolder);
@@ -296,8 +294,18 @@ namespace Client.Functions
 
                 if (indexEntry != null)
                 {
-                    GUI.Instance.UpdateStatus(1, string.Format("Updating indexed file: {0}...", fileName));
-                    Core.UpdateFileEntry(ref index, settings.GetString("clientdirectory"), filePath, 0);
+                    if (!isNew)
+                    {
+                        GUI.Instance.UpdateStatus(1, string.Format("Updating indexed file: {0}...", fileName));
+                        Core.UpdateFileEntry(ref index, settings.GetString("clientdirectory"), filePath, 0);
+                    }
+                    else
+                    {
+                        GUI.Instance.UpdateStatus(1, string.Format("Inserting file: {0}...", fileName));
+                        Core.ImportFileEntry(ref index, settings.GetString("clientdirectory"), filePath, 0);
+                    }
+
+                    GUI.Instance.UpdateStatus(1, "Finalizing data index...");
                     Core.Save(ref index, settings.GetString("clientdirectory"), false);
                 }
             }

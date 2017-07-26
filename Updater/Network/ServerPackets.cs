@@ -23,6 +23,7 @@ namespace Updater.Network
             // Loads PacketsDb
             PacketsDb = new Dictionary<ushort, PacketAction>();
 
+            PacketsDb.Add(0x0AAA, SU_ReceiveRegisterComplete);
             PacketsDb.Add(0x1001, SU_ReceiveLauncherInfo);
             PacketsDb.Add(0x1101, SU_ReceiveLauncherBytes);
             PacketsDb.Add(0x1102, SU_ReceiveLauncherEOF);
@@ -52,12 +53,22 @@ namespace Updater.Network
 
         #region Server-Updater Packets (SU)
 
+
+        private void SU_ReceiveRegisterComplete(PacketStream stream)
+        {
+            Program.OnRegisterCompleted();
+        }
+
         private void SU_ReceiveDesKey(PacketStream stream)
         {
             DesCipher = new XDes(stream.ReadString());
             Console.WriteLine("[OK]");
             Program.OnDesKeyReceived();
         }
+
+        internal void US_RegisterUpdater() { ServerManager.Instance.Send(new PacketStream(0x00AA)); }
+
+        internal void US_UnregisterUpdater() { ServerManager.Instance.Send(new PacketStream(0x00BB)); }
 
         private void SU_ReceiveLauncherInfo(PacketStream stream)
         {
@@ -82,7 +93,7 @@ namespace Updater.Network
             }
             catch (Exception ex) { Console.WriteLine("{0} SU_ReceiveLauncherBytes() Exception", ex.ToString()); }
         }
-
+      
         private void SU_ReceiveLauncherEOF(PacketStream stream) { UpdateHandler.WriteFile(); }
 
         #endregion

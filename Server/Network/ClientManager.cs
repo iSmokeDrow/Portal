@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Server.Structures;
 
 namespace Server.Network
 {
@@ -13,7 +14,11 @@ namespace Server.Network
     {
         public static readonly ClientManager Instance = new ClientManager();
 
-        private static List<Client> clientList = new List<Client>();
+        public List<Client> clientList = new List<Client>();
+
+        public void Add(Client client) { clientList.Add(client); }
+
+        public void Remove(Client client) { clientList.Remove(client); }
 
         /// <summary>
         /// Initializes the client listener
@@ -28,17 +33,17 @@ namespace Server.Network
                 IPAddress ip;
                 if (!IPAddress.TryParse(OPT.GetString("io.ip"), out ip))
                 {
-                    Console.WriteLine("Failed to parse Server IP ({0})", OPT.GetString("io.ip"));
+                    Output.Write(new Message() { Text = string.Format("Failed to parse Server IP ({0})", OPT.GetString("io.ip")), AddBreak = true });
                     return false;
                 }
+
                 listener.Bind(new IPEndPoint(ip, int.Parse(OPT.GetString("io.port"))));
                 listener.Listen(100);
                 listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine("At ClientManager.Start()");
+                Output.Write(new Message() { Text = string.Format("Error occured initializing Client Listener!\n\t {0}", e.Message), AddBreak = true });
 
                 listener.Close();
                 return false;
@@ -91,9 +96,9 @@ namespace Server.Network
 
             Client client = new Client(socket);
 
-            if (OPT.GetBool("debug")) { Console.WriteLine("Client [{0}] connected from: {1} [{2}]", client.Id, client.Ip, client.Port); }
+            if (OPT.GetBool("debug")) { Output.Write(new Message() { Text = string.Format("Client [{0}] connected from: {1} [{2}]", client.Id, client.Ip, client.Port), AddBreak = true }); }
 
-            clientList.Add(client);
+            ClientManager.Instance.Add(client);
 
             socket.BeginReceive(
                 client.Buffer, 0, PacketStream.MaxBuffer, SocketFlags.None,
@@ -184,7 +189,8 @@ namespace Server.Network
                 {
                     UserHandler.Instance.OnUserRequestDisconnect(client);
                     client.ClSocket.Close();
-                    Console.WriteLine("Client [{0}] disconected! (with errors)\n\t-Errors!\n\t-{1}.", client.Id, e.Message);
+                    Output.Write(new Message() { Text = string.Format("Client [{0}] disconected! (with errors)\n\t-Errors!\n\t-{1}.", client.Id, e.Message), AddBreak = true });
+                    // TODO: Create stat "Fatal Disconnects"
                 }
             }
         }
@@ -205,7 +211,7 @@ namespace Server.Network
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed to send packet to client.\nError: {0}", ex.Message);
+                Output.Write(new Message() { Text = string.Format("Failed to send packet to client.\nError: {0}", ex.Message), AddBreak = true });
             }
         }
         #endregion

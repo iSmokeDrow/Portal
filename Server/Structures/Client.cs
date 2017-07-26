@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server
+namespace Server.Structures
 {
     public class Client
     {

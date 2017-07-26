@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Server.Network;
+using Server.Structures;
 
 namespace Server.Functions
 {
@@ -13,7 +14,8 @@ namespace Server.Functions
         protected static UserHandler instance;
         public static UserHandler Instance { get { return (instance == null) ? new UserHandler() : instance; } }
 
-        public static List<Client> ClientList = new List<Client>();
+        public static List<User> UserList = new List<User>();
+        public static int UserCount { get { return UserList.Count; } }
 
         public UserHandler() { debug = OPT.GetBool("debug"); }
 
@@ -21,24 +23,26 @@ namespace Server.Functions
         {
             if (OPT.SettingExists("des.key"))
             {
+                if (debug) { Output.Write(new Message() { Text = string.Format("Client [{0}] requested des.key...", client.Id) }); }
+
                 string desKey = OPT.GetString("des.key");
 
                 PacketStream stream = new PacketStream(0x9999);
                 stream.WriteString(desKey);
 
-                if (OPT.GetBool("debug")) { Console.WriteLine("[{0}] Sent!", desKey); }
+                if (OPT.GetBool("debug")) { Output.Write(new Message() { Text = string.Format("[{0}] Sent!", desKey), AddBreak = true }); }
 
                 ClientManager.Instance.Send(client, stream);
             }
-            else { Console.WriteLine("Failed to find des.key in settings!"); }
+            else { Output.Write(new Message() { Text = "Failed to find des.key in settings!", AddBreak = true }); }
         }
 
         public void OnValidateUser(Client client, string username, string password, string fingerprint)
         {
             if (debug)
             {
-                Console.WriteLine("Client [{0}] requested login validation with the following credentials:", client.Id);
-                Console.WriteLine("Username: {0}\nPassword: {1}\nFingerprint: {2}", username, password, fingerprint);
+                Output.Write(new Message() { Text = string.Format("Client [{0}] requested login validation with the following credentials:", client.Id), AddBreak = true });
+                Output.Write(new Message() { Text = string.Format("Username: {0}\nPassword: {1}\nFingerprint: {2}", username, password, fingerprint), AddBreak = true });
             }
 
             // Check if username / password exist
@@ -51,27 +55,27 @@ namespace Server.Functions
                 sqlCmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = username;
                 sqlCmd.Parameters.Add("@password", SqlDbType.NVarChar).Value = PasswordCipher.CreateHash(OPT.GetString("md5.key"), password);
 
-                if (debug) { Console.Write("\t-Checking for Account..."); }
+                if (debug) { Output.Write(new Message() { Text = "\t-Checking for Account..." }); }
 
                 object result = Database.ExecuteStatement(sqlCmd, 1);
 
-                if (debug) { Console.WriteLine(((int)result > 0) ? "[FOUND]" : "[NOT FOUND]"); }
+                if (debug) { Output.Write(new Message() { Text = ((int)result > 0) ? "[FOUND]" : "[NOT FOUND]", AddBreak = true }); }
 
                 if ((int)result > 0) // Account exists
                 {
                     int account_id = (int)result;
 
-                    if (debug) { Console.Write("\t-Checking Account ban status..."); }
+                    if (debug) { Output.Write(new Message() { Text = "\t-Checking Account ban status..." }); }
 
                     // Check if account is banned
                     sqlCmd.CommandText = string.Format("SELECT ban FROM dbo.{0} WHERE login_name = @name AND password = @password", OPT.GetString("db.auth.table.alias"));
                     result = Database.ExecuteStatement(sqlCmd, 1);
 
-                    if (debug) { Console.WriteLine(((int)result == 0) ? "[NOT BANNED]" : "[BANNED]"); }
+                    if (debug) { Output.Write(new Message() { Text = ((int)result == 0) ? "[NOT BANNED]" : "[BANNED]", AddBreak = true }); }
 
                     if ((int)result == 0) // Account is not banned
                     {
-                        if (debug) { Console.Write("\t-Checking for FingerPrint..."); }
+                        if (debug) { Output.Write(new Message() { Text = "\t-Checking for FingerPrint..." }); }
 
                         // Check for fingerprint
                         sqlCmd.CommandText = "SELECT COUNT(account_id) FROM dbo.FingerPrint WHERE account_id = @account_id";
@@ -80,26 +84,30 @@ namespace Server.Functions
 
                         result = Database.ExecuteStatement(sqlCmd, 1);
 
-                        if (debug) { Console.WriteLine(((int)result == 1) ? "[FOUND]" : "[NOT FOUND]"); }
+                        if (debug) { Output.Write(new Message() { Text = ((int)result == 1) ? "[FOUND]" : "[NOT FOUND]", AddBreak = true }); }
 
                         if ((int)result == 1) // FingerPrint exists
                         {
-                            if (debug) { Console.Write("\t-Checking FingerPrint ban status..."); }
+                            if (debug) { Output.Write(new Message() { Text = "\t-Checking FingerPrint ban status..." }); }
 
                             // Check if FingerPrint is banned
                             sqlCmd.CommandText = "SELECT ban FROM dbo.FingerPrint WHERE account_id = @account_id";
 
                             result = Database.ExecuteStatement(sqlCmd, 1);
 
-                            if (debug) { Console.WriteLine(((int)result == 0) ? "[NOT BANNED]" : "[BANNED]"); }
+                            if (debug) { Output.Write(new Message() { Text = ((int)result == 0) ? "[NOT BANNED]" : "[BANNED]", AddBreak = true }); }
 
                             if ((int)result == 0) // FingerPrint is not banned
                             {
+                                UserList.Add(new User() { Client_ID = client.Id, Account_ID = account_id, Login_Name = username });
+                                Statistics.UpdateAuthenticatedCount(true);
                                 setOTP(ref client, ref sqlCmd, account_id);
                             }
                             else // FingerPrint is banned
                             {
-                                if (debug) { Console.Write("\t-Checking if FingerPrint ban is expired..."); }
+                                Statistics.UpdateBannedCount(true);
+
+                                if (debug) { Output.Write(new Message() { Text = "\t-Checking if FingerPrint ban is expired..." }); }
 
                                 // Get OTP Expiration Date
                                 sqlCmd.CommandText = "SELECT expiration_date FROM dbo.FingerPrint WHERE account_id = @account_id";
@@ -110,14 +118,16 @@ namespace Server.Functions
 
                                 if ((DateTime)result < DateTime.Now) // Ban is up
                                 {
-                                    if (debug) { Console.WriteLine("[EXPIRED]\n\t-Updating FingerPrint ban..."); }
+                                    if (debug) { Output.Write(new Message() { Text = "[EXPIRED]\n\t-Updating FingerPrint ban...", AddBreak = true }); }
 
                                     sqlCmd.CommandText = "UPDATE dbo.FingerPrint SET ban = 0 WHERE account_id = @account_id";
 
                                     result = Database.ExecuteStatement(sqlCmd, 0);
 
-                                    if (debug) { Console.WriteLine(((int)result == 1) ? "[SUCCESS]" : "[FAIL]"); }
+                                    if (debug) { Output.Write(new Message() { Text = ((int)result == 1) ? "[SUCCESS]" : "[FAIL]", AddBreak = true }); }
 
+                                    Statistics.UpdateAuthenticatedCount(true);
+                                    Statistics.UpdateBannedCount(false);
                                     setOTP(ref client, ref sqlCmd, account_id);
                                 }
                                 else { ClientPackets.Instance.SC_SendBanStatus(client, 1); }
@@ -125,7 +135,7 @@ namespace Server.Functions
                         }
                         else
                         {
-                            if (debug) { Console.Write("\t-Inserting FingerPrint: {0}...", fingerprint); }
+                            if (debug) { Output.Write(new Message() { Text = string.Format("\t-Inserting FingerPrint: {0}...", fingerprint) }); }
 
                             sqlCmd.CommandText = "INSERT INTO dbo.FingerPrint (account_id, finger_print, ban, expiration_date) VALUES (@account_id, @finger_print, @ban, @expiration_date)";
                             sqlCmd.Parameters.Clear();
@@ -136,13 +146,23 @@ namespace Server.Functions
 
                             result = Database.ExecuteStatement(sqlCmd, 0);
 
-                            if (debug) { Console.WriteLine(((int)result == 1) ? "[SUCCESS]" : "[FAIL]"); }
+                            if (debug) { Output.Write(new Message() { Text = ((int)result == 1) ? "[SUCCESS]" : "[FAIL]", AddBreak = true }); }
 
+                            Statistics.UpdateAuthenticatedCount(true);
+                            setOTP(ref client, ref sqlCmd, account_id);
                         }
                     }
-                    else { ClientPackets.Instance.SC_SendBanStatus(client, 0); } // Account is banned
+                    else // Account is banned
+                    {
+                        Statistics.UpdateBannedCount(true);
+                        ClientPackets.Instance.SC_SendBanStatus(client, 0);
+                    } 
                 }
-                else { ClientPackets.Instance.SC_SendAccountNull(client); } // Account doesn't exist
+                else // Account doesn't exist
+                {
+                    Statistics.UpdateRejectCount(true);
+                    ClientPackets.Instance.SC_SendAccountNull(client);
+                } 
             }
         }
 
@@ -157,13 +177,13 @@ namespace Server.Functions
 
             if (OPT.GetBool("imbc.login")) { arguments += "/imbclogin /account:? /password:?"; }
 
-            ClientPackets.Instance.SC_SendArguments(client, arguments, OPT.GetInt("sframe.bypass"));
+            ClientPackets.Instance.SC_SendArguments(client, arguments, OPT.GetInt("sframe.bypass"), OPT.GetBool("maintenance"));
         }
 
         internal void OnUserRequestDisconnect(Client client)
         {
-            if (debug) { Console.WriteLine("Removed Client [{0}] from ClientList", client.Id); }
-            ClientList.Remove(client);
+            if (debug) { Output.Write(new Message() { Text = string.Format("Removed Client [{0}] from ClientList", client.Id) }); }
+            ClientManager.Instance.Remove(client);
         }
 
         protected void setOTP(ref Client client, ref SqlCommand sqlCmd, int account_id)
@@ -171,7 +191,7 @@ namespace Server.Functions
             // Formulate an OTP
             string otpHash = OTP.GenerateRandomPassword(26);
 
-            if (debug) { Console.WriteLine("\t-Generated OTP: {0}", otpHash); }
+            if (debug) { Output.Write(new Message() { Text = string.Format("\t-Generated OTP: {0}", otpHash) }); }
 
             // Check if OTP account_id already exists
             sqlCmd.CommandText = "SELECT COUNT(account_id) FROM dbo.OTP WHERE account_id = @account_id";
@@ -180,7 +200,7 @@ namespace Server.Functions
 
             if ((int)result == 1) // OTP account_id exists, update OTP
             {
-                if (debug) { Console.Write("\t-Updating OTP..."); }
+                if (debug) { Output.Write(new Message() { Text = "\t-Updating OTP..." }); }
 
                 sqlCmd.CommandText = "UPDATE dbo.OTP SET otp = @OTP, expiration = @expiration WHERE account_id = @account_id";
                 sqlCmd.Parameters.Add("@OTP", SqlDbType.NVarChar).Value = otpHash;
@@ -188,11 +208,11 @@ namespace Server.Functions
 
                 result = Database.ExecuteStatement(sqlCmd, 0);
 
-                if (debug) { Console.WriteLine(((int)result == 1) ? "[SUCCESS]" : "[FAIL]"); }
+                if (debug) { Output.Write(new Message() { Text = ((int)result == 1) ? "[SUCCESS]" : "[FAIL]", AddBreak = true }); }
             }
             else // OTP account_id doesn't exist, write new OTP
             {
-                if (debug) { Console.Write("\t-Inserting OTP..."); }
+                if (debug) { Output.Write(new Message() { Text = "\t-Inserting OTP..." }); }
 
                 sqlCmd.CommandText = "INSERT INTO dbo.OTP (account_id, otp, expiration) VALUES (@account_id, @OTP, @expiration)";
                 sqlCmd.Parameters.Clear();
@@ -202,7 +222,7 @@ namespace Server.Functions
 
                 result = Database.ExecuteStatement(sqlCmd, 0);
 
-                if (debug) { Console.WriteLine(((int)result == 1) ? "[SUCCESS]" : "[FAIL]"); }
+                if (debug) { Output.Write(new Message() { Text = ((int)result == 1) ? "[SUCCESS]" : "[FAIL]", AddBreak = true }); }
             }
 
             ClientPackets.Instance.SC_SendOTP(client, otpHash);

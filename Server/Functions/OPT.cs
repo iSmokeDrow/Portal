@@ -16,8 +16,8 @@ namespace Server.Functions
         /// Dictionary holding all the settings loaded from portal.opt
         /// </summary>
         protected static Dictionary<string, string> SettingsList = new Dictionary<string, string>();
-        protected static List<string> legacyList = new List<string>();
-        protected static List<string> deleteList = new List<string>();
+        protected static List<string> legacyIndex = new List<string>();
+        protected static List<string> deleteIndex = new List<string>();
 
         public static bool SettingExists(string key) { return (SettingsList[key] != null) ? true : false; }
 
@@ -36,13 +36,13 @@ namespace Server.Functions
             return false;
         }
 
-        public static bool IsLegacy(string key) { return legacyList.Contains(key); }
+        public static bool IsLegacy(string key) { return legacyIndex.Contains(key); }
 
-        public static int LegacyCount { get { return legacyList.Count; } }
+        public static int LegacyCount { get { return legacyIndex.Count; } }
 
-        public static bool IsDelete(string key) { return deleteList.Contains(key); }
+        public static bool IsDelete(string key) { return deleteIndex.Contains(key); }
 
-        public static int DeleteCount { get { return deleteList.Count; } }
+        public static int DeleteCount { get { return deleteIndex.Count; } }
 
         /// <summary>
         /// Parses: portal.opt, legacy.opt, legacy_delete.opt into their appropriate Dictionary and List variables
@@ -78,18 +78,20 @@ namespace Server.Functions
             }
         }
 
-        public static void LoadLegacyFiles()
+        public static void LoadLegacyIndex()
         {
             if (File.Exists("legacy.opt"))
             {
                 using (StreamReader sr = new StreamReader("legacy.opt"))
                 {
                     string currentLineValue = null;
-                    while ((currentLineValue = sr.ReadLine()) != null) { legacyList.Add(currentLineValue); }
+                    while ((currentLineValue = sr.ReadLine()) != null) { legacyIndex.Add(currentLineValue); }
                 }
             }
             else { Console.WriteLine("The legacy.opt does not exist, create it!"); }
         }
+
+        public static void AlterLegacyIndex(string fileName, bool add) { if (add) legacyIndex.Add(fileName); else legacyIndex.Remove(fileName); }
 
         public static void LoadDeleteFiles()
         {
@@ -98,45 +100,50 @@ namespace Server.Functions
                 using (StreamReader sr = new StreamReader("delete.opt"))
                 {
                     string currentLineValue = null;
-                    while ((currentLineValue = sr.ReadLine()) != null) { deleteList.Add(currentLineValue); }
+                    while ((currentLineValue = sr.ReadLine()) != null) { deleteIndex.Add(currentLineValue); }
                 }
             }
             else { Console.WriteLine("The delete.opt does not exist, create it!"); }
+        }
+
+        public static void AlterDeleteIndex(string fileName, bool add) { if (add) deleteIndex.Add(fileName); else deleteIndex.Remove(fileName); }
+
+        public static void SaveIndex(int type)
+        {
+            string name = (type < 1) ? "legacy" : "delete";
+            string fileName = string.Concat(name, ".opt");
+
+            Output.WriteAndLock(new Structures.Message() { Text = string.Format("Attempting to save: {0}.opt...", name) });
+
+            if (File.Exists(fileName)) { File.Delete(fileName); }
+
+            try { using (StreamWriter sW = new StreamWriter(File.Create(fileName))) { foreach (string entryName in legacyIndex) { sW.Write(string.Concat(entryName, "\n")); } } }
+            catch (Exception ex) { Output.WriteAndUnlock(new Structures.Message() { Text = string.Format("[Fail]\nError:{0}", ex.Message), AddBreak = true }); }
+            finally { Output.WriteAndUnlock(new Structures.Message() { Text = "[OK]", AddBreak = true }); }
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="type"></param>
-        public static void SaveSettings(int type)
+        public static void SaveSettings()
         {
-            //MainWindow.Instance.MessageConsole.AppendText("Attempting to save: ");
+            Output.WriteAndLock(new Structures.Message() { Text = "Attempting to save: Portal.opt..." });
 
-            if (type == 0)
+            if (File.Exists("portal.opt")) { File.Delete("portal.opt"); }
+
+            try
             {
-                //MainWindow.Instance.MessageConsole.AppendText("portal.opt...");
-
-                if (File.Exists("portal.opt")) { File.Delete("portal.opt"); }
-
-                try
+                using (StreamWriter sW = new StreamWriter(File.Create("portal.opt")))
                 {
-                    using (StreamWriter sW = new StreamWriter(File.Create("portal.opt")))
+                    foreach (KeyValuePair<string, string> pair in SettingsList)
                     {
-                        foreach (KeyValuePair<string, string> pair in SettingsList)
-                        {
-                            sW.Write(string.Format("{0}:{1}\n", pair.Key, pair.Value));
-                        }
+                        sW.Write(string.Format("{0}:{1}\n", pair.Key, pair.Value));
                     }
                 }
-                catch
-                { 
-                    //MainWindow.Instance.MessageConsole.AppendText("[Fail]\n");
-                }
-                finally
-                {
-                    //MainWindow.Instance.MessageConsole.AppendText("[Success]\n");
-                }
             }
+            catch (Exception ex) { Output.WriteAndUnlock(new Structures.Message() { Text = string.Format("[Fail]\nError: {0}", ex.Message), AddBreak = true }); }
+            finally { Output.WriteAndUnlock(new Structures.Message() { Text = "[OK]", AddBreak = true }); }
         }
 
         /// <summary>

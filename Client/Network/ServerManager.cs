@@ -54,7 +54,11 @@ namespace Client.Network
             }
             catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show("Failed to connect to the Launcher Server!\nThe server may be down for a moment. Try again in a bit.", "Connection Exception", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                if (System.Windows.Forms.MessageBox.Show("Failed to connect to the Launcher Server!\nWould you like to change your IP/PORT?", "Connection Exception", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    GUI.Instance.launcherSettings_btn_Click(null, EventArgs.Empty);
+                    GUI.Instance.connectToServer();
+                }
 
                 socket.Close();
                 return false;

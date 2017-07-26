@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Server.Functions;
+using Server.Structures;
 
 namespace Server.Network
 {
@@ -28,8 +29,13 @@ namespace Server.Network
             PacketsDb = new Dictionary<ushort, PacketAction>();
 
             #region Client Packets
+            PacketsDb.Add(0x000A, CS_RegisterClient);
+            PacketsDb.Add(0x000B, CS_UnregisterClient);
+            PacketsDb.Add(0x00AA, US_RegisterUpdater);
+            PacketsDb.Add(0x00BB, US_UnregisterUpdater);
+            PacketsDb.Add(0x000C, CS_InitializeHeartbeat);
             PacketsDb.Add(0x0001, CS_RequestUpdateDateTime);
-            PacketsDb.Add(0x0002, CS_RequestSelfUpdate);
+            PacketsDb.Add(0x0002, CS_RequestSelfUpdateRequired);
             PacketsDb.Add(0x0008, CS_RequestUpdatesDisabled);
             PacketsDb.Add(0x0010, CS_RequestDataUpdateIndex);
             PacketsDb.Add(0x0110, CS_RequestResourceUpdateIndex);
@@ -59,7 +65,7 @@ namespace Server.Network
             // Is it a known packet ID?
             if (!PacketsDb.ContainsKey(stream.GetId()))
             {
-                Console.WriteLine("Unknown packet Id: {0}", stream.GetId());
+                Output.Write(new Message() { Text = string.Format("Unknown packet Id: {0}", stream.GetId()), AddBreak = true });
                 return;
             }
 
@@ -71,12 +77,28 @@ namespace Server.Network
 
         #region Client-Server Packets (CS)
 
-        private void CS_RequestDesKey(Client client, PacketStream stream)
+        private void CS_RegisterClient(Client client, PacketStream stream)
         {
-            if (debug) { Console.Write("Client [{0}] requested des.key...", client.Id); }
-
-            UserHandler.Instance.OnUserRequestDesKey(client);
+            Statistics.UpdateClientCount(true);
+            ClientManager.Instance.Send(client, new PacketStream(0x00AA));
         }
+
+        private void CS_UnregisterClient(Client client, PacketStream stream) { Statistics.UpdateClientCount(false); }
+
+        private void CS_InitializeHeartbeat(Client client, PacketStream stream)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void US_RegisterUpdater(Client client, PacketStream stream)
+        {
+            Statistics.UpdateUpdaterCount(true);
+            ClientManager.Instance.Send(client, new PacketStream(0x0AAA));
+        }
+
+        private void US_UnregisterUpdater(Client client, PacketStream stream) { Statistics.UpdateUpdaterCount(false); }
+
+        private void CS_RequestDesKey(Client client, PacketStream stream) { UserHandler.Instance.OnUserRequestDesKey(client); }
 
         private void CS_RequestAuthenticationType(Client client, PacketStream stream) { UserHandler.Instance.OnAuthenticationTypeRequest(client); }
 
@@ -95,7 +117,7 @@ namespace Server.Network
 
         private void CS_RequestUpdateDateTime(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestUpdateDateTime(client); }
 
-        private void CS_RequestSelfUpdate(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestSelfUpdate(client, stream.ReadString()); }
+        private void CS_RequestSelfUpdateRequired(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestSelfUpdateRequired(client, stream.ReadString()); }
 
         /// <summary>
         /// Client wants the file list
@@ -108,7 +130,7 @@ namespace Server.Network
 
         private void CS_RequestSendType(Client client, PacketStream stream)
         {
-            if (debug) { Console.WriteLine("Client [{0}] requested send.type", client.Id); }
+            if (debug) { Output.Write(new Message() { Text = string.Format("Client [{0}] requested send.type", client.Id), AddBreak = true }); }
 
             PacketStream outStream = new PacketStream(0x0040);
             outStream.WriteInt32(OPT.GetInt("send.type"));
@@ -129,17 +151,11 @@ namespace Server.Network
 
         private void CS_RequestDisconnect(Client client, PacketStream stream)
         {
-            UserHandler.ClientList.Remove(client);
+            ClientManager.Instance.Remove(client);
+            Statistics.UpdateClientCount(false);
             SC_SendOkDisconnect(client);
             client.ClSocket.Close();
-            if (debug) { Console.WriteLine("Client [{0}] disconnected!", client.Id); }
-        }
-
-        internal void SC_SendUpdatesDisabled(Client client, int updatingDisabled)
-        {
-            PacketStream stream = new PacketStream(0x0008);
-            stream.WriteInt32(updatingDisabled);
-            ClientManager.Instance.Send(client, stream);
+            if (debug) { Output.Write(new Message() { Text = string.Format("Client [{0}] disconnected!", client.Id), AddBreak = true }); }
         }
 
         #endregion
@@ -150,6 +166,20 @@ namespace Server.Network
         {
             PacketStream stream = new PacketStream(0x000A);
             stream.WriteString(DateTime, DateTime.Length + 1);
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        internal void SC_SendUpdatesDisabled(Client client, int updatingDisabled)
+        {
+            PacketStream stream = new PacketStream(0x0008);
+            stream.WriteInt32(updatingDisabled);
+            ClientManager.Instance.Send(client, stream);
+        }
+
+        internal void SC_SendSelfUpdateRequired(Client client, bool updateRequired)
+        {
+            PacketStream stream = new PacketStream(0x000B);
+            stream.WriteBool(updateRequired);
             ClientManager.Instance.Send(client, stream);
         }
 
@@ -271,7 +301,7 @@ namespace Server.Network
             ClientManager.Instance.Send(client, stream);
         }
 
-        internal void SC_SendArguments(Client client, string arguments, int startType)
+        internal void SC_SendArguments(Client client, string arguments, int startType, bool isMaintenance)
         {
             PacketStream stream = new PacketStream(0x0031);
 
@@ -279,6 +309,7 @@ namespace Server.Network
             stream.WriteInt32(argEncrypt.Length);
             stream.WriteBytes(argEncrypt);
             stream.WriteInt32(startType);
+            stream.WriteBool(isMaintenance);
 
             ClientManager.Instance.Send(client, stream);
         }

@@ -27,7 +27,12 @@ namespace Updater.Functions
             string launcherPath = string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), "Launcher.exe");
             string backupPath = string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), "Launcher.exe.old");
 
-            if (File.Exists(launcherPath)) { File.Move(launcherPath, backupPath); }
+            if (!File.Exists(backupPath))
+            {
+                if (File.Exists(launcherPath)) { File.Move(launcherPath, backupPath); }
+            }
+            else { File.Delete(launcherPath); }
+            
 
             using (FileStream fs = File.Create(launcherPath))
             {
@@ -49,6 +54,7 @@ namespace Updater.Functions
             else
             {
                 Console.WriteLine("\tLauncher update completed!");
+                File.Delete(backupPath);
                 Program.OnLauncherVerified();
             }
         }

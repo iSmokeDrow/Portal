@@ -29,7 +29,8 @@ namespace Client.Network
 
             #region Packets
             PacketsDb.Add(0x000A, SC_UpdateDateTime);
-            PacketsDb.Add(0x000B, SC_UpdateSelfUpdate);
+            PacketsDb.Add(0x00AA, SC_ReceiveRegisterComplete);
+            PacketsDb.Add(0x000B, SC_SelfUpdateRequired);
             PacketsDb.Add(0x0008, SC_ReceiveUpdatesDisabled);
             PacketsDb.Add(0x0011, SC_DataUpdateEntry);
             PacketsDb.Add(0x0111, SC_ResourceUpdateEntry);
@@ -71,6 +72,11 @@ namespace Client.Network
 
         #region Server-Client Packets (SC)
 
+        private void SC_ReceiveRegisterComplete(PacketStream stream)
+        {
+            GUI.Instance.OnRegisterCompleteReceived();
+        }
+
         private void SC_DesKey(PacketStream stream) { GUI.Instance.OnDesKeyReceived(stream.ReadString()); }
 
         private void SC_UpdateDateTime(PacketStream stream)
@@ -81,10 +87,7 @@ namespace Client.Network
             UpdateHandler.Instance.OnUpdateDateTimeReceived(time);
         }
 
-        private void SC_UpdateSelfUpdate(PacketStream stream)
-        {
-            UpdateHandler.Instance.ExecuteSelfUpdate(stream.ReadString());
-        }
+        private void SC_SelfUpdateRequired(PacketStream stream) { GUI.Instance.OnSelfUpdateCheckCompleted(stream.ReadBool()); }
 
         /// <summary>
         /// UpdateIndex entry received
@@ -192,8 +195,9 @@ namespace Client.Network
             int len = stream.ReadInt32();
             byte[] arguments = stream.ReadBytes(len);
             int startType = stream.ReadInt32();
+            bool isMaintenance = stream.ReadBool();
 
-            GUI.Instance.OnArgumentsReceived(desCipher.Decrypt(arguments), startType);
+            GUI.Instance.OnArgumentsReceived(desCipher.Decrypt(arguments), startType, isMaintenance);
         }
 
         private void SC_Disconnect(PacketStream stream)
@@ -213,11 +217,11 @@ namespace Client.Network
 
         #region Client-Server Packets (CS)
 
-        internal void RequestDESKey()
-        {
-            PacketStream stream = new PacketStream(0x9999);
-            ServerManager.Instance.Send(stream);
-        }
+        internal void CS_RegisterClient() { ServerManager.Instance.Send(new PacketStream(0x000A)); }
+
+        internal void CS_UnregisterClient() { ServerManager.Instance.Send(new PacketStream(0x000B)); } 
+
+        internal void RequestDESKey() { ServerManager.Instance.Send(new PacketStream(0x9999)); }
 
         internal void CS_RequestAuthenticationType() { ServerManager.Instance.Send(new PacketStream(0x0999)); }
 

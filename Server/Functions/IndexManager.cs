@@ -12,6 +12,10 @@ namespace Server.Functions
 
         public static int Count { get { return Index.Count; } }
 
+        public static int DataCount { get { return Filter(FilterType.Data).Count; } }
+
+        public static int ResourceCount { get { return Filter(FilterType.Resource).Count; } }
+
         public static string UpdatesDirectory
         {
             get
@@ -23,10 +27,9 @@ namespace Server.Functions
 
         public static void Build(bool rebuild)
         {
-            if (rebuild && OPT.GetBool("debug")) Console.Write("Rebuilding the Update Index...");
-            else Console.Write("Building the Update Index...");
+            Output.WriteAndLock(new Message() { Text = string.Format("{0} the Update Index...", (rebuild && OPT.GetBool("debug")) ? "Rebuilding" : "Building") });
 
-            Program.Wait = true;
+            if (rebuild) { Program.Wait = true; }
 
             if (Index.Count > 0) { Index.Clear(); }
 
@@ -69,10 +72,12 @@ namespace Server.Functions
                     break;
             }
 
-            if (rebuild && OPT.GetBool("debug")) Console.WriteLine("[OK]\n\t{0} files indexed", Count);
-            else Console.WriteLine("[OK]\n\t{0} files indexed", Count);
+            if (OPT.GetBool("debug")) { Output.WriteAndUnlock(new Message() { Text = string.Format("[OK]\n\t- {0} files indexed", Count), AddBreak = true }); }
 
-            Program.Wait = false;
+            if (rebuild) { Program.Wait = false; }
+
+            GUI.Instance.updatesViewBtn.Enabled = true;
+            GUI.Instance.updatesView.Enabled = true;
         }
 
         public static List<IndexEntry> Filter(FilterType type)
@@ -87,6 +92,20 @@ namespace Server.Functions
             }
 
             return null;
+        }
+
+        public static bool EntryExists(string name, FilterType type)
+        {
+            switch (type)
+            {
+                case FilterType.Data:
+                    return Index.Find(i => !i.Legacy && i.FileName == name) != null;
+
+                case FilterType.Resource:
+                    return Index.Find(i => i.Legacy && i.FileName == name) != null;
+            }
+
+            return false;
         }
     }
 }
