@@ -173,7 +173,7 @@ namespace Server.Functions
 
         internal void OnUserRequestArguments(Client client)
         {
-            string arguments = string.Format("/auth_ip:{0} /auth_port:{1} /locale:? country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:{2}", OPT.GetString("auth.io.ip"), OPT.GetString("auth.io.port"), OPT.GetString("double.execute"));
+            string arguments = string.Format("/auth_ip:{0} /auth_port:{1} /locale:? /country:? /use_nprotect:0 /cash /commercial_shop /allow_double_exec:{2}", OPT.GetString("auth.io.ip"), OPT.GetString("auth.io.port"), OPT.GetString("double.execute"));
 
             if (OPT.GetBool("imbc.login")) { arguments += "/imbclogin /account:? /password:?"; }
 

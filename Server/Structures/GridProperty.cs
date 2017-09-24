@@ -101,9 +101,9 @@ namespace Server.Structures
         public bool Maintenance { get { return OPT.GetBool("maintenance"); }  set { OPT.UpdateSetting("maintenance", value.ToString()); } }
 
         [Description("Determines if connecting Launchers should use 8.1+ Game Client signed startup when launching their Game Client"), Category("SFrame"), DisplayName("SFrame Bypass")]
-        public bool SFrame_Bypass { get { return OPT.GetBool("sframe.bypass"); } set { OPT.UpdateSetting("sframe.bypass", value.ToString()); } }
+        public bool SFrame_Bypass { get { return OPT.GetBool("sframe.bypass"); } set { OPT.UpdateSetting("sframe.bypass", Convert.ToInt32(value).ToString()); } }
 
         [Description("Determines if connecting Launchers should be able to start multiple Game Clients"), Category("SFrame"), DisplayName("Double Execute")]
-        public bool Double_Exec { get { return OPT.GetBool("double.execute"); } set { OPT.UpdateSetting("double.execute", value.ToString()); } }
+        public bool Double_Exec { get { return OPT.GetBool("double.execute"); } set { OPT.UpdateSetting("double.execute", Convert.ToInt32(value).ToString()); } }
     }
 }

@@ -24,6 +24,7 @@ namespace Client.Functions
                 if (File.Exists(filePath)) { File.Delete(filePath); }
 
                 UnZipper uz = new UnZipper();
+                uz.IfFileExist = enIfFileExist.Overwrite;
                 uz.Destination = outDirectory;
                 uz.ItemList.Add("**");
                 uz.ZipFile = inPath;

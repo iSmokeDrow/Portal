@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.output = new System.Windows.Forms.TabPage();
             this.OutputText = new System.Windows.Forms.RichTextBox();
             this.statistics = new System.Windows.Forms.TabPage();
@@ -85,6 +86,9 @@
             this.characterNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.byIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateWriteTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setWTBtn = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.output.SuspendLayout();
             this.statistics.SuspendLayout();
             this.logins.SuspendLayout();
@@ -215,6 +219,7 @@
             // 
             // updates
             // 
+            this.updates.Controls.Add(this.setWTBtn);
             this.updates.Controls.Add(this.DeleteCount);
             this.updates.Controls.Add(this.ResourceCount);
             this.updates.Controls.Add(this.DataCount);
@@ -497,7 +502,8 @@
             this.updatesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.updatesView,
             this.reloadToolStripMenuItem,
-            this.updatesClearTmp});
+            this.updatesClearTmp,
+            this.updateWriteTimeToolStripMenuItem});
             this.updatesToolStripMenuItem.Name = "updatesToolStripMenuItem";
             this.updatesToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.updatesToolStripMenuItem.Text = "Updates";
@@ -561,21 +567,21 @@
             this.stopToolStripMenuItem,
             this.networkListenerMaintenance});
             this.listenerToolStripMenuItem.Name = "listenerToolStripMenuItem";
-            this.listenerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.listenerToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.listenerToolStripMenuItem.Text = "Listener";
             // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Enabled = false;
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.startToolStripMenuItem.Text = "Start";
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Enabled = false;
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             // 
             // networkListenerMaintenance
@@ -636,6 +642,24 @@
             this.menuSettings.Size = new System.Drawing.Size(61, 20);
             this.menuSettings.Text = "Settings";
             this.menuSettings.Click += new System.EventHandler(this.settingsMenu_Click);
+            // 
+            // updateWriteTimeToolStripMenuItem
+            // 
+            this.updateWriteTimeToolStripMenuItem.Name = "updateWriteTimeToolStripMenuItem";
+            this.updateWriteTimeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.updateWriteTimeToolStripMenuItem.Text = "Set Write Time";
+            this.updateWriteTimeToolStripMenuItem.ToolTipText = "Sets the Updates folder last write time to the current time";
+            this.updateWriteTimeToolStripMenuItem.Click += new System.EventHandler(this.setWTBtn_Click);
+            // 
+            // setWTBtn
+            // 
+            this.setWTBtn.Location = new System.Drawing.Point(9, 99);
+            this.setWTBtn.Name = "setWTBtn";
+            this.setWTBtn.Size = new System.Drawing.Size(93, 23);
+            this.setWTBtn.TabIndex = 16;
+            this.setWTBtn.Text = "Set Write Time";
+            this.setWTBtn.UseVisualStyleBackColor = true;
+            this.setWTBtn.Click += new System.EventHandler(this.setWTBtn_Click);
             // 
             // GUI
             // 
@@ -727,5 +751,8 @@
         internal System.Windows.Forms.Label bannedCount;
         internal System.Windows.Forms.Button updatesViewBtn;
         internal System.Windows.Forms.ToolStripMenuItem updatesView;
+        internal System.Windows.Forms.Button setWTBtn;
+        private System.Windows.Forms.ToolStripMenuItem updateWriteTimeToolStripMenuItem;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

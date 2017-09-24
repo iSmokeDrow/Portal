@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using System.IO;
 using Client.Functions;
 using Client.Network;
 using Client.Structures;
+using ProgressODoom;
 
 namespace Client
 {
@@ -82,13 +84,13 @@ namespace Client
             connectToServer();
         }
 
-        protected void assignIP()
+        private void assignIP()
         {
             ip = OPT.Instance.GetString("ip");
             port = OPT.Instance.GetInt("port");
         }
 
-        internal void connectToServer()
+        private void connectToServer()
         {
             if (!ServerManager.Instance.Start(ip, port))
             {
@@ -246,6 +248,7 @@ namespace Client
 
         internal void doUpdateTasks() { ServerPackets.Instance.CS_RequestUpdatesEnabled(); }
 
+        // TODO: Redo for continuity?
         internal async void OnUpdatesEnabledReceived(int updatesDisabled)
         {
             if (updatesDisabled == 0)
@@ -266,8 +269,16 @@ namespace Client
                 Instance.currentStatus.ResetText();
                 Instance.currentProgress.Maximum = 100;
                 Instance.currentProgress.Value = 0;
-                Instance.canStart = true;
+                Instance.enableStart();
+                canStart = true;
             }));
+        }
+
+        private void enableStart()
+        {
+
+            start_btn.Image = Client.Properties.Resources.start_on;
+            start_btn.Enabled = true;
         }
 
         public void UpdateStatus(int type, string text)
@@ -321,7 +332,7 @@ namespace Client
                     {
                         totalProgress.Value = 0;
                         totalProgress.Maximum = 100;
-                        totalStatus.Text = string.Empty; 
+                        totalStatus.Text = string.Empty;
                     }));
                     break;
 
@@ -371,16 +382,19 @@ namespace Client
                 {
                     if (startType == 1) // Use SFrameBypass
                     {
-                        if (SFrameBypass.Start(10, launchArgs)) { if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.close_Click(null, EventArgs.Empty); })); } }
-                        else { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.close_Click(null, EventArgs.Empty); }
+                        if (!SFrameBypass.Start(10, launchArgs)) { MessageBox.Show("The SFrame.exe has failed to start", "Fatal Exception", MessageBoxButtons.OK, MessageBoxIcon.Error); Instance.close_Click(null, EventArgs.Empty); }
                     }
                     else
                     {
                         var p = new ProcessStartInfo();
                         p.FileName = string.Concat(OPT.Instance.GetString("clientdirectory"), @"\SFrame.exe");
+                        p.WorkingDirectory = OPT.Instance.GetString("clientdirectory");
+                        p.UseShellExecute = false;
                         p.Arguments = launchArgs;
                         Process.Start(p);
                     }
+
+                    if (OPT.Instance.GetBool("closeonstart")) { Instance.Invoke(new MethodInvoker(delegate { Instance.close_Click(null, EventArgs.Empty); })); }
                 }
                 else { MessageBox.Show("Cannot start because the server is currently in maintenance!\n\nTry again in a little bit!", "Maintenance Exception", MessageBoxButtons.OK, MessageBoxIcon.Stop); }
             }

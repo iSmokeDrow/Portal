@@ -47,7 +47,7 @@
             this.updatesGrid.Location = new System.Drawing.Point(0, 0);
             this.updatesGrid.Name = "updatesGrid";
             this.updatesGrid.RowHeadersVisible = false;
-            this.updatesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.updatesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.updatesGrid.Size = new System.Drawing.Size(580, 253);
             this.updatesGrid.TabIndex = 0;
             this.updatesGrid.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.updatesGrid_CellMouseUp);
@@ -89,7 +89,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Updates Manager";
-            this.Load += new System.EventHandler(this.updatesViewerGUI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.updatesGrid)).EndInit();
             this.updatesContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);

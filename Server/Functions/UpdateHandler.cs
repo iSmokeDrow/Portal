@@ -45,15 +45,19 @@ namespace Server.Functions
         }
 
         public void OnUserRequestSelfUpdateRequired(Client client, string remoteHash)
-        {         
+        {
+            bool result = false;
+
             if (Directory.Exists(selfUpdatesDir))
             {
                 if (File.Exists(selfUpdatePath))
                 {
                     string hash = Hash.GetSHA512Hash(selfUpdatePath);
-                    ClientPackets.Instance.SC_SendSelfUpdateRequired(client, hash != remoteHash);
+                    result = hash != remoteHash;
                 }
             }
+
+            ClientPackets.Instance.SC_SendSelfUpdateRequired(client, result);
         }
 
         internal void OnUserRequestUpdatesEnabled(Client client) { if (OPT.SettingExists("disable.updating")) { ClientPackets.Instance.SC_SendUpdatesDisabled(client, OPT.GetInt("disable.updating")); } }

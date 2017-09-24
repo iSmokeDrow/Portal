@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Net;
-using System.ComponentModel;
 using Updater.Functions;
 using Updater.Network;
 
+// TODO: Conver to GUI application
+// TODO: Share output class of server application
 namespace Updater
 {
     class Program

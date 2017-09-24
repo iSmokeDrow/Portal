@@ -147,6 +147,47 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\AbstractProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\AbstractProgressPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ChainedGlossPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\FlatGlossPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GradientGlossPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\IAnimatedProgressPainter.cs" />
+    <Compile Include="Controls\IGlossPainter.cs" />
+    <Compile Include="Controls\IProgressBackgroundPainter.cs" />
+    <Compile Include="Controls\IProgressBorderPainter.cs" />
+    <Compile Include="Controls\IProgressPainter.cs" />
+    <Compile Include="Controls\MetalProgressPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MiddleGlossPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PlainBackgroundPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PlainBorderPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PlainProgressPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ProgressBarEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\RoundGlossPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Functions\Drive.cs" />
     <Compile Include="Functions\FingerPrint.cs" />
     <Compile Include="Functions\Hash.cs" />
@@ -259,6 +300,11 @@
     <Content Include="LBIndustrialCtrls.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\bg.jpg" />
+    <None Include="Resources\bg_new.jpg" />
+    <None Include="Resources\progress_bg.png" />
+    <None Include="Resources\start-on.png" />
+    <None Include="Resources\start-off.png" />
     <Content Include="zlib32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

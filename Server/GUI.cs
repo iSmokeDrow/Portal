@@ -99,6 +99,8 @@ namespace Server
             Output.Write(new Structures.Message() { Text = "Initializing Statistics Update Service..." });
             Statistics.StartUpdating();
             Output.Write(new Structures.Message() { Text = "[OK]", AddBreak = true });
+
+            toolTip.SetToolTip(setWTBtn, "Sets the Updates folder last write time to the current time");
         }
 
         private void indexTick(object sender, EventArgs e) { IndexManager.Build(true); }
@@ -135,10 +137,9 @@ namespace Server
 
         private void updatesView_Click(object sender, EventArgs e)
         {
-            using (updatesManagerGUI updatesGUI = new updatesManagerGUI())
-            {
-                updatesGUI.ShowDialog(this);
-            }
+            using (updatesManagerGUI updatesGUI = new updatesManagerGUI(ref IndexManager.Index)) { updatesGUI.ShowDialog(this); }
         }
+
+        private void setWTBtn_Click(object sender, EventArgs e) { Directory.SetLastWriteTimeUtc(IndexManager.UpdatesDirectory, DateTime.UtcNow); }
     }
 }

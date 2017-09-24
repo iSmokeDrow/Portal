@@ -106,6 +106,7 @@
             this.countryList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.countryList.FormattingEnabled = true;
             this.countryList.Items.AddRange(new object[] {
+            "AR",
             "US",
             "DE",
             "EU",

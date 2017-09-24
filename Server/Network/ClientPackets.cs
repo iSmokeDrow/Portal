@@ -141,12 +141,6 @@ namespace Server.Network
 
         private void CS_RequestFileTransfer(Client client, PacketStream stream) { UpdateHandler.Instance.OnUserRequestFile(client, stream.ReadString()); }
 
-
-        /// <summary>
-        /// Request launch arguments
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="stream"></param>
         private void CS_RequestArguments(Client client, PacketStream stream) { UserHandler.Instance.OnUserRequestArguments(client); }
 
         private void CS_RequestDisconnect(Client client, PacketStream stream)
@@ -322,7 +316,6 @@ namespace Server.Network
         }
 
         internal void SC_SendOkDisconnect(Client client) { ClientManager.Instance.Send(client, new PacketStream(0x0099)); }
-
 
         internal void SC_SendWait(Client client, ushort currentPacketId, int period)
         {

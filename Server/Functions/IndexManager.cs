@@ -76,8 +76,10 @@ namespace Server.Functions
 
             if (rebuild) { Program.Wait = false; }
 
-            GUI.Instance.updatesViewBtn.Enabled = true;
-            GUI.Instance.updatesView.Enabled = true;
+            GUI.Instance.Invoke(new System.Windows.Forms.MethodInvoker(delegate {
+                GUI.Instance.updatesViewBtn.Enabled = true;
+                GUI.Instance.updatesView.Enabled = true;
+            }));        
         }
 
         public static List<IndexEntry> Filter(FilterType type)
